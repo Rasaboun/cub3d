@@ -1,16 +1,6 @@
 #include "test.h"
-#include "/home/user42/Bureau/cub3d/libft/libft.h"
+#include "libft/libft.h"
 #include "get_next_line.h"
-
-int		ft_iswhitespace(char const c)
-{
-	if (c == ' ' || c == '\n' || c == '\t' || c == '\v'
-		|| c == '\r' || c == '\f')
-		return (1);
-	return (0);
-}
-
-
 
 int    parsecolor(char *line,int n)
 {
@@ -75,14 +65,7 @@ char    *parsetex(char *line,int n)
 }
 void recup(char *line, parse *pars)
 {
-   // exit(1);
-    int y;
-    int nn;
     int n;
-    char *s1;
-    doubleint dint;
-
-    y = 0;
     n = 0;
 
     if (line[n] == 'S' && line[n+1] != 'O')

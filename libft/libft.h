@@ -38,6 +38,7 @@ int				ft_isascii(int c);
 int				ft_isprint(int c);
 int				ft_toupper(int c);
 int				ft_tolower(int c);
+int		ft_iswhitespace(char const c);
 char		*ft_strfjoin(char *s1, char *s2);
 void			*ft_memset(void *b, int c, size_t len);
 void			ft_bzero(void *s, size_t n);

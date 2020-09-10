@@ -1,5 +1,5 @@
 #include "test.h"
-#include "/home/user42/Bureau/cub3d/libft/libft.h"
+#include "libft/libft.h"
 #include "get_next_line.h"
 
 void recup(char *line, parse *pars);
@@ -7,8 +7,6 @@ char    *parsetex(char *line,int n);
 doubleint    parsesize(char *line,int n);
 
 int    parsecolor(char *line,int n);
-int		ft_iswhitespace(char const c);
-
 
 
 int     close_map(parse *pars, int i, int j)
@@ -22,6 +20,8 @@ int     close_map(parse *pars, int i, int j)
         return (0);
     if (pars->tab[i + 1][j] == ' ' || pars->tab[i - 1][j] == ' ' || pars->tab[i][j + 1] == ' ' || pars->tab[i][j - 1] == ' ')
         return (0);
+    if (pars->tab[i + 1][j] == '\0' || pars->tab[i - 1][j] == '\0' || pars->tab[i][j + 1] == '\0' || pars->tab[i][j - 1] == '\0')
+        return (0);
     return (1);
 }
 
@@ -33,6 +33,7 @@ int checkmap(parse *pars)
     char mapf;
     int player;
 
+    mapf = '\0';
     player = 0;
     linecount = 0;
     while(pars->tab[linecount])
@@ -73,7 +74,8 @@ char ** ft_lstdtab(t_list *lst)
     list = lst;
     i = 0;
     size = ft_lstsize(list);
-    tab = (char **)malloc((sizeof(char*) * size) + 1);
+    if (!(tab = (char **)malloc((sizeof(char*) * (size + 1)))))
+        exit(0);
     while(i < size)
     {
          tab[i] = ft_strdup(list->content);
@@ -116,6 +118,8 @@ void cub_skip_header(int fd)
 
     while (get_next_line(fd,&line))
     {
+        if(line == NULL)
+            exit(0);
         n  = 0;
         while(ft_iswhitespace(line[n]))
             n++;
@@ -132,7 +136,9 @@ void cub_skip_header(int fd)
     }
     
     pars->tab = ft_lstdtab(first);
-    printf("map is %d",checkmap(pars));
+    checkmap(pars);
+    //printf("map is %d\n",checkmap(pars));
+    //printf("tab c %c",pars->tab[15][z]);
     //printf("%s\n",pars->tab[0]);
     /*while(first->next != NULL)
     {
@@ -157,8 +163,9 @@ char *line;
 parse *par;
 int fd;
 int n = 0;
-fd = open("/home/user42/Bureau/cub3d/map.cub",O_RDWR);
-if (fd != 0)
+fd = 0;
+fd = open("/home/user42/cub1d/map.cub",O_RDWR);
+if (fd > 0)
     cub_skip_header(fd);
 
 close(fd);

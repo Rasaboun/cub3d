@@ -2,6 +2,7 @@
 
 char    *parsing(char *str,int i);
 int     *intparsing(char *str,int i);
+
 data ft_parse(char *path)
 {
     int     fd;
@@ -15,6 +16,8 @@ data ft_parse(char *path)
 
     while(get_next_line(fd,&line))
     {
+        if(line == NULL)
+            exit(0);
         i = 0;
         while(line[i] != '\0' && ft_iswhitespace(line[i]) == 1)
             i++;
