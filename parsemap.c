@@ -24,7 +24,30 @@ int     close_map(parse *pars, int i, int j)
         return (0);
     return (1);
 }
+void freepars(parse *pars)
+{
+    free(pars);
+}
+void    freemap(parse *pars)
+{
+    int i;
 
+    i = 0;
+    while(pars->tab[i] != NULL)
+    {
+        free(pars->tab[i]);
+        i++;
+    }
+    free(pars->tab[i]);
+}
+void    freetext(parse *pars)
+{
+    free(pars->ea);
+    free(pars->no);
+    free(pars->s);
+    free(pars->so);
+    free(pars->we);
+}
 int checkmap(parse *pars)
 {
     int linecount;
@@ -38,15 +61,12 @@ int checkmap(parse *pars)
     linecount = 0;
     while(pars->tab[linecount])
         linecount++;
-    //printf("int %d\n",linecount);
     i = 0;
     while (i < linecount)
     {
-        //printf("int %s\n",pars->tab[i]);
         j = 0;
         while (pars->tab[i][j])
         {
-            //printf("\n %c",pars->tab[i][j]);
             mapf = pars->tab[i][j];
             if (!(ft_strchr("012 NSWE",mapf)))
                 return (0);
@@ -57,7 +77,6 @@ int checkmap(parse *pars)
                     return (0);
             j++;
         }
-        //exit(1);
         i++;
     }
     return (1);
@@ -65,11 +84,12 @@ int checkmap(parse *pars)
 
 char ** ft_lstdtab(t_list *lst)
 {
-    char **tab;
+    char    **tab;
     int     i;
     int     size;
     int     n;
     t_list *list;
+    t_list *next;
 
     list = lst;
     i = 0;
@@ -78,10 +98,13 @@ char ** ft_lstdtab(t_list *lst)
         exit(0);
     while(i < size)
     {
-         tab[i] = ft_strdup(list->content);
-         list = list->next;
+         next = list->next;
+         tab[i] = list->content;
+         free(list);
+         list = next;
          i++;
     }
+    free(list);
     tab[size] = NULL;
     return (tab);
 }
@@ -97,11 +120,9 @@ t_list    *recupmap(int fd, char *line)
     while (get_next_line(fd,&line))
     {
         map = ft_lstnew(line);
-        //printf("%s\n",map->content);
         ft_lstadd_back(&first,map);
     }
         map = ft_lstnew(line);
-        //printf("%s\n",map->content);
         ft_lstadd_back(&first,map);
     return(first);
 }
@@ -137,6 +158,10 @@ void cub_skip_header(int fd)
     
     pars->tab = ft_lstdtab(first);
     checkmap(pars);
+    //printf("map is %d\n",checkmap(pars));
+    freemap(pars);
+    freetext(pars);
+    freepars(pars);
     //printf("map is %d\n",checkmap(pars));
     //printf("tab c %c",pars->tab[15][z]);
     //printf("%s\n",pars->tab[0]);
