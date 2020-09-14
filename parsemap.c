@@ -141,6 +141,8 @@ void cub_skip_header(int fd)
     {
         if(line == NULL)
             exit(0);
+        if(line[0] = '\0')
+            free(line);
         n  = 0;
         while(ft_iswhitespace(line[n]))
             n++;
@@ -154,14 +156,14 @@ void cub_skip_header(int fd)
         {
             first = recupmap(fd, line);
         }
+        free(line);
     }
-    
     pars->tab = ft_lstdtab(first);
     checkmap(pars);
     //printf("map is %d\n",checkmap(pars));
     freemap(pars);
     freetext(pars);
-    freepars(pars);
+    //freepars(pars);
     //printf("map is %d\n",checkmap(pars));
     //printf("tab c %c",pars->tab[15][z]);
     //printf("%s\n",pars->tab[0]);
