@@ -9,6 +9,11 @@ int    parsecolor(char *line,int n)
     int b;
     int rgb;
 
+    r = 0;
+    g = 0;
+    b = 0;
+    rgb = 0;
+
     while(ft_iswhitespace(line[n]))
         n++;
     r = ft_atoi(line+n);
@@ -51,8 +56,10 @@ char    *parsetex(char *line,int n)
     char *s1;
 
     y = 0;
+    nn = 0;
+    s1 = NULL;
 
-    while(ft_iswhitespace(line[n]))
+    while(ft_iswhitespace(line[n]) && line[n])
         n++;
     nn = n;
     while (line[n] >= 33 && line[n] <= 126)
@@ -106,6 +113,6 @@ void recup(char *line, parse *pars)
     if (line[n] == 'C')
     {
         n++;
-        pars->f = parsecolor(line,n);
+        pars->c = parsecolor(line,n);
     }
 }
