@@ -8,6 +8,32 @@
 #include "get_next_line.h"
 #include "libft/libft.h"
 
+
+typedef struct bitmap_file_header
+{
+    unsigned char bitmap[2];;
+    int     file_size;
+    short reserved1;
+    short reserverd2;
+    unsigned int offset_bits;
+} bfh;
+
+typedef struct bitmap_image_header
+{
+    unsigned size_header;
+    unsigned int width;
+    unsigned int height;
+    short int planes;
+    short int bit_count;
+    unsigned int compression;
+    unsigned int image_size;
+    unsigned int ppm_x;
+    unsigned int ppm_y;
+    unsigned int clr_used;
+    unsigned int clr_important;
+} bih;
+
+
 typedef struct color
 {
     char    *id;
@@ -81,3 +107,4 @@ int		ft_iswhitespace(char const c);
 int ft_atoi_base(const char *str, int str_base);
 int	base(int c, int base);
 void    ft_error(char *str);
+void    save_bitmap(unsigned int *color, int width, int height, int fd);

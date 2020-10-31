@@ -154,6 +154,9 @@ int deal_key(int key, void *param)
     }
     if (key == 65307)
     {
+        int fdd;
+        fdd = open("image.bmp", O_WRONLY | O_CREAT | O_TRUNC | O_APPEND,777);
+        save_bitmap(ray->imagescreenB,screenWidth,screenHeight,fdd);
         mlx_destroy_window(ray->mlx,ray->mlx_win);
         freeall(ray->texture);
         exit(EXIT_SUCCESS);

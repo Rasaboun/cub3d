@@ -198,28 +198,18 @@ void cub_skip_header(int fd)
     free(line);
     pars.tab = ft_lstdtab(first);
     checkmap(&pars);
-    //printf("map is %d\n",checkmap(pars));
+    printf("map is %d\n",checkmap(&pars));
+    printf("pars.c %d\n",pars.c);
+    printf("pars.ea %s\n",pars.ea);
+    printf("pars.f %d\n",pars.f);
+    printf("pars.no %s\n",pars.no);
+    printf("pars.row %d\n",pars.row);
+    printf("pars.s %s\n",pars.s);
+    printf("pars.so %s\n",pars.so);
+    printf("pars.we %s\n",pars.we);
     freemap(&pars);
     freepars(&pars);
-    //gfreetext(pars);
-    //printf("map is %d\n",checkmap(pars));
-    //printf("tab c %c",pars->tab[15][z]);
-    //printf("%s\n",pars->tab[0]);
-    /*while(first->next != NULL)
-    {
-    printf("%s\n",first->content);
-    first  = first->next;
-    }
-    printf("%s\n",first->content);
-    printf("lst count %d\n",ft_lstsize(first));
-    printf("f %d\n",pars->f);
-    printf("NO %s\n",pars->no);
-    printf("r1 %d r2 %d\n",pars->r.i,pars->r.ii);
-    printf("s %s\n",pars->s);
-    printf("so %s\n",pars->so);
-    printf("we %s\n",pars->we);
-    printf("ea %s\n",pars->ea);
-    printf("c %d\n",pars->c);*/
+    
 }
 
 int main(){
