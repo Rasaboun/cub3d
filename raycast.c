@@ -266,8 +266,14 @@ int raycast(raycasting *ray)
        // mlx_put_image_to_window(ray->mlx,ray->mlx_win,ray->screenB,0,0);
     }
     //SPRITE
-    double spriteX = 24-ray->posX;
-    double spriteY = 12-ray->posY;
+    int i = 0;
+    while(ray->pars->sprites[i])
+        i++;
+    sort_sprite(ray->pars->sprites,ray->posX,ray->posY,i);
+    for(int y = 0;y < i;y++)
+    {
+    double spriteX = ray->pars->sprites[y]->x - ray->posX;
+    double spriteY = ray->pars->sprites[y]->y - ray->posY;
     double invDet = 1.0 / (ray->planeX * ray->dirY - ray->dirX * ray->planeY);
     double transformX = invDet * (ray->dirY * spriteX - ray->dirX * spriteY);
     double transformY = invDet * (-ray->planeY * spriteX + ray->planeX * spriteY);
@@ -305,6 +311,7 @@ int raycast(raycasting *ray)
           if(colors != -1) ray->imagescreenB[(screenWidth) * yy + stripe] = colors; //paint pixel if it isn't black, black is the invisible color
         }
       }
+    }
               mlx_put_image_to_window(ray->mlx,ray->mlx_win,ray->screenB,0,0);
     return (1);
 }

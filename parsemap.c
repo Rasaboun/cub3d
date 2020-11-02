@@ -50,7 +50,7 @@ int     tab_width(char **tab)
     return(last);
 }
 
-void    sort_sprite(sprite *sprites,int posX,int posY,int size)
+void    sort_sprite(sprite **sprites,int posX,int posY,int size)
 {
     int disorder;
     int dist1;
@@ -59,25 +59,25 @@ void    sort_sprite(sprite *sprites,int posX,int posY,int size)
     dist1 = 0;
     dist2 = 0;
     disorder = 1;
-    sprite tmp;
+    sprite *tmp;
     while(disorder)
     {
         disorder = 0;
-        for(int j = 0;j < size;j++)
+        for(int j = 0;j < size-1;j++)
         {
-            dist1 = (posX - sprites[j].x) * (posX - sprites[j].x) + (posY - sprites[j].y) * (posY - sprites[j].y);
-            dist2 = (posX - sprites[j+1].x) * (posX - sprites[j+1].x) + (posY - sprites[j+1].y) * (posY - sprites[j+1].y);
+            dist1 = (posX - sprites[j]->x) * (posX - sprites[j]->x) + (posY - sprites[j]->y) * (posY - sprites[j]->y);
+            dist2 = (posX - sprites[j+1]->x) * (posX - sprites[j+1]->x) + (posY - sprites[j+1]->y) * (posY - sprites[j+1]->y);
+    
+
             if (dist1 < dist2)
             {
-                tmp = sprites[j];
+                tmp = sprites[j+1];
                 sprites[j+1] = sprites[j];
                 sprites[j] = tmp;
                 disorder = 1;
             }
         }
     }
-
-
 }
 sprite **get_sprites(t_list *lst,parse *pars)
 {

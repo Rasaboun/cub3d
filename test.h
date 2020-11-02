@@ -132,7 +132,7 @@ void recup(char *line, parse *pars);
 char    *parsetex(char *line,int n);
 doubleint    parsesize(char *line,int n);
 int    parsecolor(char *line,int n);
-void    sort_sprite(sprite *sprites,int posX,int posY,int size);
+void    sort_sprite(sprite **sprites,int posX,int posY,int size);
 sprite **get_sprites(t_list *lst,parse *pars);
 int     close_map(parse *pars, int i, int j);
 int checkmap(parse *pars,t_list **lst);
