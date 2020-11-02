@@ -2,11 +2,103 @@
 #include "libft/libft.h"
 #include "get_next_line.h"
 
-void recup(char *line, parse *pars);
-char    *parsetex(char *line,int n);
-doubleint    parsesize(char *line,int n);
 
-int    parsecolor(char *line,int n);
+void    create_charcub(char **tab,int width)
+{
+    int i;
+    int n; 
+    char *tmp;
+
+    i = 0;
+    n = 0;
+
+    while(tab[n])
+    {
+        i = ft_strlen(tab[n]);
+        if (i <= width)
+        {
+            tmp = ft_calloc((width-i)+1,sizeof(char));
+            tab[n] = ft_strfjoin(tab[n],tmp);
+        }
+        n++;
+    }
+}
+int     tab_width(char **tab)
+{
+    int i;
+    int j;
+    int new;
+    int last;
+
+    last = 0;
+    new = 0;
+    i = 0;
+    j = 0;
+
+    while(tab[i] != NULL)
+    {
+        j = 0;
+        while(tab[i][j])
+        {
+            j++;
+        }
+        new = j;
+        if(new > last)
+            last = new;
+        i++;
+    }
+    return(last);
+}
+
+void    sort_sprite(sprite *sprites,int posX,int posY,int size)
+{
+    int disorder;
+    int dist1;
+    int dist2;
+
+    dist1 = 0;
+    dist2 = 0;
+    disorder = 1;
+    sprite tmp;
+    while(disorder)
+    {
+        disorder = 0;
+        for(int j = 0;j < size;j++)
+        {
+            dist1 = (posX - sprites[j].x) * (posX - sprites[j].x) + (posY - sprites[j].y) * (posY - sprites[j].y);
+            dist2 = (posX - sprites[j+1].x) * (posX - sprites[j+1].x) + (posY - sprites[j+1].y) * (posY - sprites[j+1].y);
+            if (dist1 < dist2)
+            {
+                tmp = sprites[j];
+                sprites[j+1] = sprites[j];
+                sprites[j] = tmp;
+                disorder = 1;
+            }
+        }
+    }
+
+
+}
+sprite **get_sprites(t_list *lst,parse *pars)
+{
+    sprite **sprites;
+    int i;
+
+    i = 0;
+    i = ft_lstsize(lst);
+    sprites = (sprite**)malloc((sizeof(sprite*) * i) + 1);
+    i = 0;
+    while(lst != NULL)
+    {
+        sprites[i] = (sprite*)lst->content;
+        lst = lst->next;
+        i++;
+    }
+    sprites[i] = NULL;
+    return(sprites);
+}
+
+
 
 
 int     close_map(parse *pars, int i, int j)
@@ -46,20 +138,23 @@ void    freetext(parse *pars)
     free(pars->so);
     free(pars->we);
 }
-int checkmap(parse *pars)
+int checkmap(parse *pars,t_list **lst)
 {
     int linecount;
     int i;
     int j;
     char mapf;
     int player;
+    char *play;
 
+    play = NULL;
     mapf = '\0';
     player = 0;
     linecount = 0;
     i = 0;
     j = 0;
-
+    sprite *sprites;
+        t_list *new;
     while(pars->tab[linecount])
         linecount++;
     i = 0;
@@ -72,7 +167,23 @@ int checkmap(parse *pars)
             if (!(ft_strchr("012 NSWE",mapf)))
                 return (0);
             if (ft_strchr("NSWE",mapf))
+            {
+                play = ft_strchr("NSWE",mapf);
+                pars->play.x = i;
+                pars->play.y = j;
+                pars->play.direction = mapf;
                 player++;
+                pars->tab[i][j] = '0';
+            }
+            if(ft_strchr("2",mapf))
+            {
+                sprites = malloc(sizeof(sprite));
+                sprites->x = i;
+                sprites->y = j;
+                new = ft_lstnew(sprites);
+                ft_lstadd_back(lst,new);
+                pars->tab[i][j] = '0';
+            }
             if (mapf == '0' || mapf == '2' || mapf == 'N' || mapf == 'S' || mapf == 'W' || mapf == 'E')
                 if (!(close_map(pars,i,j)))
                     return (0);
@@ -162,17 +273,20 @@ void init_pars(parse *pars)
     pars = &parsing;
 }
 
-void cub_skip_header(int fd)
+parse *cub_skip_header(int fd)
 {
     char *line;
     int n;
     t_list *first;
-    parse pars;
-
+    parse *pars;
+    t_list *lst;
+    sprite **sprites;
+    lst = NULL;
     n = 0;
     line = NULL;
 
-    init_pars(&pars);
+    pars = malloc(sizeof(parse));
+    init_pars(pars);
     while (get_next_line(fd,&line))
     {
         if(line == NULL)
@@ -180,7 +294,7 @@ void cub_skip_header(int fd)
         n  = 0;
         while(ft_iswhitespace(line[n]) && line[n] != '\0')
             n++;
-        recup(line+n,&pars);
+        recup(line+n,pars);
         if (line[n] == '0')
         {
             ft_putstr_fd("ERROR MAP",1);
@@ -196,23 +310,32 @@ void cub_skip_header(int fd)
         }
     }
     free(line);
-    pars.tab = ft_lstdtab(first);
-    checkmap(&pars);
-    printf("map is %d\n",checkmap(&pars));
-    printf("pars.c %d\n",pars.c);
-    printf("pars.ea %s\n",pars.ea);
-    printf("pars.f %d\n",pars.f);
-    printf("pars.no %s\n",pars.no);
-    printf("pars.row %d\n",pars.row);
-    printf("pars.s %s\n",pars.s);
-    printf("pars.so %s\n",pars.so);
-    printf("pars.we %s\n",pars.we);
-    freemap(&pars);
-    freepars(&pars);
-    
+    pars->tab = ft_lstdtab(first);
+    create_charcub(pars->tab,tab_width(pars->tab));
+    checkmap(pars,&lst);
+    //printf("map is %d\n",checkmap(pars,&lst));
+    sprites = get_sprites(lst,pars);
+    pars->sprites = sprites;
+/*int e = 0;
+
+    while(pars->tab[e])
+    {
+        printf("%s\n",pars->tab[e]);
+        e++;
+    }*/
+    /*printf("pars.c %d\n",pars->c);
+    printf("pars.f %d\n",pars->f);
+    printf("pars.no %s\n",pars->no);
+    printf("pars.row %d\n",pars->row);
+    printf("pars.s %s\n",pars->s);
+    printf("pars.so %s\n",pars->so);
+    printf("pars.we %s\n",pars->we);*/
+   // freemap(&pars);
+   // freepars(&pars);
+    return(pars);
 }
 
-int main(){
+/*int main(){
 
 int fd;
 fd = 0;
@@ -221,3 +344,4 @@ if (fd > 0)
     cub_skip_header(fd);
 close(fd);
 }
+*/

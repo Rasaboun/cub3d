@@ -4,11 +4,11 @@
 
 R 900 600
 
-S /home/user42/Bureau/cub3d/texture/redbrick.xpm
+S ./texture/open.xpm
 
 
-           SO ./texture/open.xpm
-WE ./texture/open.xpm
+           SO /home/user42/Bureau/cub3d/texture/redbrick.xpm
+WE /home/user42/Bureau/cub3d/texture/wood.xpm
 EA 	./texture/open.xpm
 
 
@@ -29,7 +29,7 @@ EA 	./texture/open.xpm
 11000000110101011100000010001
 10002000000000001100000010001
 10000000000000001101010010001
-10000000S00000001101010010N01
+10000000S000000011010100120N1
 11000000110101011111011110001
 111101111111010111110111100011
 1111111111111111111111111111121

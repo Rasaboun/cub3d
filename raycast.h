@@ -1,9 +1,12 @@
+#ifndef RAYCAST_H
+#define RAYCAST_H
+
 #include <stdlib.h>
 #include <math.h>
 #include <mlx.h>
 #include <unistd.h>
-#define mapWidth 24
-#define mapHeight 24
+#include "test.h"
+
 #define screenWidth 640
 #define screenHeight 480
 #define KEY_PRESSED 2
@@ -23,7 +26,6 @@ typedef struct texture
     int             endian;
     int    *imagedata;
 
-
 } texture;
 
 typedef struct raycasting
@@ -42,8 +44,11 @@ typedef struct raycasting
     int size_line;
     void* screenB;
     texture         *texture;
+    parse *pars;
 } raycasting;
 
 
 int deal_key(int key, void *param);
 int raycast(raycasting *ray);
+
+#endif

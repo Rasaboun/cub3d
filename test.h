@@ -1,3 +1,7 @@
+#ifndef TEST_H
+
+#define TEST_H
+
 #include <stdlib.h>
 #include <math.h>
 #include <mlx.h>
@@ -46,6 +50,19 @@ typedef struct doubleint
     int    ii;
 } doubleint;
 
+typedef struct sprite
+{
+    int x;
+    int y;
+}sprite;
+
+typedef struct player
+{
+    int x;
+    int y;
+    char direction;
+}player;
+
 typedef struct parse
 {
     char    *s;
@@ -58,6 +75,9 @@ typedef struct parse
     int     c;
     char **tab;
     int row;
+    sprite **sprites;
+    player play;
+
 } parse;
 
 
@@ -108,3 +128,18 @@ int ft_atoi_base(const char *str, int str_base);
 int	base(int c, int base);
 void    ft_error(char *str);
 void    save_bitmap(unsigned int *color, int width, int height, int fd);
+void recup(char *line, parse *pars);
+char    *parsetex(char *line,int n);
+doubleint    parsesize(char *line,int n);
+int    parsecolor(char *line,int n);
+void    sort_sprite(sprite *sprites,int posX,int posY,int size);
+sprite **get_sprites(t_list *lst,parse *pars);
+int     close_map(parse *pars, int i, int j);
+int checkmap(parse *pars,t_list **lst);
+char **ft_lstdtab(t_list *lst);
+t_list    *recupmap(int fd, char *line);
+void init_pars(parse *pars);
+parse *cub_skip_header(int fd);
+int     tab_width(char **tab);
+void    create_charcub(char **tab,int width);
+#endif

@@ -2,33 +2,7 @@
 #include "raycast.h"
 #include "test.h"
 
-int worldMap[mapWidth][mapHeight]=
-{
-  {1,1,1,1},
-  {1,0,0,0,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,1,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-};
+
 void freeall(texture *texture)
 {
     int i;
@@ -40,14 +14,19 @@ void freeall(texture *texture)
         i++;
     }
 }
-void init_texture(texture *texture,char **path)
+void init_texture(texture *texture,parse *pars)
 {
     int fd;
     int data[4];
 
-    for(int i = 0;i < 4;i++)
+    texture[0].path = pars->ea;
+    texture[1].path = pars->no;
+    texture[2].path = pars->we;
+    texture[3].path = pars->so;
+    texture[4].path = pars->s;
+
+    for(int i = 0;i < 5;i++)
     {
-        texture[i].path = path[i];
         fd = open(texture[i].path,O_RDONLY);
         if (fd < 1)
         {
@@ -65,11 +44,17 @@ void init_texture(texture *texture,char **path)
  
 int main()
 {
+    parse *pars;
+    int fdd;
+
+    fdd = open("/home/user42/Bureau/cub3d/map.cub",O_RDWR);
+    if (fdd > 0)
+        pars = cub_skip_header(fdd);
+        
     void* screenB;
     unsigned int *imagescreenB;
     void    *mlx;
     void    *mlx_win;
-    char *path[4] = {"/home/user42/Bureau/cub3d/texture/redbrick.xpm","/home/user42/Bureau/cub3d/texture/redbrick.xpm","/home/user42/Bureau/cub3d/texture/redbrick.xpm","/home/user42/Bureau/cub3d/texture/redbrick.xpm"};
     mlx = mlx_init();
     mlx_win = mlx_new_window(mlx, screenWidth, screenHeight, "Raycasting!");
     screenB = mlx_new_image(mlx,screenWidth,screenHeight);
@@ -77,10 +62,10 @@ int main()
     int size_line;
     int endian;
     imagescreenB = (unsigned int*)mlx_get_data_addr(screenB,&bpp,&size_line,&endian);
-    texture texture[4];
-    init_texture(texture,path);
-    double posX = 2.5;
-    double posY = 12.0;
+    texture texture[5];
+    init_texture(texture,pars);
+    double posX = (float)pars->play.x;
+    double posY = (float)pars->play.y;
     double dirX = 1.0;
     double dirY = 0.0;
     double planeX = 0.0;
@@ -102,6 +87,7 @@ int main()
     param.screenB = screenB;
     param.size_line = size_line;
     param.texture = texture;
+    param.pars = pars;
     mlx_hook(mlx_win,KEY_PRESSED,1L << 0,deal_key,&param);
     mlx_loop_hook(mlx,raycast,&param);
     mlx_loop(mlx);
@@ -112,26 +98,26 @@ int deal_key(int key, void *param)
     //down
     if (key == 65361)
     {
-        if(worldMap[(int)ray->posX][(int)(ray->posY-ray->planeY * 0.10)] == 0) ray->posY -= ray->planeY * 0.10;
-        if(worldMap[(int)(ray->posX-ray->planeX * 0.10)][(int)ray->posY] == 0) ray->posX -= ray->planeX * 0.10;
+        if(ray->pars->tab[(int)ray->posX][(int)(ray->posY-ray->planeY * 0.10)] == '0') ray->posY -= ray->planeY * 0.10;
+        if(ray->pars->tab[(int)(ray->posX-ray->planeX * 0.10)][(int)ray->posY] == '0') ray->posX -= ray->planeX * 0.10;
     }
         //up
     if (key == 65363)
     {
-        if(worldMap[(int)ray->posX][(int)(ray->posY+ray->planeY * 0.10)] == 0) ray->posY += ray->planeY * 0.10;
-        if(worldMap[(int)(ray->posX+ray->planeX * 0.10)][(int)ray->posY] == 0) ray->posX += ray->planeX * 0.10;
+        if(ray->pars->tab[(int)ray->posX][(int)(ray->posY+ray->planeY * 0.10)] == '0') ray->posY += ray->planeY * 0.10;
+        if(ray->pars->tab[(int)(ray->posX+ray->planeX * 0.10)][(int)ray->posY] == '0') ray->posX += ray->planeX * 0.10;
     }
         //right
     if (key == 65362)
     {
-        if(worldMap[(int)(ray->posX + ray->dirX * 0.10)][(int)ray->posY] == 0) ray->posX += ray->dirX * 0.10;
-        if(worldMap[(int)ray->posX][(int)(ray->posY+ray->dirY * 0.10)] == 0) ray->posY += ray->dirY * 0.10;
+        if(ray->pars->tab[(int)(ray->posX + ray->dirX * 0.10)][(int)ray->posY] == '0') ray->posX += ray->dirX * 0.10;
+        if(ray->pars->tab[(int)ray->posX][(int)(ray->posY+ray->dirY * 0.10)] == '0') ray->posY += ray->dirY * 0.10;
     }
         //left
     if (key == 65364)
     {
-        if(worldMap[(int)(ray->posX - ray->dirX * 0.10)][(int)ray->posY] == 0) ray->posX -= ray->dirX * 0.10;
-        if(worldMap[(int)ray->posX][(int)(ray->posY-ray->dirY * 0.10)] == 0) ray->posY -= ray->dirY * 0.10;
+        if(ray->pars->tab[(int)(ray->posX - ray->dirX * 0.10)][(int)ray->posY] == '0') ray->posX -= ray->dirX * 0.10;
+        if(ray->pars->tab[(int)ray->posX][(int)(ray->posY-ray->dirY * 0.10)] == '0') ray->posY -= ray->dirY * 0.10;
     }
     //rotate left
     if (key == 100)
@@ -228,7 +214,7 @@ int raycast(raycasting *ray)
                 mapY += stepY;
                 side = 1;
             }
-            if (worldMap[mapX][mapY] == 1) hit = 1;
+            if (ray->pars->tab[mapX][mapY] == '1') hit = 1;
         } 
         if (side == 0)
             perpWallDist = (mapX - ray->posX + (1 - stepX) / 2) / raydirX;
@@ -248,7 +234,8 @@ int raycast(raycasting *ray)
             drawEnd = ray->h - 1;
 
         //Texture
-        int texNum = worldMap[mapX][mapY] - 1;
+        int charint = (ray->pars->tab[mapX][mapY] - 48);
+        int texNum =  charint - 1;
         double wallX;
 
         if (side == 0) wallX = ray->posY + perpWallDist * raydirY;
@@ -278,8 +265,9 @@ int raycast(raycasting *ray)
         zbuffer[x] = perpWallDist;
        // mlx_put_image_to_window(ray->mlx,ray->mlx_win,ray->screenB,0,0);
     }
-    double spriteX = 10-ray->posX;
-    double spriteY = 10-ray->posY;
+    //SPRITE
+    double spriteX = 24-ray->posX;
+    double spriteY = 12-ray->posY;
     double invDet = 1.0 / (ray->planeX * ray->dirY - ray->dirX * ray->planeY);
     double transformX = invDet * (ray->dirY * spriteX - ray->dirX * spriteY);
     double transformY = invDet * (-ray->planeY * spriteX + ray->planeX * spriteY);

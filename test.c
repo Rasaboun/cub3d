@@ -240,6 +240,8 @@ char    *xpmimgdata(int fd,int *data)
                     return (NULL);
                 }
             }
+            if(line == NULL || line[0] == ' ')
+                ft_error("ERROR TEXTURE FILE");
         tmp = ft_substr(line,1,data[0]*data[3]);
         imgdata = ft_strfjoin(imgdata,tmp);
         free(line);
