@@ -116,6 +116,16 @@ typedef struct mlxf
     int *data;
 } mlxf;
 
+typedef struct cub_skip
+{
+    char *line;
+    int n;
+    t_list *first;
+    parse *pars;
+    t_list *lst;
+    sprite **sprites;
+} cub_skip;
+
 int    *mlx_data_xpm(char *path,int fd,int *data);
 void     xpm_skip_header(int fd);
 void    get_data_xpm(int fd,int *data);
@@ -133,7 +143,7 @@ char    *parsetex(char *line,int n);
 doubleint    parsesize(char *line,int n);
 int    parsecolor(char *line,int n);
 void    sort_sprite(sprite **sprites,int posX,int posY,int size);
-sprite **get_sprites(t_list *lst,parse *pars);
+void get_sprites(cub_skip *map_pars);
 int     close_map(parse *pars, int i, int j);
 int checkmap(parse *pars,t_list **lst);
 char **ft_lstdtab(t_list *lst);
@@ -142,4 +152,5 @@ void init_pars(parse *pars);
 parse *cub_skip_header(int fd);
 int     tab_width(char **tab);
 void    create_charcub(char **tab,int width);
+void    get_map(int fd,cub_skip *map_pars);
 #endif

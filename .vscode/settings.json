@@ -2,6 +2,7 @@
     "files.associations": {
         "mlx.h": "c",
         "stdio.h": "c",
-        "cmath": "c"
+        "cmath": "c",
+        "type_traits": "c"
     }
 }

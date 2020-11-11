@@ -23,6 +23,7 @@ void    create_charcub(char **tab,int width)
         n++;
     }
 }
+
 int     tab_width(char **tab)
 {
     int i;
@@ -79,23 +80,21 @@ void    sort_sprite(sprite **sprites,int posX,int posY,int size)
         }
     }
 }
-sprite **get_sprites(t_list *lst,parse *pars)
+void get_sprites(cub_skip *map_pars)
 {
-    sprite **sprites;
     int i;
 
     i = 0;
-    i = ft_lstsize(lst);
-    sprites = (sprite**)malloc((sizeof(sprite*) * i) + 1);
+    i = ft_lstsize(map_pars->lst);
+    map_pars->pars->sprites = (sprite**)malloc(sizeof(sprite*) * (i + 1));
     i = 0;
-    while(lst != NULL)
+    while(map_pars->lst != NULL)
     {
-        sprites[i] = (sprite*)lst->content;
-        lst = lst->next;
+        map_pars->pars->sprites[i] = (sprite*)map_pars->lst->content;
+        map_pars->lst = map_pars->lst->next;
         i++;
     }
-    sprites[i] = NULL;
-    return(sprites);
+    map_pars->pars->sprites[i] = NULL;
 }
 
 
@@ -258,84 +257,71 @@ void    freepars(parse *pars)
 }
 void init_pars(parse *pars)
 {
-    parse parsing;
-    parsing.c = 0;
-    parsing.ea = NULL;
-    parsing.f = 0;
-    parsing.no = NULL;
-    parsing.r.i = 0;
-    parsing.r.ii = 0;
-    parsing.row = 0;
-    parsing.s = NULL;
-    parsing.so = NULL;
-    parsing.tab = NULL;
-    parsing.we = NULL;
-    pars = &parsing;
+    pars->c = 0;
+    pars->ea = NULL;
+    pars->f = 0;
+    pars->no = NULL;
+    pars->r.i = 0;
+    pars->r.ii = 0;
+    pars->row = 0;
+    pars->s = NULL;
+    pars->so = NULL;
+    pars->tab = NULL;
+    pars->we = NULL;
 }
 
-parse *cub_skip_header(int fd)
+void    get_map(int fd,cub_skip *map_pars)
 {
-    char *line;
     int n;
-    t_list *first;
-    parse *pars;
-    t_list *lst;
-    sprite **sprites;
-    lst = NULL;
-    n = 0;
-    line = NULL;
 
-    pars = malloc(sizeof(parse));
-    init_pars(pars);
-    while (get_next_line(fd,&line))
+    n = 0;
+    while (get_next_line(fd,&map_pars->line))
     {
-        if(line == NULL)
+        if(map_pars->line == NULL)
             exit(0);
         n  = 0;
-        while(ft_iswhitespace(line[n]) && line[n] != '\0')
+        while(ft_iswhitespace(map_pars->line[n]) && map_pars->line[n] != '\0')
             n++;
-        recup(line+n,pars);
-        if (line[n] == '0')
+        recup(map_pars->line+n,map_pars->pars);
+        if (map_pars->line[n] == '0')
         {
             ft_putstr_fd("ERROR MAP",1);
             exit(EXIT_FAILURE);
         }
-       if (line[n] == '1')
-        {
-            first = recupmap(fd, line);
-        }
+       if (map_pars->line[n] == '1')
+            map_pars->first = recupmap(fd, map_pars->line);
         else
-        {
-            free(line);
-        }
+            free(map_pars->line);
     }
-    free(line);
-    pars->tab = ft_lstdtab(first);
-    create_charcub(pars->tab,tab_width(pars->tab));
-    checkmap(pars,&lst);
-    //printf("map is %d\n",checkmap(pars,&lst));
-    sprites = get_sprites(lst,pars);
-    pars->sprites = sprites;
-/*int e = 0;
-
-    while(pars->tab[e])
-    {
-        printf("%s\n",pars->tab[e]);
-        e++;
-    }*/
-    /*printf("pars.c %d\n",pars->c);
-    printf("pars.f %d\n",pars->f);
-    printf("pars.no %s\n",pars->no);
-    printf("pars.row %d\n",pars->row);
-    printf("pars.s %s\n",pars->s);
-    printf("pars.so %s\n",pars->so);
-    printf("pars.we %s\n",pars->we);*/
-   // freemap(&pars);
-   // freepars(&pars);
-    return(pars);
+    free(map_pars->line);
 }
 
-/*int main(){
+parse *cub_skip_header(int fd)
+{
+    cub_skip map_pars;
+    int n;
+    map_pars.lst = NULL;
+    n = 0;
+    map_pars.line = NULL;
+
+    map_pars.pars = malloc(sizeof(parse));
+    init_pars(map_pars.pars);
+    get_map(fd,&map_pars);
+    map_pars.pars->tab = ft_lstdtab(map_pars.first);
+    create_charcub(map_pars.pars->tab,tab_width(map_pars.pars->tab));
+    checkmap(map_pars.pars,&map_pars.lst);
+    get_sprites(&map_pars);
+
+    for(int e = 0;map_pars.pars->sprites[e] != NULL;e++)
+    {
+        printf("Sprites %d %dx %dy\n",e,map_pars.pars->sprites[e]->x,map_pars.pars->sprites[e]->y);
+    }
+
+
+    return(map_pars.pars);
+}
+
+int main(){
 
 int fd;
 fd = 0;
@@ -344,4 +330,3 @@ if (fd > 0)
     cub_skip_header(fd);
 close(fd);
 }
-*/
