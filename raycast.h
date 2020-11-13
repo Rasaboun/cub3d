@@ -7,8 +7,8 @@
 #include <unistd.h>
 #include "test.h"
 
-#define screenWidth 640
-#define screenHeight 480
+#define screenWidth 1680
+#define screenHeight 1050
 #define KEY_PRESSED 2
 #define KEY_RELEASE 3
 #define CLOSE_EVENT 17

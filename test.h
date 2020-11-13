@@ -2,6 +2,7 @@
 
 #define TEST_H
 
+#define XPMCOMMENT "/* columns rows colors chars-per-pixel */"
 #include <stdlib.h>
 #include <math.h>
 #include <mlx.h>
@@ -149,7 +150,7 @@ int		ft_iswhitespace(char const c);
 int ft_atoi_base(const char *str, int str_base);
 int	base(int c, int base);
 void    ft_error(char *str);
-void    save_bitmap(unsigned int *color, int width, int height, int fd);
+int    save_bitmap(unsigned int *color, int width, int height, int fd);
 void recup(char *line, parse *pars);
 char    *parsetex(char *line,int n);
 doubleint    parsesize(char *line,int n);
@@ -166,4 +167,15 @@ int     tab_width(char **tab);
 void    create_charcub(char **tab,int width);
 void    get_map(int fd,cub_skip *map_pars);
 static	void	ft_swap_sprite(sprite **one,int j);
+static	int	ft_while(char *s3, const char *s1, int i);
+char	*ft_strjoinzero(char *s1, int size);
+static	void	ft_swap_sprite(sprite **one, int j);
+static	int	ft_calcul_dist(int x, int y, int posx, int posy);
+void	get_sprites(cub_skip *map_pars);
+void	freesprite(parse *pars);
+int		ft_getelemmap(parse *pars, t_checkmap *ck, t_list **lst);
+void	ft_getspritemap(parse *pars, t_checkmap *ck, t_list **lst);
+void	ft_getplayermap(parse *pars, t_checkmap *ck);
+void	freepars(parse *pars);
+
 #endif
