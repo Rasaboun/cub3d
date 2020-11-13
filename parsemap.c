@@ -6,13 +6,60 @@
 /*   By: rasaboun <rasaboun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 20:31:18 by rasaboun          #+#    #+#             */
-/*   Updated: 2020/11/13 18:00:56 by rasaboun         ###   ########.fr       */
+/*   Updated: 2020/11/13 20:09:41 by rasaboun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "test.h"
 #include "libft/libft.h"
 #include "get_next_line.h"
+
+static int	ft_while(char *s3, const char *s1, int i)
+{
+	int		p;
+	int		y;
+
+	p = 0;
+	y = 0;
+	while (p < i)
+	{
+		s3[p] = s1[y];
+		p++;
+		y++;
+	}
+	return (p);
+}
+
+char		*ft_callocstrjoin(char*s1, int size)
+{
+	int		p;
+	char	*s3;
+	int		y;
+	int		i;
+
+	if (!s1 )
+		return (NULL);
+	y = 0;
+	p = 0;
+	i = (int)ft_strlen(s1);
+	if (!(s3 = (char *)malloc(sizeof(char) * (i + size + 1))))
+		return (0);
+	p = ft_while(s3, s1, i);
+	y = 0;
+	while (p <= (int)(i + size - 1))
+	{
+		s3[p] = '\0';
+		p++;
+		y++;
+	}
+	s3[p] = '\0';
+    free(s1);
+	return (s3);
+}
+
+
+
+
 
 void	create_charcub(char **tab, int width)
 {
@@ -22,14 +69,13 @@ void	create_charcub(char **tab, int width)
 
 	i = 0;
 	n = 0;
-	while (tab[n])
+	if (tab != NULL && width > 0)
+	while (tab[n] != NULL)
 	{
 		i = ft_strlen(tab[n]);
-		if (i <= width)
-		{
-			tmp = ft_calloc((width - i) + 1, sizeof(char));
-			tab[n] = ft_strfjoin(tab[n], tmp);
-		}
+		//printf("strlen %d width %d\n",i,width);
+		if (i < width)
+			tab[n] = ft_callocstrjoin(tab[n], width - i);
 		n++;
 	}
 }
@@ -45,6 +91,7 @@ int		tab_width(char **tab)
 	new = 0;
 	i = 0;
 	j = 0;
+	if(tab != NULL)
 	while (tab[i] != NULL)
 	{
 		j = 0;
@@ -107,7 +154,10 @@ void	get_sprites(cub_skip *map_pars)
 {
 	int i;
 	t_list *tmp;
+
 	i = ft_lstsize(map_pars->lst);
+	if (map_pars->lst != NULL)
+	{
 	map_pars->pars->sprites = (sprite **)malloc(sizeof(sprite *) * (i + 1));
 	i = 0;
 	while (map_pars->lst != NULL)
@@ -119,6 +169,7 @@ void	get_sprites(cub_skip *map_pars)
 		i++;
 	}
 	map_pars->pars->sprites[i] = NULL;
+	}
 }
 
 int		close_map(parse *pars, int i, int j)
@@ -251,6 +302,8 @@ char	**ft_lstdtab(t_list *lst)
 	i = -1;
 	size = ft_lstsize(list);
 	next = NULL;
+	if(size <= 0)
+		return (NULL);
 	if (!(tab = (char **)malloc((sizeof(char *) * (size + 1)))))
 		exit(0);
 	while (i++ < size)
