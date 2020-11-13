@@ -126,6 +126,18 @@ typedef struct cub_skip
     sprite **sprites;
 } cub_skip;
 
+typedef struct checkmap
+{
+    int		linecount;
+	int		i;
+	int		j;
+	char	mapf;
+	int		player;
+	char	*play;
+	sprite	*sprites;
+	t_list	*new;
+} t_checkmap;
+
 int    *mlx_data_xpm(char *path,int fd,int *data);
 void     xpm_skip_header(int fd);
 void    get_data_xpm(int fd,int *data);
@@ -153,4 +165,5 @@ parse *cub_skip_header(int fd);
 int     tab_width(char **tab);
 void    create_charcub(char **tab,int width);
 void    get_map(int fd,cub_skip *map_pars);
+static	void	ft_swap_sprite(sprite **one,int j);
 #endif

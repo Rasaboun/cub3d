@@ -6,7 +6,7 @@
 /*   By: rasaboun <rasaboun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 20:31:18 by rasaboun          #+#    #+#             */
-/*   Updated: 2020/11/11 21:36:27 by rasaboun         ###   ########.fr       */
+/*   Updated: 2020/11/13 18:00:56 by rasaboun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,45 +60,62 @@ int		tab_width(char **tab)
 	return (last);
 }
 
-void	sort_sprite(sprite **sprites, int posx, int posy, int size)
+static	void	ft_swap_sprite(sprite **one, int j)
+{
+	sprite *tmp;
+
+	tmp = one[j + 1];
+	one[j + 1] = one[j];
+	one[j] = tmp;
+}
+
+static	int		ft_calcul_dist(int x, int y, int posx, int posy)
+{
+	return (pow((posx - x), 2) + pow((posy - y), 2));
+}
+
+void	sort_sprite(sprite **spr, int posx, int posy, int size)
 {
 	int		disorder;
 	int		dist1;
 	int		dist2;
-	sprite	*tmp;
+	int		j;
 
+	j = 0;
 	dist1 = 0;
 	dist2 = 0;
 	disorder = 1;
 	while (disorder)
 	{
 		disorder = 0;
-		for (int j = 0; j < size - 1; j++)
+		j = 0;
+		while (j < (size - 1))
 		{
-			dist1 = (posx - sprites[j]->x) * (posx - sprites[j]->x) + (posy - sprites[j]->y) * (posy - sprites[j]->y);
-			dist2 = (posx - sprites[j + 1]->x) * (posx - sprites[j + 1]->x) + (posy - sprites[j + 1]->y) * (posy - sprites[j + 1]->y);
-
+			dist1 = ft_calcul_dist(spr[j]->x, spr[j]->y, posx, posy);
+			dist2 = ft_calcul_dist(spr[j + 1]->x, spr[j + 1]->y, posx, posy);
 			if (dist1 < dist2)
 			{
-				tmp = sprites[j + 1];
-				sprites[j + 1] = sprites[j];
-				sprites[j] = tmp;
+				ft_swap_sprite(spr, j);
 				disorder = 1;
 			}
+			j++;
 		}
 	}
 }
+
 void	get_sprites(cub_skip *map_pars)
 {
 	int i;
-
+	t_list *tmp;
 	i = ft_lstsize(map_pars->lst);
 	map_pars->pars->sprites = (sprite **)malloc(sizeof(sprite *) * (i + 1));
 	i = 0;
 	while (map_pars->lst != NULL)
 	{
+		tmp = map_pars->lst->next;
 		map_pars->pars->sprites[i] = (sprite *)map_pars->lst->content;
-		map_pars->lst = map_pars->lst->next;
+		free(map_pars->lst);
+		map_pars->lst = tmp;
 		i++;
 	}
 	map_pars->pars->sprites[i] = NULL;
@@ -111,11 +128,14 @@ int		close_map(parse *pars, int i, int j)
 	linecount = 0;
 	while (pars->tab[linecount])
 		linecount++;
-	if (i == 0 || i == linecount - 1 || j == 0 || j == (int)ft_strlen(pars->tab[i]) - 1)
+	if (i == 0 || i == linecount - 1 || \
+	j == 0 || j == (int)ft_strlen(pars->tab[i]) - 1)
 		return (0);
-	if (pars->tab[i + 1][j] == ' ' || pars->tab[i - 1][j] == ' ' || pars->tab[i][j + 1] == ' ' || pars->tab[i][j - 1] == ' ')
+	if (pars->tab[i + 1][j] == ' ' || pars->tab[i - 1][j] == ' ' || \
+	pars->tab[i][j + 1] == ' ' || pars->tab[i][j - 1] == ' ')
 		return (0);
-	if (pars->tab[i + 1][j] == '\0' || pars->tab[i - 1][j] == '\0' || pars->tab[i][j + 1] == '\0' || pars->tab[i][j - 1] == '\0')
+	if (pars->tab[i + 1][j] == '\0' || pars->tab[i - 1][j] == '\0' || \
+	pars->tab[i][j + 1] == '\0' || pars->tab[i][j - 1] == '\0')
 		return (0);
 	return (1);
 }
@@ -133,6 +153,21 @@ void	freemap(parse *pars)
 	free(pars->tab[i]);
 	free(pars->tab);
 }
+
+void	freesprite(parse *pars)
+{
+	int i;
+
+	i = 0;
+	while (pars->sprites[i] != NULL)
+	{
+		free(pars->sprites[i]);
+		i++;
+	}
+	free(pars->sprites[i]);
+	free(pars->sprites);
+}
+
 void	freetext(parse *pars)
 {
 	free(pars->ea);
@@ -141,77 +176,81 @@ void	freetext(parse *pars)
 	free(pars->so);
 	free(pars->we);
 }
+
+void	ft_getplayermap(parse *pars, t_checkmap *ck)
+{
+	ck->play = ft_strchr("NSWE", ck->mapf);
+	pars->play.x = ck->i;
+	pars->play.y = ck->j;
+	pars->play.direction = ck->mapf;
+	ck->player++;
+	pars->tab[ck->i][ck->j] = '0';
+}
+
+void	ft_getspritemap(parse *pars, t_checkmap *ck, t_list **lst)
+{
+	ck->sprites = malloc(sizeof(sprite));
+	ck->sprites->x = ck->i;
+	ck->sprites->y = ck->j;
+	ck->new = ft_lstnew(ck->sprites);
+	ft_lstadd_back(lst, ck->new);
+	pars->tab[ck->i][ck->j] = '0';
+}
+
+int	ft_getelemmap(parse *pars, t_checkmap *ck, t_list **lst)
+{
+	ck->mapf = pars->tab[ck->i][ck->j];
+	if (!(ft_strchr("012 NSWE", ck->mapf)))
+		return (0);
+	if (ft_strchr("NSWE", ck->mapf))
+		ft_getplayermap(pars, ck);
+	if (ft_strchr("2", ck->mapf))
+		ft_getspritemap(pars, ck, lst);
+	if (ck->mapf == '0' || ck->mapf == '2' || ck->mapf == 'N' || \
+	ck->mapf == 'S' || ck->mapf == 'W' || ck->mapf == 'E')
+		if (!(close_map(pars, ck->i, ck->j)))
+			return (0);
+	return (1);
+}
+
 int		checkmap(parse *pars, t_list **lst)
 {
-	int		linecount;
-	int		i;
-	int		j;
-	char	mapf;
-	int		player;
-	char	*play;
-	sprite	*sprites;
-	t_list	*new;
+	t_checkmap ck;
 
-	play = NULL;
-	mapf = '\0';
-	player = 0;
-	linecount = 0;
-	i = 0;
-	j = 0;
-	while (pars->tab[linecount])
-		linecount++;
-	i = 0;
-	while (i < linecount)
+	ck.play = NULL;
+	ck.mapf = '\0';
+	ck.player = 0;
+	ck.linecount = 0;
+	ck.i = 0;
+	ck.j = 0;
+	while (pars->tab[ck.linecount])
+		ck.linecount++;
+	while (ck.i < ck.linecount)
 	{
-		j = 0;
-		while (pars->tab[i][j])
+		ck.j = 0;
+		while (pars->tab[ck.i][ck.j])
 		{
-			mapf = pars->tab[i][j];
-			if (!(ft_strchr("012 NSWE", mapf)))
+			if (ft_getelemmap(pars, &ck, lst) == 0)
 				return (0);
-			if (ft_strchr("NSWE", mapf))
-			{
-				play = ft_strchr("NSWE", mapf);
-				pars->play.x = i;
-				pars->play.y = j;
-				pars->play.direction = mapf;
-				player++;
-				pars->tab[i][j] = '0';
-			}
-			if (ft_strchr("2", mapf))
-			{
-				sprites = malloc(sizeof(sprite));
-				sprites->x = i;
-				sprites->y = j;
-				new = ft_lstnew(sprites);
-				ft_lstadd_back(lst, new);
-				pars->tab[i][j] = '0';
-			}
-			if (mapf == '0' || mapf == '2' || mapf == 'N' || mapf == 'S' || mapf == 'W' || mapf == 'E')
-				if (!(close_map(pars, i, j)))
-					return (0);
-			j++;
+			ck.j++;
 		}
-		i++;
+		ck.i++;
 	}
 	return (1);
 }
 
-char **ft_lstdtab(t_list *lst)
+char	**ft_lstdtab(t_list *lst)
 {
 	char	**tab;
 	int		i;
 	int		size;
-	int		n;
-	t_list	*list;
 	t_list	*next;
+	t_list	*list;
 
-	n = 0;
-	list = lst;
+	list  = lst;
 	i = -1;
 	size = ft_lstsize(list);
 	next = NULL;
-
 	if (!(tab = (char **)malloc((sizeof(char *) * (size + 1)))))
 		exit(0);
 	while (i++ < size)
@@ -230,7 +269,7 @@ char **ft_lstdtab(t_list *lst)
 	return (tab);
 }
 
-t_list *recupmap(int fd, char *line)
+t_list	*recupmap(int fd, char *line)
 {
 	int		n;
 	t_list	*first;
@@ -249,15 +288,16 @@ t_list *recupmap(int fd, char *line)
 	ft_lstadd_back(&first, map);
 	return (first);
 }
-void freepars(parse *pars)
+
+void	freepars(parse *pars)
 {
-	free(pars->ea);
-	free(pars->no);
-	free(pars->s);
-	free(pars->so);
-	free(pars->we);
+freetext(pars);
+freemap(pars);
+freesprite(pars);
+free(pars);
 }
-void init_pars(parse *pars)
+
+void	init_pars(parse *pars)
 {
 	pars->c = 0;
 	pars->ea = NULL;
@@ -272,7 +312,7 @@ void init_pars(parse *pars)
 	pars->we = NULL;
 }
 
-void get_map(int fd, cub_skip *map_pars)
+void	get_map(int fd, cub_skip *map_pars)
 {
 	int n;
 
@@ -298,7 +338,7 @@ void get_map(int fd, cub_skip *map_pars)
 	free(map_pars->line);
 }
 
-parse *cub_skip_header(int fd)
+parse	*cub_skip_header(int fd)
 {
 	cub_skip	map_pars;
 	int			n;
@@ -306,13 +346,25 @@ parse *cub_skip_header(int fd)
 	map_pars.lst = NULL;
 	n = 0;
 	map_pars.line = NULL;
-
 	map_pars.pars = malloc(sizeof(parse));
 	init_pars(map_pars.pars);
 	get_map(fd, &map_pars);
 	map_pars.pars->tab = ft_lstdtab(map_pars.first);
 	create_charcub(map_pars.pars->tab, tab_width(map_pars.pars->tab));
-	checkmap(map_pars.pars, &map_pars.lst);
+	if (checkmap(map_pars.pars, &map_pars.lst) == 0)
+		ft_putstr_fd("ERROR MAP", 1);
 	get_sprites(&map_pars);
 	return (map_pars.pars);
+}
+
+int main()
+{
+int fdd;
+parse *pars;
+
+    fdd = open("/home/user42/Bureau/cub3d/map.cub",O_RDWR);
+    if (fdd > 0)
+        pars = cub_skip_header(fdd);
+freepars(pars);
+
 }
