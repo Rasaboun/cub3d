@@ -6,7 +6,7 @@
 /*   By: rasaboun <rasaboun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 20:31:18 by rasaboun          #+#    #+#             */
-/*   Updated: 2020/11/13 23:45:05 by rasaboun         ###   ########.fr       */
+/*   Updated: 2020/11/17 15:35:51 by rasaboun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,19 @@ int		tab_width(char **tab)
 			i++;
 		}
 	return (last);
+}
+
+int		tab_height(char **tab)
+{
+	int i;
+
+	i = 0;
+	if (tab != NULL)
+		while (tab[i] != NULL)
+		{
+			i++;
+		}
+	return (i);
 }
 
 static	void	ft_swap_sprite(sprite **one, int j)
@@ -240,7 +253,7 @@ void	ft_getspritemap(parse *pars, t_checkmap *ck, t_list **lst)
 	ck->sprites->y = ck->j;
 	ck->new = ft_lstnew(ck->sprites);
 	ft_lstadd_back(lst, ck->new);
-	pars->tab[ck->i][ck->j] = '0';
+	//pars->tab[ck->i][ck->j] = '0';
 }
 
 int		ft_getelemmap(parse *pars, t_checkmap *ck, t_list **lst)
@@ -403,6 +416,8 @@ parse	*cub_skip_header(int fd)
 	if (checkmap(map_pars.pars, &map_pars.lst) == 0)
 		ft_putstr_fd("ERROR MAP", 1);
 	get_sprites(&map_pars);
+	map_pars.pars->width = tab_width(map_pars.pars->tab);
+	map_pars.pars->height = tab_height(map_pars.pars->tab);
 	return (map_pars.pars);
 }
 

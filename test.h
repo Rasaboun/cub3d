@@ -78,7 +78,8 @@ typedef struct parse
     int row;
     sprite **sprites;
     player play;
-
+    int width;
+    int height;
 } parse;
 
 
@@ -177,5 +178,5 @@ int		ft_getelemmap(parse *pars, t_checkmap *ck, t_list **lst);
 void	ft_getspritemap(parse *pars, t_checkmap *ck, t_list **lst);
 void	ft_getplayermap(parse *pars, t_checkmap *ck);
 void	freepars(parse *pars);
-
+int		tab_height(char **tab);
 #endif

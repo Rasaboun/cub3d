@@ -6,7 +6,7 @@
 /*   By: rasaboun <rasaboun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 23:05:03 by rasaboun          #+#    #+#             */
-/*   Updated: 2020/11/14 00:32:44 by rasaboun         ###   ########.fr       */
+/*   Updated: 2020/11/14 19:12:48 by rasaboun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,13 +215,20 @@ int		*xpmtoint(char *imgs, int *data, xpmcolordata *idcolor)
 	int		i;
 	char	*tmp;
 	int		y;
+	int		w;
 
+	w = 0;
 	y = 0;
 	tmp = NULL;
 	imgdataint = NULL;
 	i = 0;
-	if (!(imgdataint = malloc(sizeof(int) * (data[0] * data[1]) + 1)))
+	if (!(imgdataint = (int *)malloc(sizeof(int) * (data[0] * data[1] + 1))))
 		ft_error("FAIL MALLOC");
+	while (w <= data[0] * data[1])
+	{
+		imgdataint[w] = 0;
+		w++;
+	}
 	while (i < (data[0] * data[3]) * data[1])
 	{
 		imgdataint[y] = convert(imgs, idcolor, data, i);

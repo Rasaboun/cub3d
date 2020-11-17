@@ -25,6 +25,8 @@ typedef struct texture
     int             size_line;
     int             endian;
     int    *imagedata;
+    	void *mlx;
+
 
 } texture;
 

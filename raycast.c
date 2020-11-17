@@ -2,9 +2,93 @@
 #include "raycast.h"
 #include "test.h"
 
+void put_pixel(int color, int *imagescreenB, int x, int y, int ratio_x, int ratio_y, int screenwidth)
+{
+	int yy;
+	int xx;
+	int xtmp;
+	xx = 0;
+	yy = 0;
+	xtmp = x;
+
+	while (yy < ratio_y)
+	{
+		xx = 0;
+		x = xtmp;
+		while (xx < ratio_x)
+		{
+			imagescreenB[y * screenWidth + x] = color;
+			x++;
+			xx++;
+		}
+		y++;
+		yy++;
+	}
+}
+
+void mini_map(int *imagescreenB, int screenwidth, int screenheight, int mapwidth, int mapheight, char **tab, int plx, int ply, void *mlx, void *mlx_win)
+{
+
+	int width;
+	int height;
+	int margel;
+	int marget;
+	int i;
+	int y;
+	int color;
+	int size_x;
+	int size_y;
+	int ratio_x;
+	int ratio_y;
+	int ii;
+	int yy;
+	void *screenB;
+
+	margel = screenwidth / (16 * 2);
+	marget = screenheight / (16 * 2);
+
+	width = screenWidth / 8;
+	height = screenHeight / 8;
+
+	size_x = width - margel; //158
+	size_y = height - marget;
+
+	ratio_x = size_x / mapwidth;
+	ratio_y = size_y / mapheight;
+
+
+	ii = 0;
+	i = 0;
+	y = 0;
+	yy = 0;
+		while (y < mapheight)
+	{
+		i = 0;
+		ii = 0;
+		while (i < mapwidth)
+		{
+			if (y == plx && i == ply)
+			{
+				//printf("OKKKK");
+				color = 0xfc030b;
+			}
+			else if (tab[y][i] != '1')
+				color = 0x292d2e;
+			else
+				color = 0x33dcf2;
+			put_pixel(color, imagescreenB, ii, yy, ratio_x, ratio_y, screenwidth);
+			//imagescreenB[y*screenWidth + i] = color;
+			ii += ratio_x;
+			i++;
+		}
+		yy += ratio_y;
+		y++;
+	}
+}
+
 void freeall(parse *pars)
 {
-freepars(pars);
+	freepars(pars);
 }
 void init_texture(texture *texture, parse *pars)
 {
@@ -25,9 +109,10 @@ void init_texture(texture *texture, parse *pars)
 			ft_putstr_fd("ERROR OPEN FILE", 1);
 			exit(EXIT_FAILURE);
 		}
-		texture[i].imagedata = mlx_data_xpm(texture[i].path, fd, data);
-		texture[i].textheight = data[0];
-		texture[i].textwidth = data[1];
+		texture[i].img = mlx_xpm_file_to_image(texture[i].mlx, texture[i].path, &texture[i].textwidth, &texture[i].textheight);
+		if (texture[i].img == NULL)
+			printf("NO %d", i);
+		texture[i].imagedata = (int *)mlx_get_data_addr(texture[i].img, &texture[i].bpp, &texture[i].size_line, &texture[i].endian);
 		close(fd);
 	}
 }
@@ -42,18 +127,27 @@ int main()
 		pars = cub_skip_header(fdd);
 
 	void *screenB;
-	unsigned int *imagescreenB;
+	int *imagescreenB;
 	void *mlx;
-	void *mlx_win;
 	mlx = mlx_init();
+
+	void *mlx_win;
 	mlx_win = mlx_new_window(mlx, screenWidth, screenHeight, "Raycasting!");
 	screenB = mlx_new_image(mlx, screenWidth, screenHeight);
 	int bpp;
 	int size_line;
 	int endian;
+	void *img;
 	imagescreenB = (unsigned int *)mlx_get_data_addr(screenB, &bpp, &size_line, &endian);
+
 	texture texture[5];
+	texture[0].mlx = mlx;
+	texture[1].mlx = mlx;
+	texture[2].mlx = mlx;
+	texture[3].mlx = mlx;
+	texture[4].mlx = mlx;
 	init_texture(texture, pars);
+
 	double posX = (float)pars->play.x;
 	double posY = (float)pars->play.y;
 	double dirX = 1.0;
@@ -85,6 +179,8 @@ int main()
 int deal_key(int key, void *param)
 {
 	raycasting *ray = (raycasting *)param;
+	mlx_clear_window(ray->mlx, ray->mlx_win);
+
 	if (key == 65361)
 	{
 		if (ray->pars->tab[(int)ray->posX][(int)(ray->posY - ray->planeY * 0.10)] == '0')
@@ -147,7 +243,7 @@ int deal_key(int key, void *param)
 
 int raycast(raycasting *ray)
 {
-	mlx_clear_window(ray->mlx, ray->mlx_win);
+
 	double zbuffer[screenWidth];
 	for (int n = 0; n < (screenWidth * screenHeight); n++)
 	{
@@ -315,6 +411,7 @@ int raycast(raycasting *ray)
 				}
 		}
 	}
+	mini_map(ray->imagescreenB, screenWidth, screenHeight, ray->pars->width, ray->pars->height, ray->pars->tab, (int)ray->posX, (int)ray->posY, ray->mlx, ray->mlx_win);
 	mlx_put_image_to_window(ray->mlx, ray->mlx_win, ray->screenB, 0, 0);
 	return (1);
 }

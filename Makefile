@@ -16,7 +16,7 @@ objj = $(srcc:.c=.o)
 all	:$(NAME)
 
 $(NAME)	:$(OBJ) libft
-	$(CC) -o $(NAME)  $(OBJ) libft/libft.a -L.. -lmlx -L$(INCLIB) -lXext -lX11 -lm -lbsd -g
+	$(CC)  -o $(NAME)  $(OBJ) libft/libft.a -L.. -lmlx -L$(INCLIB) -lXext -lX11 -lm -lbsd -g
 
 libft :
 	cd libft/
