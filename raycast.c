@@ -86,7 +86,7 @@ void mini_map(int *imagescreenB, int screenwidth, int screenheight, int mapwidth
 	}
 }
 
-void mini_life(int *imagescreenB, int screenwidth, int screenheight, int mapwidth, int mapheight)
+void mini_life(int *imagescreenB, int screenwidth, int screenheight, int mapwidth, int mapheight,char **tab)
 {
 
 	int width;
@@ -103,19 +103,12 @@ void mini_life(int *imagescreenB, int screenwidth, int screenheight, int mapwidt
 	int ii;
 	int yy;
 	void *screenB;
-	char tab[5][21] =
-	{
-	{'1','1','1','1','1','1','1','1','z','0','z','z','0','z','0','0','z','0','0','z'},
-    {'1','1','1','1','1','1','1','1','z','0','z','z','z','z','0','z','z','0','z','z'},
-    {'1','1','1','1','1','1','1','1','z','0','z','z','0','z','0','0','z','0','0','z'},
-    {'1','1','1','1','1','1','1','1','z','0','0','z','0','z','0','z','z','0','z','z'},
-	{'1','1','1','1','1','1','1','1','z','0','0','z','0','z','0','z','z','0','0','z'},
-};
+
 	margel = screenwidth / (16 * 2);
 	marget = screenheight / (16 * 2);
 
-	width = screenWidth / 8;
-	height = screenHeight / 20;
+	width = screenWidth / 5;
+	height = screenHeight / 17;
 
 	size_x = width - margel; //158
 	size_y = height - marget;
@@ -134,11 +127,8 @@ void mini_life(int *imagescreenB, int screenwidth, int screenheight, int mapwidt
 		ii = 500;
 		while (i < mapwidth)
 		{
-			if (tab[y][i] != '1')
-				color = 0x292d2e;
-			else
-				color = 0xc21316;
-			if (tab[y][i] != 'z')
+			color = 0xc21316;//0xc21316;
+			if (tab[y][i] == '4' || tab[y][i] == '6')
 			put_pixel(color, imagescreenB, ii, yy, ratio_x, ratio_y, screenwidth);
 			//imagescreenB[y*screenWidth + i] = color;
 			ii += ratio_x;
@@ -180,12 +170,20 @@ void init_texture(texture *texture, parse *pars)
 	}
 }
 
-int main()
+int main(int argc, char *argv[])
 {
 	parse *pars;
 	int fdd;
 
-	fdd = open("/home/user42/Bureau/cub3d/map.cub", O_RDWR);
+
+	if (argc >= 2)
+		{
+			fdd = open(argv[1], O_RDWR);
+		}
+	else
+	{
+		exit(0);
+	}
 	if (fdd > 0)
 		pars = cub_skip_header(fdd);
 
@@ -195,7 +193,6 @@ int main()
 	mlx = mlx_init();
 
 	void *mlx_win;
-	mlx_win = mlx_new_window(mlx, screenWidth, screenHeight, "Raycasting!");
 	screenB = mlx_new_image(mlx, screenWidth, screenHeight);
 	int bpp;
 	int size_line;
@@ -229,12 +226,28 @@ int main()
 	param.w = w;
 	param.h = h;
 	param.mlx = mlx;
-	param.mlx_win = mlx_win;
 	param.imagescreenB = imagescreenB;
 	param.screenB = screenB;
 	param.size_line = size_line;
 	param.texture = texture;
 	param.pars = pars;
+
+	if (argc >= 3 && ft_strcmp(argv[2],"--save") == 0)
+	{
+	int fd;
+	fd = 0;
+	fd = open("image.bmp", O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 777);
+	if (fd > 0)
+		{
+			param.save = 1;
+			raycast(&param);
+			save_bitmap(param.imagescreenB,screenWidth,screenHeight,fd);
+			exit(1);
+		}
+	}
+	mlx_win = mlx_new_window(mlx, screenWidth, screenHeight, "Raycasting!");
+		param.mlx_win = mlx_win;
+
 	mlx_hook(mlx_win, KEY_PRESSED, 1L << 0, deal_key, &param);
 	mlx_loop_hook(mlx, raycast, &param);
 	mlx_loop(mlx);
@@ -475,7 +488,9 @@ int raycast(raycasting *ray)
 		}
 	}
 	mini_map(ray->imagescreenB, screenWidth, screenHeight, ray->pars->width, ray->pars->height, ray->pars->tab, (int)ray->posX, (int)ray->posY);
-	mini_life(ray->imagescreenB, screenWidth, screenHeight, 20, 5);
-	mlx_put_image_to_window(ray->mlx, ray->mlx_win, ray->screenB, 0, 0);
+	mini_life(ray->imagescreenB, screenWidth, screenHeight, ray->pars->hwidth, ray->pars->hheight,ray->pars->tabhud);
+
+	if(ray->save == 0)
+		mlx_put_image_to_window(ray->mlx, ray->mlx_win, ray->screenB, 0, 0);
 	return (1);
 }

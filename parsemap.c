@@ -6,7 +6,7 @@
 /*   By: rasaboun <rasaboun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 20:31:18 by rasaboun          #+#    #+#             */
-/*   Updated: 2020/11/18 16:10:18 by rasaboun         ###   ########.fr       */
+/*   Updated: 2020/11/18 21:13:58 by rasaboun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -349,6 +349,31 @@ t_list	*recupmap(int fd, char *line)
 	return (first);
 }
 
+t_list	*recuphud(int fd, char *line)
+{
+	t_list *first;
+	t_list *map;
+	int n;
+
+	n = 0;
+	first = NULL;
+	map = NULL;
+	first = ft_lstnew(line);
+	get_next_line(fd, &line);
+	while (ft_iswhitespace(line[n]) && line[n] != '\0')
+			n++;
+	while (line[n] == '5')
+	{
+		map = ft_lstnew(line);
+		ft_lstadd_back(&first, map);
+		get_next_line(fd, &line);
+		n = 0;
+		while (ft_iswhitespace(line[n]) && line[n] != '\0')
+			n++;
+	}
+	return (first);
+}
+
 void	freepars(parse *pars)
 {
 	freetext(pars);
@@ -390,7 +415,11 @@ void	get_map(int fd, cub_skip *map_pars)
 			ft_putstr_fd("ERROR MAP", 1);
 			exit(EXIT_FAILURE);
 		}
-		if (map_pars->line[n] == '1')
+		if (map_pars->line[n] == '5'){
+			map_pars->hud = recuphud(fd,map_pars->line);
+			//n = 0;
+		}
+		else if (map_pars->line[n] == '1')
 			map_pars->first = recupmap(fd, map_pars->line);
 		else
 			free(map_pars->line);
@@ -409,8 +438,13 @@ parse	*cub_skip_header(int fd)
 	map_pars.pars = malloc(sizeof(parse));
 	init_pars(map_pars.pars);
 	get_map(fd, &map_pars);
+
+	map_pars.pars->tabhud = ft_lstdtab(map_pars.hud);
 	map_pars.pars->tab = ft_lstdtab(map_pars.first);
+
+
 	create_charcub(map_pars.pars->tab, tab_width(map_pars.pars->tab));
+	create_charcub(map_pars.pars->tabhud, tab_width(map_pars.pars->tabhud));
 	if (checkmap(map_pars.pars, &map_pars.lst) == 0)
 	{
 		ft_putstr_fd("ERROR MAP", 1);
@@ -419,6 +453,35 @@ parse	*cub_skip_header(int fd)
 	get_sprites(&map_pars);
 	map_pars.pars->width = tab_width(map_pars.pars->tab);
 	map_pars.pars->height = tab_height(map_pars.pars->tab);
+	map_pars.pars->hwidth = tab_width(map_pars.pars->tabhud);
+	map_pars.pars->hheight = tab_height(map_pars.pars->tabhud);
+	/*int i = 0;
+	while(map_pars.pars->tabhud[i] != NULL)
+	{
+		printf("%s\n",map_pars.pars->tabhud[i]);
+		i++;
+	}
+	printf("\n");
+	i = 0;
+	while(map_pars.pars->tab[i] != NULL)
+	{
+		printf("%s\n",map_pars.pars->tab[i]);
+		i++;
+	}
+	exit(1);*/
 	return (map_pars.pars);
 }
 
+/*int	main()
+{
+parse *pars;
+	int fdd;
+
+	fdd = open("/home/user42/Bureau/cub3d/map.cub", O_RDWR);
+	if (fdd > 0)
+		pars = cub_skip_header(fdd);
+
+
+
+
+}*/

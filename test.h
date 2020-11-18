@@ -80,6 +80,9 @@ typedef struct parse
     player play;
     int width;
     int height;
+    int hwidth;
+    int hheight;
+    char **tabhud;
 } parse;
 
 
@@ -126,6 +129,7 @@ typedef struct cub_skip
     parse *pars;
     t_list *lst;
     sprite **sprites;
+    t_list *hud;
 } cub_skip;
 
 typedef struct checkmap

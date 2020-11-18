@@ -47,6 +47,7 @@ typedef struct raycasting
     void* screenB;
     texture         *texture;
     parse *pars;
+    int save;
 } raycasting;
 
 
