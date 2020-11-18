@@ -6,7 +6,7 @@
 /*   By: rasaboun <rasaboun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 20:31:18 by rasaboun          #+#    #+#             */
-/*   Updated: 2020/11/17 15:35:51 by rasaboun         ###   ########.fr       */
+/*   Updated: 2020/11/18 16:10:18 by rasaboun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -333,11 +333,9 @@ char	**ft_lstdtab(t_list *lst)
 
 t_list	*recupmap(int fd, char *line)
 {
-	int n;
 	t_list *first;
 	t_list *map;
 
-	n = 0;
 	first = NULL;
 	map = NULL;
 	first = ft_lstnew(line);
@@ -414,7 +412,10 @@ parse	*cub_skip_header(int fd)
 	map_pars.pars->tab = ft_lstdtab(map_pars.first);
 	create_charcub(map_pars.pars->tab, tab_width(map_pars.pars->tab));
 	if (checkmap(map_pars.pars, &map_pars.lst) == 0)
+	{
 		ft_putstr_fd("ERROR MAP", 1);
+		exit(0);
+	}
 	get_sprites(&map_pars);
 	map_pars.pars->width = tab_width(map_pars.pars->tab);
 	map_pars.pars->height = tab_height(map_pars.pars->tab);

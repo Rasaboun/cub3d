@@ -26,7 +26,7 @@ void put_pixel(int color, int *imagescreenB, int x, int y, int ratio_x, int rati
 	}
 }
 
-void mini_map(int *imagescreenB, int screenwidth, int screenheight, int mapwidth, int mapheight, char **tab, int plx, int ply, void *mlx, void *mlx_win)
+void mini_map(int *imagescreenB, int screenwidth, int screenheight, int mapwidth, int mapheight, char **tab, int plx, int ply)
 {
 
 	int width;
@@ -76,6 +76,69 @@ void mini_map(int *imagescreenB, int screenwidth, int screenheight, int mapwidth
 				color = 0x292d2e;
 			else
 				color = 0x33dcf2;
+			put_pixel(color, imagescreenB, ii, yy, ratio_x, ratio_y, screenwidth);
+			//imagescreenB[y*screenWidth + i] = color;
+			ii += ratio_x;
+			i++;
+		}
+		yy += ratio_y;
+		y++;
+	}
+}
+
+void mini_life(int *imagescreenB, int screenwidth, int screenheight, int mapwidth, int mapheight)
+{
+
+	int width;
+	int height;
+	int margel;
+	int marget;
+	int i;
+	int y;
+	int color;
+	int size_x;
+	int size_y;
+	int ratio_x;
+	int ratio_y;
+	int ii;
+	int yy;
+	void *screenB;
+	char tab[5][21] =
+	{
+	{'1','1','1','1','1','1','1','1','z','0','z','z','0','z','0','0','z','0','0','z'},
+    {'1','1','1','1','1','1','1','1','z','0','z','z','z','z','0','z','z','0','z','z'},
+    {'1','1','1','1','1','1','1','1','z','0','z','z','0','z','0','0','z','0','0','z'},
+    {'1','1','1','1','1','1','1','1','z','0','0','z','0','z','0','z','z','0','z','z'},
+	{'1','1','1','1','1','1','1','1','z','0','0','z','0','z','0','z','z','0','0','z'},
+};
+	margel = screenwidth / (16 * 2);
+	marget = screenheight / (16 * 2);
+
+	width = screenWidth / 8;
+	height = screenHeight / 20;
+
+	size_x = width - margel; //158
+	size_y = height - marget;
+
+	ratio_x = size_x / mapwidth;
+	ratio_y = size_y / mapheight;
+
+
+	ii = 500;
+	i = 0;
+	y = 0;
+	yy = 15;
+		while (y < mapheight)
+	{
+		i = 0;
+		ii = 500;
+		while (i < mapwidth)
+		{
+			if (tab[y][i] != '1')
+				color = 0x292d2e;
+			else
+				color = 0xc21316;
+			if (tab[y][i] != 'z')
 			put_pixel(color, imagescreenB, ii, yy, ratio_x, ratio_y, screenwidth);
 			//imagescreenB[y*screenWidth + i] = color;
 			ii += ratio_x;
@@ -373,13 +436,13 @@ int raycast(raycasting *ray)
 	sort_sprite(ray->pars->sprites, ray->posX, ray->posY, i);
 	for (int y = 0; y < i; y++)
 	{
-		double spriteX = ray->pars->sprites[y]->x - ray->posX;
-		double spriteY = ray->pars->sprites[y]->y - ray->posY;
+		double spriteX = (ray->pars->sprites[y]->x + 0.5)- ray->posX;
+		double spriteY = (ray->pars->sprites[y]->y + 0.5)- ray->posY;
 		double invDet = 1.0 / (ray->planeX * ray->dirY - ray->dirX * ray->planeY);
 		double transformX = invDet * (ray->dirY * spriteX - ray->dirX * spriteY);
 		double transformY = invDet * (-ray->planeY * spriteX + ray->planeX * spriteY);
 
-		int spriteScreenX = (int)((ray->w / 2) * (1 + transformX / transformY));
+		double spriteScreenX = ((ray->w / 2) * (1 + transformX / transformY));
 
 		int spriteHeight = abs((int)(ray->h / (transformY)));
 		int drawStartY = -spriteHeight / 2 + ray->h / 2;
@@ -411,7 +474,8 @@ int raycast(raycasting *ray)
 				}
 		}
 	}
-	mini_map(ray->imagescreenB, screenWidth, screenHeight, ray->pars->width, ray->pars->height, ray->pars->tab, (int)ray->posX, (int)ray->posY, ray->mlx, ray->mlx_win);
+	mini_map(ray->imagescreenB, screenWidth, screenHeight, ray->pars->width, ray->pars->height, ray->pars->tab, (int)ray->posX, (int)ray->posY);
+	mini_life(ray->imagescreenB, screenWidth, screenHeight, 20, 5);
 	mlx_put_image_to_window(ray->mlx, ray->mlx_win, ray->screenB, 0, 0);
 	return (1);
 }
