@@ -69,7 +69,6 @@ void mini_map(int *imagescreenB, int screenwidth, int screenheight, int mapwidth
 		{
 			if (y == plx && i == ply)
 			{
-				//printf("OKKKK");
 				color = 0xfc030b;
 			}
 			else if (tab[y][i] != '1')
@@ -77,7 +76,6 @@ void mini_map(int *imagescreenB, int screenwidth, int screenheight, int mapwidth
 			else
 				color = 0x33dcf2;
 			put_pixel(color, imagescreenB, ii, yy, ratio_x, ratio_y, screenwidth);
-			//imagescreenB[y*screenWidth + i] = color;
 			ii += ratio_x;
 			i++;
 		}
@@ -130,7 +128,6 @@ void mini_life(int *imagescreenB, int screenwidth, int screenheight, int mapwidt
 			color = 0xc21316;//0xc21316;
 			if (tab[y][i] == '4' || tab[y][i] == '6')
 			put_pixel(color, imagescreenB, ii, yy, ratio_x, ratio_y, screenwidth);
-			//imagescreenB[y*screenWidth + i] = color;
 			ii += ratio_x;
 			i++;
 		}
@@ -246,7 +243,7 @@ int main(int argc, char *argv[])
 		}
 	}
 	mlx_win = mlx_new_window(mlx, screenWidth, screenHeight, "Raycasting!");
-		param.mlx_win = mlx_win;
+	param.mlx_win = mlx_win;
 
 	mlx_hook(mlx_win, KEY_PRESSED, 1L << 0, deal_key, &param);
 	mlx_loop_hook(mlx, raycast, &param);
@@ -426,11 +423,11 @@ int raycast(raycasting *ray)
 		double texPos = (drawStart - ray->h / 2 + lineHeight / 2) * step;
 		for (int begin = 0; begin < drawStart; begin++)
 		{
-			ray->imagescreenB[(screenWidth)*begin + x] = 0x0000FF;
+			ray->imagescreenB[(screenWidth)*begin + x] = ray->pars->c;
 		}
 		for (int end = drawEnd; end < ray->h; end++)
 		{
-			ray->imagescreenB[(screenWidth)*end + x] = 0x008000;
+			ray->imagescreenB[(screenWidth)*end + x] = ray->pars->f;
 		}
 		for (int y = drawStart; y < drawEnd; y++)
 		{
@@ -475,13 +472,13 @@ int raycast(raycasting *ray)
 
 		for (int stripe = drawStartX; stripe < drawEndX; stripe++)
 		{
-			int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * ray->texture[1].textwidth / spriteWidth) / 256;
+			int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * ray->texture[4].textwidth / spriteWidth) / 256;
 			if (transformY > 0 && stripe > 0 && stripe < ray->w && transformY < zbuffer[stripe])
 				for (int yy = drawStartY; yy < drawEndY; yy++)
 				{
 					int d = (yy)*256 - ray->h * 128 + spriteHeight * 128;
-					int texY = ((d * ray->texture[1].textheight) / spriteHeight) / 256;
-					int colors = ray->texture[1].imagedata[ray->texture[1].textheight * texY + texX];
+					int texY = ((d * ray->texture[4].textheight) / spriteHeight) / 256;
+					int colors = ray->texture[4].imagedata[ray->texture[4].textheight * texY + texX];
 					if (colors != -1)
 						ray->imagescreenB[(screenWidth)*yy + stripe] = colors;
 				}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsemap.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rasaboun <rasaboun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 20:31:18 by rasaboun          #+#    #+#             */
-/*   Updated: 2020/11/18 21:13:58 by rasaboun         ###   ########.fr       */
+/*   Updated: 2020/12/09 23:10:37 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,7 +253,6 @@ void	ft_getspritemap(parse *pars, t_checkmap *ck, t_list **lst)
 	ck->sprites->y = ck->j;
 	ck->new = ft_lstnew(ck->sprites);
 	ft_lstadd_back(lst, ck->new);
-	//pars->tab[ck->i][ck->j] = '0';
 }
 
 int		ft_getelemmap(parse *pars, t_checkmap *ck, t_list **lst)
@@ -268,7 +267,7 @@ int		ft_getelemmap(parse *pars, t_checkmap *ck, t_list **lst)
 	if (ck->mapf == '0' || ck->mapf == '2' || ck->mapf == 'N' ||
 		ck->mapf == 'S' || ck->mapf == 'W' || ck->mapf == 'E')
 		if (!(close_map(pars, ck->i, ck->j)))
-			return (0);
+			return (0);		
 	return (1);
 }
 
@@ -295,6 +294,8 @@ int		checkmap(parse *pars, t_list **lst)
 		}
 		ck.i++;
 	}
+	if(ck.player != 1)
+		return(0);
 	return (1);
 }
 

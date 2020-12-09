@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   recup.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rasaboun <rasaboun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 22:57:01 by rasaboun          #+#    #+#             */
-/*   Updated: 2020/11/13 23:42:27 by rasaboun         ###   ########.fr       */
+/*   Updated: 2020/12/05 10:10:22 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,31 @@ int	parsecolor(char *line, int n)
 	r = ft_atoi(line + n);
 	while (ft_isdigit(line[n]))
 		n++;
+	while (ft_iswhitespace(line[n]))
+		n++;
+	if (ft_isdigit(line[n]) == 1)
+		return(-1);
+	if (line[n] != ',')
+		return(-1);
 	n += 1;
+	while (ft_iswhitespace(line[n]))
+		n++;
+	if (ft_isdigit(line[n]) != 1)
+		return(-1);
 	g = ft_atoi(line + n);
+	while (ft_isdigit(line[n]))
+		n++;
+	while (ft_iswhitespace(line[n]))
+		n++;
+	if (ft_isdigit(line[n]) == 1)
+		return(-1);
+	if (line[n] != ',')
+		return(-1);
 	n += 1;
+	while (ft_iswhitespace(line[n]))
+		n++;
+	if (ft_isdigit(line[n]) != 1)
+		return(-1);
 	b = ft_atoi(line + n);
 	rgb = r << 16 | g << 8 | b;
 	return (rgb);
