@@ -30,18 +30,29 @@ typedef struct texture
 
 } texture;
 
+typedef struct dda
+{
 
+    double perpWallDist;
+    int mapy;
+    int mapx;
+	double sidedistx;
+	double sidedisty;
+    double raydiry;
+    double raydirx;
+    int side;
+} ddas;
 
 typedef struct raycasting
 {
     void    *mlx;
     void    *mlx_win;
-    double  posX;
-    double  posY;
-    double  dirX;
-    double  dirY;
-    double  planeX;
-    double  planeY;
+    double  posx;
+    double  posy;
+    double  dirx;
+    double  diry;
+    double  planex;
+    double  planey;
     int     w;
     int     h;
     int     screenx;

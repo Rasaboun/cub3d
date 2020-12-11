@@ -42,7 +42,6 @@ void mini_map(int *imagescreenB, int screenx, int screeny, int mapwidth, int map
 	int ratio_y;
 	int ii;
 	int yy;
-	void *screenB;
 	int sp;
 	margel = screenx / (16 * 2);
 	marget = screeny / (16 * 2);
@@ -148,18 +147,19 @@ void freeall(parse *pars)
 {
 	freepars(pars);
 }
-void init_texture(texture *texture, parse *pars)
+void init_texture(texture *texture, parse *pars,void *mlx)
 {
 	int fd;
-	int data[4];
+	int i;
 
+	i = 0;
 	texture[0].path = pars->ea;
 	texture[1].path = pars->no;
 	texture[2].path = pars->we;
 	texture[3].path = pars->so;
 	texture[4].path = pars->s;
 
-	for (int i = 0; i < 5; i++)
+	while (i < 5)
 	{
 		fd = open(texture[i].path, O_RDONLY);
 		if (fd < 1)
@@ -167,16 +167,13 @@ void init_texture(texture *texture, parse *pars)
 			ft_putstr_fd("ERROR OPEN FILE", 1);
 			exit(EXIT_FAILURE);
 		}
-		texture[i].img = mlx_xpm_file_to_image(texture[i].mlx, texture[i].path, &texture[i].textwidth, &texture[i].textheight);
-		if (texture[i].img == NULL)
-			printf("NO %d", i);
-		texture[i].imagedata = (int *)mlx_get_data_addr(texture[i].img, &texture[i].bpp, &texture[i].size_line, &texture[i].endian);
-		if(texture[i].imagedata == NULL)
-		{
-			printf("error text");
-			exit(0);
-		}
+		if((texture[i].img = mlx_xpm_file_to_image(mlx, texture[i].path, &texture[i].textwidth, &texture[i].textheight)) == NULL)
+			ft_error("Error xpm to file");
+
+		if( (texture[i].imagedata = (int *)mlx_get_data_addr(texture[i].img, &texture[i].bpp, &texture[i].size_line, &texture[i].endian)) == NULL)
+			ft_error("Error xpm to file");
 		close(fd);
+		i++;
 	}
 }
 
@@ -195,98 +192,101 @@ int main(int argc, char *argv[])
 {
 	parse *pars;
 	int fdd;
-
-
-	if (argc >= 2)
-		{
-			fdd = open(argv[1], O_RDWR);
-
-		}
-	else
-	{
-		exit(0);
-	}
-	if (fdd > 0)
-		pars = cub_skip_header(fdd);
-	ft_checkun(pars);
 	void *screenB;
 	int *imagescreenB;
 	void *mlx;
-	mlx = mlx_init();
 	int screenx;
 	int screeny;
+	int w;
+	int h;
+	void *mlx_win;
+	int bpp;
+	int size_line;
+	int endian;
+	void *img;
+	texture texture[5];
+	double posx;
+	double posy;
+	double dirx;
+	double diry;
+	double planey;
+	double planex;
+	int fd;
+
+	if (argc >= 2)
+	{
+		fdd = open(argv[1], O_RDWR);
+		if (fdd > 0)
+			pars = cub_skip_header(fdd);
+		else
+			ft_error("Error open .cub file");
+	}
+	else
+		ft_error("error ARG");
+
+	ft_checkun(pars);
+	
+	mlx = mlx_init();
+	
 	mlx_get_screen_size(mlx, &screenx, &screeny);
 	
 	
 	if(pars->r.i > screenx)
 		pars->r.i = screenx;
-		if(pars->r.ii > screeny)
+	if(pars->r.ii > screeny)
 		pars->r.ii = screeny;
-		int w = pars->r.i;
-	int h = pars->r.ii;
-	void *mlx_win;
-	screenB = mlx_new_image(mlx, pars->r.i, pars->r.ii);
-	int bpp;
-	int size_line;
-	int endian;
-	void *img;
-	imagescreenB = (unsigned int *)mlx_get_data_addr(screenB, &bpp, &size_line, &endian);
-	if(imagescreenB == NULL)
-	{
-		exit(0);
-	}
-	texture texture[5];
-	texture[0].mlx = mlx;
-	texture[1].mlx = mlx;
-	texture[2].mlx = mlx;
-	texture[3].mlx = mlx;
-	texture[4].mlx = mlx;
-	init_texture(texture, pars);
+	w = pars->r.i;
+	h = pars->r.ii;
 
-	double posX = (float)pars->play.x;
-	double posY = (float)pars->play.y;
-	double dirX = 1.0;
-	double dirY = 0.0;
-	double planeX = 0.0; //N = dirx = 0 planex -0.66 dirY = -1 planeY 0
-	double planeY = -0.66; //S dirx = 0 playx 0.66 dir y 1 planeY 0
-	// O dirx = 1 planex 0 diry = 0 planey = -0.66
-	 // E dirx = -1 planex = 0 diry 0 planey 0.66
+	screenB = mlx_new_image(mlx, pars->r.i, pars->r.ii);
+
+	if ((imagescreenB = (unsigned int *)mlx_get_data_addr(screenB, &bpp, &size_line, &endian)) == NULL)
+		ft_error("get data addr screen");
+	
+	init_texture(texture, pars,mlx);
+
+	posx = (float)pars->play.x;
+	posy = (float)pars->play.y;
+	dirx = 1.0;
+	diry = 0.0;
+	planex = 0.0;
+	planey = -0.66;
 
 	if (pars->play.direction == 'E')
 	{
-		planeY = 0.0;
-		planeX = 0.66;
-		dirX = 0.0;
-		dirY = 1;
+		planey = 0.0;
+		planex = 0.66;
+		dirx = 0.0;
+		diry = 1;
 	}
 	if (pars->play.direction == 'W')
 	{
-		planeY = 0.0;
-		planeX = -0.66;
-		dirX = 0.0;
-		dirY = -1;
+		planey = 0.0;
+		planex = -0.66;
+		dirx = 0.0;
+		diry = -1;
 	}
 	if (pars->play.direction == 'S')
 	{
-		planeY = -0.66;
-		planeX = 0.0;
-		dirX = 1.0;
-		dirY = 0.0;
+		planey = -0.66;
+		planex = 0.0;
+		dirx = 1.0;
+		diry = 0.0;
 	}
 	if (pars->play.direction == 'N')
 	{
-		planeY = 0.66;
-		planeX = 0.0;
-		dirX = -1.0;
-		dirY = 0.0;
+		planey = 0.66;
+		planex = 0.0;
+		dirx = -1.0;
+		diry = 0.0;
 	}
 	raycasting param;
-	param.posY = posY+0.5;
-	param.posX = posX+0.5;
-	param.dirX = dirX;
-	param.dirY = dirY;
-	param.planeY = planeY;
-	param.planeX = planeX;
+	param.posy = posy+0.5;
+	param.posx = posx+0.5;
+	param.dirx = dirx;
+	param.diry = diry;
+	param.planey = planey;
+	param.planex = planex;
 	param.w = w;
 	param.h = h;
 	param.mlx = mlx;
@@ -295,107 +295,29 @@ int main(int argc, char *argv[])
 	param.size_line = size_line;
 	param.texture = texture;
 	param.pars = pars;
-	if(argc >= 3)
-	{
-	if(ft_strcmp(argv[2],"--save") == 0)
-	{
-		param.save = 1;
-	}
-	else
-	{
-		param.save = 0;
-	}
-	}
 	
-
 	if (argc >= 3 && ft_strcmp(argv[2],"--save") == 0)
 	{
-	int fd;
-	fd = 0;
+
 	fd = open("image.bmp", O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 777);
 	if (fd > 0)
 		{
 			param.save = 1;
 			raycast(&param);
 			save_bitmap(param.imagescreenB,param.w,param.h,fd);
+			freeall(pars);
 			exit(1);
 		}
 	}
-	mlx_win = mlx_new_window(mlx, param.w, param.h, "Raycasting!");
+
+	mlx_win = mlx_new_window(mlx, param.w, param.h, "Rasaboun Raycasting !");
 	param.mlx_win = mlx_win;
 
 	mlx_hook(mlx_win, KEY_PRESSED, 1L << 0, deal_key, &param);
 	mlx_loop_hook(mlx, raycast, &param);
 	mlx_loop(mlx);
 }
-int deal_key(int key, void *param)
-{
-	raycasting *ray = (raycasting *)param;
-	mlx_clear_window(ray->mlx, ray->mlx_win);
 
-	if (key == 	97)//q
-	{
-		if (ray->pars->tab[(int)ray->posX][(int)(ray->posY - ray->planeY * 0.10)] == '0')
-			ray->posY -= ray->planeY * 0.10;
-		if (ray->pars->tab[(int)(ray->posX - ray->planeX * 0.10)][(int)ray->posY] == '0')
-			ray->posX -= ray->planeX * 0.10;
-			
-	}
-	if (key == 	100)//d
-	{
-		if (ray->pars->tab[(int)ray->posX][(int)(ray->posY + ray->planeY * 0.10)] == '0')
-			ray->posY += ray->planeY * 0.10;
-		if (ray->pars->tab[(int)(ray->posX + ray->planeX * 0.10)][(int)ray->posY] == '0')
-			ray->posX += ray->planeX * 0.10;
-
-		
-	}
-	if (key == 119)//w
-	{
-		if (ray->pars->tab[(int)(ray->posX + ray->dirX * 0.10)][(int)ray->posY] == '0')
-			ray->posX += ray->dirX * 0.10;
-		if (ray->pars->tab[(int)ray->posX][(int)(ray->posY + ray->dirY * 0.10)] == '0')
-			ray->posY += ray->dirY * 0.10;
-		
-	}
-	if (key == 	115) //s
-	{
-		if (ray->pars->tab[(int)(ray->posX - ray->dirX * 0.10)][(int)ray->posY] == '0')
-			ray->posX -= ray->dirX * 0.10;
-		if (ray->pars->tab[(int)ray->posX][(int)(ray->posY - ray->dirY * 0.10)] == '0')
-			ray->posY -= ray->dirY * 0.10;
-	}
-	if (key == 65363)//fleche gauche
-	{
-		double oldDirX = ray->dirX;
-		double oldPlaneX = ray->planeX;
-		ray->dirX = ray->dirX * cos(-0.10) - ray->dirY * sin(-0.10);
-		ray->dirY = oldDirX * sin(-0.10) + ray->dirY * cos(-0.10);
-		ray->planeX = ray->planeX * cos(-0.10) - ray->planeY * sin(-0.10);
-		ray->planeY = oldPlaneX * sin(-0.10) + ray->planeY * cos(-0.10);
-	}
-	if (key == 65361)//fleche droite
-	{
-		double oldDirX = ray->dirX;
-		ray->dirX = ray->dirX * cos(0.10) - ray->dirY * sin(0.10);
-		ray->dirY = oldDirX * sin(0.10) + ray->dirY * cos(0.10);
-		double oldPlaneX = ray->planeX;
-		ray->planeX = ray->planeX * cos(0.10) - ray->planeY * sin(0.10);
-		ray->planeY = oldPlaneX * sin(0.10) + ray->planeY * cos(0.10);
-	}
-	if (key == 65307)
-	{
-		int fdd;
-		fdd = 0;
-		fdd = open("image.bmp", O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 777);
-		if (fdd > 0 && ray->save == 1)
-			save_bitmap(ray->imagescreenB, ray->w, ray->h, fdd);
-		mlx_destroy_window(ray->mlx, ray->mlx_win);
-		freeall(ray->pars);
-		exit(EXIT_SUCCESS);
-	}
-	return 1;
-}
 
 int raycast(raycasting *ray)
 {
@@ -407,126 +329,11 @@ int raycast(raycasting *ray)
 	}
 	for (int x = 0; x < ray->w; x++)
 	{
-		double cameraX = 2 * x / (double)ray->w - 1;
-		double raydirX = ray->dirX + ray->planeX * cameraX;
-		double raydirY = ray->dirY + ray->planeY * cameraX;
+		//DDA
+		ddas ddavar;
 
-		int mapX = (int)ray->posX;
-		int mapY = (int)ray->posY;
-
-		double sideDistX;
-		double sideDistY;
-
-		double deltaDistX = (raydirY == 0) ? 0 : ((raydirX == 0) ? 1 : fabs(1 / raydirX));
-		double deltaDistY = (raydirX == 0) ? 0 : ((raydirY == 0) ? 1 : fabs(1 / raydirY));
-		float perpWallDist;
-
-		int stepX;
-		int stepY;
-
-		int hit = 0;
-		int side;
-
-		if (raydirX < 0)
-		{
-			stepX = -1;
-			sideDistX = (ray->posX - mapX) * deltaDistX;
-		}
-		else
-		{
-			stepX = 1;
-			sideDistX = (mapX + 1.0 - ray->posX) * deltaDistX;
-		}
-		if (raydirY < 0)
-		{
-			stepY = -1;
-			sideDistY = (ray->posY - mapY) * deltaDistY;
-		}
-		else
-		{
-			stepY = 1;
-			sideDistY = (mapY + 1.0 - ray->posY) * deltaDistY;
-		}
-
-		while (hit == 0)
-		{
-			if (sideDistX < sideDistY)
-			{
-				sideDistX += deltaDistX;
-				mapX += stepX;
-				side = 0;
-			}
-			else
-			{
-				sideDistY += deltaDistY;
-				mapY += stepY;
-				side = 1;
-			}
-			if (ray->pars->tab[mapX][mapY] == '1')
-				hit = 1;
-		}
-		if (side == 0)
-			perpWallDist = (double)(mapX - ray->posX + (1 - stepX) / 2) / raydirX;
-		else
-			perpWallDist = (double)(mapY - ray->posY + (1 - stepY) / 2) / raydirY;
-
-		if (perpWallDist <= 0.0)
-		{
-			perpWallDist = 1;
-
-		}
-		int lineHeight = (int)(ray->h / perpWallDist);
-		int drawStart = -lineHeight / 2 + ray->h / 2;
-
-		if (drawStart < 0)
-			drawStart = 0;
-
-		int drawEnd = lineHeight / 2 + ray->h / 2;
-
-		if (drawEnd >= ray->h)
-			drawEnd = ray->h - 1;
-		int charint = (ray->pars->tab[mapX][mapY] - 48);
-		int texNum = charint - 1;
-		double wallX;
-
-		if (side == 0)
-			wallX = ray->posY + perpWallDist * raydirY;
-		else
-			wallX = ray->posX + perpWallDist * raydirX;
-
-		if (side == 0 && raydirX > 0)
-			side = 3;
-		if (side == 1 && raydirY < 0)
-			side = 2;
-		wallX -= floor((wallX));
-		int texX = (int)(wallX * (double)(ray->texture[side].textwidth));
-
-		if (side == 0)
-			texX = ray->texture[side].textwidth - texX - 1;
-		if (side == 1)
-			texX = ray->texture[side].textwidth - texX - 1;
-
-		double step = 1.0 * ray->texture[side].textwidth / lineHeight;
-		double texPos = (drawStart - ray->h / 2 + lineHeight / 2) * step;
-
-		for (int begin = 0; begin < drawStart; begin++)
-		{
-			ray->imagescreenB[(ray->w)*begin + x] = ray->pars->c;
-		}
-
-		for (int end = drawEnd; end < ray->h; end++)
-		{
-			ray->imagescreenB[(ray->w)*end + x] = ray->pars->f;
-		}
-		for (int y = drawStart; y < drawEnd; y++)
-		{
-			int texY = (int)texPos & (ray->texture[side].textheight - 1);
-
-			texPos += step;
-			int color = ray->texture[side].imagedata[ray->texture[side].textheight * texY + ray->texture[side].textwidth - texX];
-				ray->imagescreenB[(ray->w)*y + x] = color;
-		}
-		zbuffer[x] = perpWallDist;
+		dda();
+		
 	}
 
 	int i = 0;
@@ -535,14 +342,14 @@ int raycast(raycasting *ray)
 
 	if(i != 0)
 	{
-	sort_sprite(ray->pars->sprites, ray->posX, ray->posY, i);
+	sort_sprite(ray->pars->sprites, ray->posx, ray->posy, i);
 	for (int y = 0; y < i; y++)
 	{
-		double spriteX = (ray->pars->sprites[y]->x + 0.5)- ray->posX;
-		double spriteY = (ray->pars->sprites[y]->y + 0.5)- ray->posY;
-		double invDet = 1.0 / (ray->planeX * ray->dirY - ray->dirX * ray->planeY);
-		double transformX = invDet * (ray->dirY * spriteX - ray->dirX * spriteY);
-		double transformY = invDet * (-ray->planeY * spriteX + ray->planeX * spriteY);
+		double spriteX = (ray->pars->sprites[y]->x + 0.5)- ray->posx;
+		double spriteY = (ray->pars->sprites[y]->y + 0.5)- ray->posy;
+		double invDet = 1.0 / (ray->planex * ray->diry - ray->dirx * ray->planey);
+		double transformX = invDet * (ray->diry * spriteX - ray->dirx * spriteY);
+		double transformY = invDet * (-ray->planey * spriteX + ray->planex * spriteY);
 
 		double spriteScreenX = ((ray->w / 2) * (1 + transformX / transformY));
 
@@ -579,7 +386,7 @@ int raycast(raycasting *ray)
 		}
 	}
 	}
-	mini_map(ray->imagescreenB, ray->w, ray->h, ray->pars->width, ray->pars->height, ray->pars->tab, (int)ray->posX, (int)ray->posY,ray->pars->sprites);
+	mini_map(ray->imagescreenB, ray->w, ray->h, ray->pars->width, ray->pars->height, ray->pars->tab, (int)ray->posx, (int)ray->posy,ray->pars->sprites);
 	mini_life(ray->imagescreenB, ray->w, ray->h, ray->pars->hwidth, ray->pars->hheight,ray->pars->tabhud);
 
 	if(ray->save == 0)
