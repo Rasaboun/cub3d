@@ -281,8 +281,8 @@ int main(int argc, char *argv[])
 		dirY = 0.0;
 	}
 	raycasting param;
-	param.posY = posY;
-	param.posX = posX;
+	param.posY = posY+0.5;
+	param.posX = posX+0.5;
 	param.dirX = dirX;
 	param.dirY = dirY;
 	param.planeY = planeY;
@@ -471,7 +471,10 @@ int raycast(raycasting *ray)
 			perpWallDist = (double)(mapY - ray->posY + (1 - stepY) / 2) / raydirY;
 
 		if (perpWallDist <= 0.0)
+		{
 			perpWallDist = 1;
+
+		}
 		int lineHeight = (int)(ray->h / perpWallDist);
 		int drawStart = -lineHeight / 2 + ray->h / 2;
 
@@ -521,7 +524,6 @@ int raycast(raycasting *ray)
 
 			texPos += step;
 			int color = ray->texture[side].imagedata[ray->texture[side].textheight * texY + ray->texture[side].textwidth - texX];
-			if (color != -1)
 				ray->imagescreenB[(ray->w)*y + x] = color;
 		}
 		zbuffer[x] = perpWallDist;
