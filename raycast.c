@@ -78,7 +78,7 @@ void mini_map(int *imagescreenB, int screenx, int screeny, int mapwidth, int map
 				color = 0x33dcf2;
 			while(sprit[sp] != NULL)
 			{
-				if (y == sprit[sp]->y && i == sprit[sp]->x)
+				if (y == sprit[sp]->x && i == sprit[sp]->y)
 					color = 0xffffff;
 				sp++;
 			}
@@ -259,7 +259,7 @@ int main(int argc, char *argv[])
 		dirX = 0.0;
 		dirY = 1;
 	}
-	if (pars->play.direction == 'O')
+	if (pars->play.direction == 'W')
 	{
 		planeY = 0.0;
 		planeX = -0.66;
@@ -564,12 +564,14 @@ int raycast(raycasting *ray)
 
 		for (int stripe = drawStartX; stripe < drawEndX; stripe++)
 		{
-			int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * ray->texture[4].textwidth / spriteWidth) / 256;
+			int texX = (int)((256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * ray->texture[4].textwidth / spriteWidth) / 256);
 			if (transformY > 0 && stripe > 0 && stripe < ray->w && transformY < zbuffer[stripe])
 				for (int yy = drawStartY; yy < drawEndY; yy++)
 				{
 					int d = (yy)*256 - ray->h * 128 + spriteHeight * 128;
 					int texY = ((d * ray->texture[4].textheight) / spriteHeight) / 256;
+					if(texY == 0)
+						texY = 1;
 					int colors = ray->texture[4].imagedata[ray->texture[4].textheight * texY + texX];
 					if ((colors  & (0xFF << 24)) == 0)
 						ray->imagescreenB[(ray->w)*yy + stripe] = colors;
