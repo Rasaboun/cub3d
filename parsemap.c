@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 20:31:18 by rasaboun          #+#    #+#             */
-/*   Updated: 2020/12/11 02:12:05 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/11 02:21:22 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -468,7 +468,7 @@ parse	*cub_skip_header(int fd)
 		ft_putstr_fd("ERROR MAP", 1);
 		exit(0);
 	}
-
+	
 	get_sprites(&map_pars);
 
 	map_pars.pars->width = tab_width(map_pars.pars->tab);

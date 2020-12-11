@@ -231,7 +231,10 @@ int main(int argc, char *argv[])
 	int endian;
 	void *img;
 	imagescreenB = (unsigned int *)mlx_get_data_addr(screenB, &bpp, &size_line, &endian);
-
+	if(imagescreenB == NULL)
+	{
+		exit(0);
+	}
 	texture texture[5];
 	texture[0].mlx = mlx;
 	texture[1].mlx = mlx;
@@ -416,7 +419,7 @@ int raycast(raycasting *ray)
 
 		double deltaDistX = (raydirY == 0) ? 0 : ((raydirX == 0) ? 1 : fabs(1 / raydirX));
 		double deltaDistY = (raydirX == 0) ? 0 : ((raydirY == 0) ? 1 : fabs(1 / raydirY));
-		double perpWallDist;
+		float perpWallDist;
 
 		int stepX;
 		int stepY;
@@ -463,10 +466,12 @@ int raycast(raycasting *ray)
 				hit = 1;
 		}
 		if (side == 0)
-			perpWallDist = (mapX - ray->posX + (1 - stepX) / 2) / raydirX;
+			perpWallDist = (double)(mapX - ray->posX + (1 - stepX) / 2) / raydirX;
 		else
-			perpWallDist = (mapY - ray->posY + (1 - stepY) / 2) / raydirY;
+			perpWallDist = (double)(mapY - ray->posY + (1 - stepY) / 2) / raydirY;
 
+		if (perpWallDist <= 0.0)
+			perpWallDist = 1;
 		int lineHeight = (int)(ray->h / perpWallDist);
 		int drawStart = -lineHeight / 2 + ray->h / 2;
 
@@ -477,7 +482,6 @@ int raycast(raycasting *ray)
 
 		if (drawEnd >= ray->h)
 			drawEnd = ray->h - 1;
-
 		int charint = (ray->pars->tab[mapX][mapY] - 48);
 		int texNum = charint - 1;
 		double wallX;
@@ -501,10 +505,12 @@ int raycast(raycasting *ray)
 
 		double step = 1.0 * ray->texture[side].textwidth / lineHeight;
 		double texPos = (drawStart - ray->h / 2 + lineHeight / 2) * step;
+
 		for (int begin = 0; begin < drawStart; begin++)
 		{
 			ray->imagescreenB[(ray->w)*begin + x] = ray->pars->c;
 		}
+
 		for (int end = drawEnd; end < ray->h; end++)
 		{
 			ray->imagescreenB[(ray->w)*end + x] = ray->pars->f;
@@ -520,9 +526,11 @@ int raycast(raycasting *ray)
 		}
 		zbuffer[x] = perpWallDist;
 	}
+
 	int i = 0;
 	while (ray->pars->sprites != NULL && ray->pars->sprites[i] != NULL)
 		i++;
+
 	if(i != 0)
 	{
 	sort_sprite(ray->pars->sprites, ray->posX, ray->posY, i);
