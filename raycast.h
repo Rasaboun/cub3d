@@ -30,6 +30,8 @@ typedef struct texture
 
 } texture;
 
+
+
 typedef struct raycasting
 {
     void    *mlx;
@@ -42,6 +44,8 @@ typedef struct raycasting
     double  planeY;
     int     w;
     int     h;
+    int     screenx;
+    int     screeny;
     unsigned int     *imagescreenB;
     int size_line;
     void* screenB;

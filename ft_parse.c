@@ -99,26 +99,3 @@ int     *intparsing(char *str,int i)
     }
     return(ii);
 }
-
-
-
-int main()
-{
-    data dat;
-
-    dat = ft_parse("/home/user42/Bureau/cub3d/map.cub");
-    printf("%s\n",dat.s);
-    printf("%s\n",dat.no);
-    printf("%s\n",dat.so);
-    printf("%s\n",dat.we);
-    printf("%s\n",dat.ea);
-    printf("%d\n",dat.resolution[1]);
-    printf("%d\n",dat.resolution[0]);
-    free(dat.resolution);
-    free(dat.ea);
-    free(dat.s);
-    free(dat.no);
-    free(dat.so);
-    free(dat.we);
-
-}

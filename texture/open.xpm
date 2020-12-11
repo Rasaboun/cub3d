@@ -2,8 +2,8 @@
 static char * open30_2_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "64 64 1372 2",
-"  	c  none",
-". 	c #08090D",
+"  	c #01000000",
+". 	c #0108090D",
 "+ 	c #1A1E23",
 "@ 	c #1F2124",
 "# 	c #060809",

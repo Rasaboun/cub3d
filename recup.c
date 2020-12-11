@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 22:57:01 by rasaboun          #+#    #+#             */
-/*   Updated: 2020/12/05 10:10:22 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/11 00:56:29 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ int	parsecolor(char *line, int n)
 	if (ft_isdigit(line[n]) != 1)
 		return(-1);
 	b = ft_atoi(line + n);
+	if(r > 255 || g > 255 || b > 255)
+		return(-1);
 	rgb = r << 16 | g << 8 | b;
 	return (rgb);
 }
