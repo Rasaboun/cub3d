@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   text_ray.c                                         :+:      :+:    :+:   */
+/*   ft_draw.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 05:14:19 by user42            #+#    #+#             */
-/*   Updated: 2020/12/11 05:15:52 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/12 19:38:01 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycast.h"
 #include "test.h"
 
-void    text_ray(raycasting *ray, int x)
+void    ft_draw(raycasting *ray, int x,double *zbuffer)
 {
-        int lineHeight = (int)(ray->h / perpwalldist);
+        int lineHeight = (int)(ray->h / ray->perpwalldist);
 		int drawStart = -lineHeight / 2 + ray->h / 2;
 
 		if (drawStart < 0)
@@ -25,48 +25,48 @@ void    text_ray(raycasting *ray, int x)
 
 		if (drawEnd >= ray->h)
 			drawEnd = ray->h - 1;
-		int charint = (ray->pars->tab[mapx][mapy] - 48);
+		int charint = (ray->pars->tab[ray->mapx][ray->mapy] - 48);
 		int texNum = charint - 1;
 		double wallX;
 
-		if (side == 0)
-			wallX = ray->posy + perpwalldist * raydiry;
+		if (ray->side == 0)
+			wallX = ray->posy + ray->perpwalldist * ray->raydiry;
 		else
-			wallX = ray->posx + perpwalldist * raydirx;
+			wallX = ray->posx + ray->perpwalldist * ray->raydirx;
 
-		if (side == 0 && raydirx > 0)
-			side = 3;
-		if (side == 1 && raydiry < 0)
-			side = 2;
+		if (ray->side == 0 && ray->raydirx > 0)
+			ray->side = 3;
+		if (ray->side == 1 && ray->raydiry < 0)
+			ray->side = 2;
 		wallX -= floor((wallX));
-		int texX = (int)(wallX * (double)(ray->texture[side].textwidth));
+		int texX = (int)(wallX * (double)(ray->texture[ray->side].textwidth));
 
-		if (side == 0)
-			texX = ray->texture[side].textwidth - texX - 1;
-		if (side == 1)
-			texX = ray->texture[side].textwidth - texX - 1;
+		if (ray->side == 0)
+			texX = ray->texture[ray->side].textwidth - texX - 1;
+		if (ray->side == 1)
+			texX = ray->texture[ray->side].textwidth - texX - 1;
 
-		double step = 1.0 * ray->texture[side].textwidth / lineHeight;
+		double step = 1.0 * ray->texture[ray->side].textwidth / lineHeight;
 		double texPos = (drawStart - ray->h / 2 + lineHeight / 2) * step;
 
 		for (int begin = 0; begin < drawStart; begin++)
 		{
-			ray->imagescreenB[(ray->w)*begin + x] = ray->pars->c;
+			ray->imagescreenb[(ray->w)*begin + x] = ray->pars->c;
 		}
 
 		for (int end = drawEnd; end < ray->h; end++)
 		{
-			ray->imagescreenB[(ray->w)*end + x] = ray->pars->f;
+			ray->imagescreenb[(ray->w)*end + x] = ray->pars->f;
 		}
 		for (int y = drawStart; y < drawEnd; y++)
 		{
-			int texY = (int)texPos & (ray->texture[side].textheight - 1);
+			int texY = (int)texPos & (ray->texture[ray->side].textheight - 1);
 
 			texPos += step;
-			int color = ray->texture[side].imagedata[ray->texture[side].textheight * texY + ray->texture[side].textwidth - texX];
-				ray->imagescreenB[(ray->w)*y + x] = color;
+			int color = ray->texture[ray->side].imagedata[ray->texture[ray->side].textheight * texY + ray->texture[ray->side].textwidth - texX];
+				ray->imagescreenb[(ray->w)*y + x] = color;
 		}
-		zbuffer[x] = perpwalldist;
+		zbuffer[x] = ray->perpwalldist;
 
 
 }
