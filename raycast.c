@@ -155,8 +155,8 @@ void init_texture(texture *texture, parse *pars,void *mlx)
 	int i;
 
 	i = 0;
-	texture[0].path = pars->ea;
-	texture[1].path = pars->no;
+	texture[0].path = pars->no;
+	texture[1].path = pars->ea;
 	texture[2].path = pars->we;
 	texture[3].path = pars->so;
 	texture[4].path = pars->s;
@@ -297,7 +297,13 @@ int main(int argc, char *argv[])
 	param.size_line = size_line;
 	param.texture = texture;
 	param.pars = pars;
-	
+	param.left = 0;
+	param.right = 0;
+	param.rotate_right = 0;
+	param.rotate_left = 0;
+	param.back = 0;
+	param.forward = 0;
+	param.save = 0;
 	if (argc >= 3 && ft_strcmp(argv[2],"--save") == 0)
 	{
 
@@ -336,7 +342,7 @@ int raycast(raycasting *ray)
 		turn_left(ray);
 	if(ray->rotate_right == 1)
 		turn_right(ray);
-		
+
 	double zbuffer[ray->w];
 	for (int n = 0; n < (ray->w * ray->h); n++)
 	{

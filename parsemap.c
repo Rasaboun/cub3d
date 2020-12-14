@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 20:31:18 by rasaboun          #+#    #+#             */
-/*   Updated: 2020/12/11 02:21:22 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/14 02:49:38 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,6 +218,20 @@ void	freemap(parse *pars)
 	free(pars->tab);
 }
 
+void	freehud(parse *pars)
+{
+	int i;
+
+	i = 0;
+	while (pars->tabhud[i] != NULL)
+	{
+		free(pars->tabhud[i]);
+		i++;
+	}
+	free(pars->tabhud[i]);
+	free(pars->tabhud);
+}
+
 void	freesprite(parse *pars)
 {
 	int i;
@@ -337,6 +351,15 @@ char	**ft_lstdtab(t_list *lst)
 	return (tab);
 }
 
+int	skip_wspace(char *s)
+{
+	int n;
+	n = 0;
+	while (ft_iswhitespace(s[n]) && s[n] != '\0')
+			n++;
+	return (n);
+}
+
 t_list	*recupmap(int fd, char *line)
 {
 	t_list *first;
@@ -346,12 +369,9 @@ t_list	*recupmap(int fd, char *line)
 	map = NULL;
 	first = ft_lstnew(line);
 	n = 0;
-	while (get_next_line(fd, &line) && line)
+	while (get_next_line(fd, &line) && line != NULL)
 	{
-		n  = 0;
-		while(ft_iswhitespace(line[n]))
-			n++;
-		if(line[n] != '1')
+		if(line[skip_wspace(line)] != '1')
 			ft_error("Error Map");
 		map = ft_lstnew(line);
 		ft_lstadd_back(&first, map);
@@ -371,18 +391,17 @@ t_list	*recuphud(int fd, char *line)
 	first = NULL;
 	map = NULL;
 	first = ft_lstnew(line);
-	get_next_line(fd, &line);
-	while (ft_iswhitespace(line[n]) && line[n] != '\0')
-			n++;
-	while (line[n] == '5')
+	while (get_next_line(fd, &line) && line[n] == '5')
 	{
 		map = ft_lstnew(line);
 		ft_lstadd_back(&first, map);
-		get_next_line(fd, &line);
+		
 		n = 0;
 		while (ft_iswhitespace(line[n]) && line[n] != '\0')
 			n++;
 	}
+	map = ft_lstnew(line);
+		ft_lstadd_back(&first, map);
 	return (first);
 }
 
@@ -390,6 +409,7 @@ void	freepars(parse *pars)
 {
 	freetext(pars);
 	freemap(pars);
+	freehud(pars);
 	freesprite(pars);
 	free(pars);
 }
@@ -415,7 +435,7 @@ void	get_map(int fd, cub_skip *map_pars)
 
 	n = 0;
 	map_pars->first = NULL;
-	while (get_next_line(fd, &map_pars->line) >= 1)
+	while (get_next_line(fd, &map_pars->line))
 	{
 		if (map_pars->line == NULL)
 			exit(0);
@@ -429,14 +449,22 @@ void	get_map(int fd, cub_skip *map_pars)
 			exit(EXIT_FAILURE);
 		}
 		if (map_pars->line[n] == '5'){
+						printf("line %s",map_pars->line);
+
 			map_pars->hud = recuphud(fd,map_pars->line);
+			printf("line %s",map_pars->line);
 		}
+
 		else if (map_pars->line[n] == '1')
-		{			
+		{
 			map_pars->first = recupmap(fd, map_pars->line);
+						printf("line %s",map_pars->line);
+
 		}
+
 		else
 			free(map_pars->line);
+
 	}
 	free(map_pars->line);
 }
@@ -465,7 +493,7 @@ parse	*cub_skip_header(int fd)
 
 	if (checkmap(map_pars.pars, &map_pars.lst) == 0)
 	{
-		ft_putstr_fd("ERROR MAP", 1);
+		ft_putstr_fd("ERRORe MAP", 1);
 		exit(0);
 	}
 	

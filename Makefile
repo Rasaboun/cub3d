@@ -16,7 +16,7 @@ objj = $(srcc:.c=.o)
 all	:$(NAME)
 
 $(NAME)	:$(OBJ) libft
-	$(CC) -g raycast.c ft_draw.c dda.c ft_draw_sprites.c key_manager.c test.c parsemap.c recup.c bmp.c get_next_line.c get_next_line_utils.c libft/libft.a -L.. -lmlx -L$(INCLIB) -lXext -lX11 -lm -lbsd
+	$(CC) -g  raycast.c ft_draw.c dda.c ft_draw_sprites.c key_manager.c test.c parsemap.c recup.c bmp.c get_next_line.c get_next_line_utils.c libft/libft.a -L.. -lmlx -L$(INCLIB) -lXext -lX11 -lm -lbsd
 
 libft :
 	cd libft/
