@@ -49,6 +49,7 @@ typedef struct doubleint
 {
     int    i;
     int    ii;
+    int    alr;
 } doubleint;
 
 typedef struct sprite
@@ -154,7 +155,7 @@ int *xpmtoint(char *imgs,int *data,xpmcolordata  *idcolor);
 int		ft_iswhitespace(char const c);
 int ft_atoi_base(const char *str, int str_base);
 int	base(int c, int base);
-void    ft_error(char *str);
+void    ft_error(char *str,parse *pars);
 int    save_bitmap(unsigned int *color, int width, int height, int fd);
 void recup(char *line, parse *pars);
 char    *parsetex(char *line,int n);
@@ -165,7 +166,7 @@ void get_sprites(cub_skip *map_pars);
 int     close_map(parse *pars, int i, int j);
 int checkmap(parse *pars,t_list **lst);
 char **ft_lstdtab(t_list *lst);
-t_list    *recupmap(int fd, char *line);
+t_list    *recupmap(int fd, char *line,parse *pars);
 void init_pars(parse *pars);
 parse *cub_skip_header(int fd);
 int     tab_width(char **tab);

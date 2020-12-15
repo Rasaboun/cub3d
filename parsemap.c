@@ -6,13 +6,14 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 20:31:18 by rasaboun          #+#    #+#             */
-/*   Updated: 2020/12/14 02:49:38 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/16 00:30:18 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "test.h"
 #include "libft/libft.h"
 #include "get_next_line.h"
+#include "raycast.h"
 
 static	int	ft_while(char *s3, const char *s1, int i)
 {
@@ -209,13 +210,16 @@ void	freemap(parse *pars)
 	int i;
 
 	i = 0;
-	while (pars->tab[i] != NULL)
+	if (pars->tab != NULL)
 	{
-		free(pars->tab[i]);
-		i++;
-	}
+		while (pars->tab[i] != NULL)
+		{
+			free(pars->tab[i]);
+			i++;
+		}
 	free(pars->tab[i]);
 	free(pars->tab);
+	}
 }
 
 void	freehud(parse *pars)
@@ -223,6 +227,8 @@ void	freehud(parse *pars)
 	int i;
 
 	i = 0;
+	if (pars->tabhud != NULL)
+	{
 	while (pars->tabhud[i] != NULL)
 	{
 		free(pars->tabhud[i]);
@@ -230,6 +236,7 @@ void	freehud(parse *pars)
 	}
 	free(pars->tabhud[i]);
 	free(pars->tabhud);
+	}
 }
 
 void	freesprite(parse *pars)
@@ -237,6 +244,8 @@ void	freesprite(parse *pars)
 	int i;
 
 	i = 0;
+	if (pars->sprites != NULL)
+	{
 	while (pars->sprites[i] != NULL)
 	{
 		free(pars->sprites[i]);
@@ -244,15 +253,21 @@ void	freesprite(parse *pars)
 	}
 	free(pars->sprites[i]);
 	free(pars->sprites);
+	}
 }
 
 void	freetext(parse *pars)
 {
-	free(pars->ea);
-	free(pars->no);
-	free(pars->s);
-	free(pars->so);
-	free(pars->we);
+	if (pars->ea != NULL)
+		free(pars->ea);
+	if (pars->no != NULL)
+		free(pars->no);
+	if (pars->s != NULL)
+		free(pars->s);
+	if (pars->so != NULL)
+		free(pars->so);
+	if (pars->we != NULL)
+		free(pars->we);
 }
 
 void	ft_getplayermap(parse *pars, t_checkmap *ck)
@@ -360,7 +375,7 @@ int	skip_wspace(char *s)
 	return (n);
 }
 
-t_list	*recupmap(int fd, char *line)
+t_list	*recupmap(int fd, char *line,parse *pars)
 {
 	t_list *first;
 	t_list *map;
@@ -372,7 +387,7 @@ t_list	*recupmap(int fd, char *line)
 	while (get_next_line(fd, &line) && line != NULL)
 	{
 		if(line[skip_wspace(line)] != '1')
-			ft_error("Error Map");
+			ft_error("Error Map",pars);
 		map = ft_lstnew(line);
 		ft_lstadd_back(&first, map);
 	}
@@ -416,12 +431,13 @@ void	freepars(parse *pars)
 
 void	init_pars(parse *pars)
 {
-	pars->c = 0;
+	pars->c = -1;
 	pars->ea = NULL;
-	pars->f = 0;
+	pars->f = -1;
 	pars->no = NULL;
 	pars->r.i = 0;
 	pars->r.ii = 0;
+	pars->r.alr = 0;
 	pars->s = NULL;
 	pars->so = NULL;
 	pars->tab = NULL;
@@ -448,19 +464,11 @@ void	get_map(int fd, cub_skip *map_pars)
 			ft_putstr_fd("ERROR MAP", 1);
 			exit(EXIT_FAILURE);
 		}
-		if (map_pars->line[n] == '5'){
-						printf("line %s",map_pars->line);
-
+		if (map_pars->line[n] == '5')
 			map_pars->hud = recuphud(fd,map_pars->line);
-			printf("line %s",map_pars->line);
-		}
 
 		else if (map_pars->line[n] == '1')
-		{
-			map_pars->first = recupmap(fd, map_pars->line);
-						printf("line %s",map_pars->line);
-
-		}
+			map_pars->first = recupmap(fd, map_pars->line,map_pars->pars);
 
 		else
 			free(map_pars->line);
@@ -482,9 +490,8 @@ parse	*cub_skip_header(int fd)
 	init_pars(map_pars.pars);
 	get_map(fd, &map_pars);
 	if(map_pars.first == NULL)
-	{
-		ft_error("NO MAP");
-	}
+		ft_error("NO MAP",map_pars.pars);
+
 	map_pars.pars->tabhud = ft_lstdtab(map_pars.hud);
 	map_pars.pars->tab = ft_lstdtab(map_pars.first);
 
@@ -494,6 +501,7 @@ parse	*cub_skip_header(int fd)
 	if (checkmap(map_pars.pars, &map_pars.lst) == 0)
 	{
 		ft_putstr_fd("ERRORe MAP", 1);
+		freeall(map_pars.pars);
 		exit(0);
 	}
 	

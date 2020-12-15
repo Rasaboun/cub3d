@@ -160,21 +160,19 @@ void init_texture(texture *texture, parse *pars,void *mlx)
 	texture[2].path = pars->we;
 	texture[3].path = pars->so;
 	texture[4].path = pars->s;
-
+	fd  = 0;
 	while (i < 5)
 	{
-		fd = open(texture[i].path, O_RDONLY);
-		if (fd < 1)
-		{
-			ft_putstr_fd("ERROR OPEN FILE", 1);
-			exit(EXIT_FAILURE);
-		}
+		if(texture[i].path == NULL)
+			ft_error("ERROR OPEN FILE NULL PATH", pars);
+		if(fd = open(texture[i].path, O_RDONLY) <= 0)
+			ft_error("ERROR OPEN FILE", pars);
+		close(fd);
 		if((texture[i].img = mlx_xpm_file_to_image(mlx, texture[i].path, &texture[i].textwidth, &texture[i].textheight)) == NULL)
-			ft_error("Error xpm to file");
+			ft_error("Error xpm to file",pars);
 
 		if( (texture[i].imagedata = (int *)mlx_get_data_addr(texture[i].img, &texture[i].bpp, &texture[i].size_line, &texture[i].endian)) == NULL)
-			ft_error("Error xpm to file");
-		close(fd);
+			ft_error("Error xpm to file",pars);
 		i++;
 	}
 }
@@ -182,11 +180,11 @@ void init_texture(texture *texture, parse *pars,void *mlx)
 int ft_checkun(parse *pars)
 {
 	if (pars->r.i == 0)
-		ft_error("error resolution");
+		ft_error("error resolution",pars);
 	if (pars->r.ii == 0)
-		ft_error("error resolution");	
+		ft_error("error resolution",pars);	
 	if(pars->c == -1 || pars->f == -1)
-		ft_error("error color");
+		ft_error("error color",pars);
 
 }
 
@@ -214,17 +212,17 @@ int main(int argc, char *argv[])
 	double planey;
 	double planex;
 	int fd;
-
+	fd = 0;
 	if (argc >= 2)
 	{
 		fdd = open(argv[1], O_RDWR);
 		if (fdd > 0)
 			pars = cub_skip_header(fdd);
 		else
-			ft_error("Error open .cub file");
+			ft_putstr_fd("Error open .cub file",1);
 	}
 	else
-		ft_error("error ARG");
+		ft_putstr_fd("error ARG",1);
 
 	ft_checkun(pars);
 	
@@ -243,7 +241,7 @@ int main(int argc, char *argv[])
 	screenB = mlx_new_image(mlx, pars->r.i, pars->r.ii);
 
 	if ((imagescreenb = (unsigned int *)mlx_get_data_addr(screenB, &bpp, &size_line, &endian)) == NULL)
-		ft_error("get data addr screen");
+		ft_putstr_fd("get data addr screen",1);
 	
 	init_texture(texture, pars,mlx);
 
@@ -306,9 +304,7 @@ int main(int argc, char *argv[])
 	param.save = 0;
 	if (argc >= 3 && ft_strcmp(argv[2],"--save") == 0)
 	{
-
-	fd = open("image.bmp", O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 777);
-	if (fd > 0)
+		if ((fd = open("image.bmp", O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 777)) < 0)
 		{
 			param.save = 1;
 			raycast(&param);
@@ -316,6 +312,9 @@ int main(int argc, char *argv[])
 			freeall(pars);
 			exit(1);
 		}
+	else
+		ft_error("Error create save img",pars);
+	
 	}
 
 	mlx_win = mlx_new_window(mlx, param.w, param.h, "Rasaboun Raycasting !");
@@ -350,9 +349,6 @@ int raycast(raycasting *ray)
 	}
 	for (int x = 0; x < ray->w; x++)
 	{
-		//DDA
-		ddas ddavar;
-
 		ft_dda(ray,x);
 		ft_draw(ray,x,zbuffer);
 	}
