@@ -49,7 +49,7 @@ void mini_map(int *imagescreenb, int screenx, int screeny, int mapwidth, int map
 	width = screenx / 8;
 	height = screeny / 8;
 
-	size_x = width - margel; //158
+	size_x = width - margel;
 	size_y = height - marget;
 
 	ratio_x = size_x / mapwidth;
@@ -117,7 +117,7 @@ void mini_life(int *imagescreenb, int screenwidth, int screenheight, int mapwidt
 	width = screenwidth / 5;
 	height = screenheight / 17;
 
-	size_x = width - margel; //158
+	size_x = width - margel;
 	size_y = height - marget;
 
 	ratio_x = size_x / mapwidth;

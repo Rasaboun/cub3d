@@ -64,6 +64,14 @@ int d;
 int texy;
 int yy;
 int colors;
+int texnum;
+double wallx;
+int charint;
+double texpos;
+double step;
+int lineheight;
+int drawstart;
+int drawend;
 } draws;
 
 typedef struct raycasting
