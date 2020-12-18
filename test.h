@@ -65,6 +65,14 @@ typedef struct player
     char direction;
 }player;
 
+typedef struct rgbcolor
+{
+    int r;
+    int g;
+    int b;
+    int rgb;
+}rgbcolor;
+
 typedef struct parse
 {
     char    *s;
@@ -131,6 +139,7 @@ typedef struct cub_skip
     t_list *lst;
     sprite **sprites;
     t_list *hud;
+    int hudrep;
 } cub_skip;
 
 typedef struct checkmap
@@ -145,6 +154,8 @@ typedef struct checkmap
 	t_list	*new;
 } t_checkmap;
 
+
+void	freecubskip(cub_skip *map_pars);
 int    *mlx_data_xpm(char *path,int fd,int *data);
 void     xpm_skip_header(int fd);
 void    get_data_xpm(int fd,int *data);
@@ -166,7 +177,7 @@ void get_sprites(cub_skip *map_pars);
 int     close_map(parse *pars, int i, int j);
 int checkmap(parse *pars,t_list **lst);
 char **ft_lstdtab(t_list *lst);
-t_list    *recupmap(int fd, char *line,parse *pars);
+static t_list    *recupmap(int fd, char *line,parse *pars,cub_skip *map_pars);
 void init_pars(parse *pars);
 parse *cub_skip_header(int fd);
 int     tab_width(char **tab);

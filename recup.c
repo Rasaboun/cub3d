@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 22:57:01 by rasaboun          #+#    #+#             */
-/*   Updated: 2020/12/16 00:34:04 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/18 01:09:08 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,52 +14,55 @@
 #include "libft/libft.h"
 #include "get_next_line.h"
 
+static	int	parse_color(char *line, int n, rgbcolor *rgb)
+{
+	while (ft_iswhitespace(line[n]))
+		n++;
+	rgb->r = ft_atoi(line + n);
+	while (ft_isdigit(line[n]))
+		n++;
+	while (ft_iswhitespace(line[n]))
+		n++;
+	if (ft_isdigit(line[n]) == 1)
+		return (-1);
+	if (line[n] != ',')
+		return (-1);
+	n += 1;
+	while (ft_iswhitespace(line[n]))
+		n++;
+	if (ft_isdigit(line[n]) != 1)
+		return (-1);
+	rgb->g = ft_atoi(line + n);
+	while (ft_isdigit(line[n]))
+		n++;
+	return (n);
+}
+
 int	parsecolor(char *line, int n)
 {
-	int r;
-	int g;
-	int b;
-	int rgb;
+	rgbcolor rgb;
 
-	r = 0;
-	g = 0;
-	b = 0;
-	rgb = 0;
-	while (ft_iswhitespace(line[n]))
-		n++;
-	r = ft_atoi(line + n);
-	while (ft_isdigit(line[n]))
-		n++;
+	rgb.r = 0;
+	rgb.g = 0;
+	rgb.b = 0;
+	rgb.rgb = 0;
+	n = parse_color(line, n, &rgb);
 	while (ft_iswhitespace(line[n]))
 		n++;
 	if (ft_isdigit(line[n]) == 1)
-		return(-1);
+		return (-1);
 	if (line[n] != ',')
-		return(-1);
+		return (-1);
 	n += 1;
 	while (ft_iswhitespace(line[n]))
 		n++;
 	if (ft_isdigit(line[n]) != 1)
-		return(-1);
-	g = ft_atoi(line + n);
-	while (ft_isdigit(line[n]))
-		n++;
-	while (ft_iswhitespace(line[n]))
-		n++;
-	if (ft_isdigit(line[n]) == 1)
-		return(-1);
-	if (line[n] != ',')
-		return(-1);
-	n += 1;
-	while (ft_iswhitespace(line[n]))
-		n++;
-	if (ft_isdigit(line[n]) != 1)
-		return(-1);
-	b = ft_atoi(line + n);
-	if(r > 255 || g > 255 || b > 255)
-		return(-1);
-	rgb = r << 16 | g << 8 | b;
-	return (rgb);
+		return (-1);
+	rgb.b = ft_atoi(line + n);
+	if (rgb.r > 255 || rgb.g > 255 || rgb.b > 255 || rgb.r < 0 || rgb.g < 0 || rgb.b < 0)
+		return (-1);
+	rgb.rgb = rgb.r << 16 | rgb.g << 8 | rgb.b;
+	return (rgb.rgb);
 }
 
 doubleint	parsesize(char *line, int n)
@@ -78,6 +81,12 @@ doubleint	parsesize(char *line, int n)
 	dint.ii = ft_atoi(line + n);
 	dint.alr = 1;
 	return (dint);
+}
+
+int		duplicerror(char *s,parse *pars)
+{
+	if(s != NULL)
+		ft_error("duplicate param",pars);
 }
 
 char	*parsetex(char *line, int n)
@@ -102,35 +111,7 @@ char	*parsetex(char *line, int n)
 	s1 = ft_substr(line, nn, y);
 	return (s1);
 }
-/*
-void	ft_dupppar(parse *pars,char *line, int n)
-{
-	if (line[n] == 'S' && line[n + 1] != 'O')
-		if (pars->s != NULL)
-			ft_error("Error Param",pars);
-	if (line[n] == 'R')
-		if (pars->r.alr == 1)
-			ft_error("Error Param",pars);
-	if (line[n] == 'N' && line[n + 1] == 'O')
-		if (pars->no != NULL)
-			ft_error("Error Param",pars);
-	if (line[n] == 'S' && line[n + 1] == 'O')
-		if (pars->so != NULL)
-			ft_error("Error Param",pars);
-	if (line[n] == 'W' && line[n + 1] == 'E')
-		if (pars->we != NULL)
-			ft_error("Error Param",pars);
-	if (line[n] == 'E' && line[n + 1] == 'A')
-		if (pars->ea != NULL)
-			ft_error("Error Param",pars);
-	if (line[n] == 'F')
-		if (pars->f != NULL)
-			ft_error("Error Param",pars);
-	if (line[n] == 'C')
-		if (pars->c != NULL)
-			ft_error("Error Param",pars);
-}
-*/
+
 void	recuptwo(char *line, parse *pars)
 {
 	int n;
@@ -139,26 +120,32 @@ void	recuptwo(char *line, parse *pars)
 
 	if (line[n] == 'S' && line[n + 1] != 'O')
 	{
+		duplicerror(pars->s,pars);
 		n++;
 		pars->s = parsetex(line, n);
 	}
 	if (line[n] == 'R')
 	{
+		if (pars->r.alr == 1)
+			ft_error("duplicate",pars);
 		n++;
 		pars->r = parsesize(line, n);
 	}
 	if (line[n] == 'N' && line[n + 1] == 'O')
 	{
+		duplicerror(pars->no,pars);
 		n += 2;
 		pars->no = parsetex(line, n);
 	}
 	if (line[n] == 'S' && line[n + 1] == 'O')
 	{
+		duplicerror(pars->so,pars);
 		n += 2;
 		pars->so = parsetex(line, n);
 	}
 	if (line[n] == 'W' && line[n + 1] == 'E')
 	{
+		duplicerror(pars->we,pars);
 		n += 2;
 		pars->we = parsetex(line, n);
 	}
@@ -167,26 +154,26 @@ void	recuptwo(char *line, parse *pars)
 void	recup(char *line, parse *pars)
 {
 	int n;
-	static int alrd;
-	alrd = 0;
 	n = 0;
 	recuptwo(line, pars);
 	if (line[n] == 'E' && line[n + 1] == 'A')
 	{
-		alrd += 1;
+		duplicerror(pars->ea,pars);
 		n += 2;
 		pars->ea = parsetex(line, n);
 	}
 	if (line[n] == 'F')
 	{
+		if (pars->f != -2)
+			ft_error("duplicate",pars);
 		n++;
 		pars->f = parsecolor(line, n);
 	}
 	if (line[n] == 'C')
 	{
+		if (pars->c != -2)
+			ft_error("duplicate",pars);
 		n++;
 		pars->c = parsecolor(line, n);
 	}
-	if(alrd >= 2)
-		ft_error("error param",pars);
 }

@@ -165,7 +165,7 @@ void init_texture(texture *texture, parse *pars,void *mlx)
 	{
 		if(texture[i].path == NULL)
 			ft_error("ERROR OPEN FILE NULL PATH", pars);
-		if(fd = open(texture[i].path, O_RDONLY) <= 0)
+		if((fd = open(texture[i].path, O_RDONLY)) <= 0)
 			ft_error("ERROR OPEN FILE", pars);
 		close(fd);
 		if((texture[i].img = mlx_xpm_file_to_image(mlx, texture[i].path, &texture[i].textwidth, &texture[i].textheight)) == NULL)
@@ -219,10 +219,15 @@ int main(int argc, char *argv[])
 		if (fdd > 0)
 			pars = cub_skip_header(fdd);
 		else
+		{
 			ft_putstr_fd("Error open .cub file",1);
+		}
 	}
 	else
+	{
 		ft_putstr_fd("error ARG",1);
+		exit(0);
+	}
 
 	ft_checkun(pars);
 	
@@ -304,12 +309,14 @@ int main(int argc, char *argv[])
 	param.save = 0;
 	if (argc >= 3 && ft_strcmp(argv[2],"--save") == 0)
 	{
-		if ((fd = open("image.bmp", O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 777)) < 0)
+		if ((fd = open("image.bmp", O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 777)) > 0)
 		{
 			param.save = 1;
 			raycast(&param);
 			save_bitmap(param.imagescreenb,param.w,param.h,fd);
+			
 			freeall(pars);
+			close(fd);
 			exit(1);
 		}
 	else
