@@ -6,14 +6,14 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 19:08:33 by user42            #+#    #+#             */
-/*   Updated: 2020/12/16 22:25:12 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/19 01:27:49 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycast.h"
 #include "test.h"
 
-static	void	ft_calculsprite(draws *ds, raycasting *ray)
+void	ft_calculsprite(draws *ds, raycasting *ray)
 {
 	ds->spriteheight = abs((int)(ray->h / (ds->transformy)));
 	ds->drawstarty = -ds->spriteheight / 2 + ray->h / 2;
@@ -31,7 +31,7 @@ static	void	ft_calculsprite(draws *ds, raycasting *ray)
 		ds->drawendx = ray->w - 1;
 }
 
-static void	ft_startinitdraws(draws *ds)
+void	ft_startinitdraws(draws *ds)
 {
 	ds->colors = 0;
 	ds->d = 0;
@@ -53,58 +53,47 @@ static void	ft_startinitdraws(draws *ds)
 	ds->yy = 0;
 }
 
-static	void	ft_initdraws(draws *ds, raycasting *ray, int y)
+void	drawcolors(draws *ds, raycasting *ray)
 {
-	ft_startinitdraws(ds);
-	ds->spritex = (ray->pars->sprites[y]->x + 0.5) - ray->posx;
-	ds->spritey = (ray->pars->sprites[y]->y + 0.5) - ray->posy;
-	ds->invdet = 1.0 / (ray->planex * ray->diry - ray->dirx * ray->planey);
-	ds->transformx = ds->invdet * (ray->diry * ds->spritex - ray->dirx * ds->spritey);
-	ds->transformy = ds->invdet * (-ray->planey * ds->spritex + ray->planex * ds->spritey);
-	ds->spritescreenx = ((ray->w / 2) * (1 + ds->transformx / ds->transformy));
+	while (ds->yy < ds->drawendy)
+	{
+		ds->d = (ds->yy) * 256 - ray->h * 128 + ds->spriteheight * 128;
+		ds->texy = ((ds->d * ray->textures[4].textheight) \
+		/ ds->spriteheight) / 256;
+		ds->colors = \
+		ray->textures[4].imagedata[ray->textures[4].textheight \
+		* ds->texy + ds->texx];
+		if ((ds->colors & (0xff << 24)) == 0)
+			ray->imagescreenb[(ray->w) * ds->yy + ds->stripe] = ds->colors;
+		ds->yy++;
+	}
 }
 
-void			ft_draw_sprites(raycasting *ray, int y, double *zbuffer)
+void	ft_drawspritetwo(draws *ds, raycasting *ray, double *zbuffer)
 {
-	draws	ds;
-	int		texx;
-	int		d;
-	int		texy;
-	int		colors;
-	int		stripe;
-	int		yy;
+	ds->stripe = ds->drawstartx;
+	while (ds->stripe < ds->drawendx)
+	{
+		ds->texx = ((256 * (ds->stripe - \
+		(-ds->spritewidth / 2 + ds->spritescreenx))\
+		* ray->textures[4].textwidth / ds->spritewidth) / 256);
+		if (ds->texx < 0)
+			ds->texx = 1;
+		if (ds->transformy > 0 && ds->stripe > 0 && ds->stripe \
+		< ray->w && ds->transformy < zbuffer[ds->stripe])
+		{
+			ds->yy = ds->drawstarty;
+			drawcolors(ds, ray);
+		}
+		ds->stripe++;
+	}
+}
 
-	yy = 0;
-	stripe = 0;
-	colors = 0;
-	texy = 0;
-	d = 0;
-	texx = 0;
+void	ft_draw_sprites(raycasting *ray, int y, double *zbuffer)
+{
+	draws ds;
+
 	ft_initdraws(&ds, ray, y);
 	ft_calculsprite(&ds, ray);
-	stripe = ds.drawstartx;
-	while (stripe < ds.drawendx)
-	{
-		texx = ((256 * (stripe - \
-			(-ds.spritewidth / 2 + ds.spritescreenx)) \
-				* ray->texture[4].textwidth / ds.spritewidth) / 256);
-		if (texx < 0)
-			texx = 1;
-		if (ds.transformy > 0 && stripe > 0 \
-			&& stripe < ray->w && ds.transformy < zbuffer[stripe])
-		{
-			yy = ds.drawstarty;
-			while (yy < ds.drawendy)
-			{
-				d = (yy) * 256 - ray->h * 128 + ds.spriteheight * 128;
-				texy = ((d * ray->texture[4].textheight) / ds.spriteheight) / 256;
-				colors = ray->texture[4].imagedata[ray->texture[4].textheight \
-					* texy + texx];
-				if ((colors & (0xff << 24)) == 0)
-					ray->imagescreenb[(ray->w) * yy + stripe] = colors;
-				yy++;
-			}
-		}
-		 stripe++;
-	}
+	ft_drawspritetwo(&ds, ray, zbuffer);
 }
