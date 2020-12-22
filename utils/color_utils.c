@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 23:22:15 by user42            #+#    #+#             */
-/*   Updated: 2020/12/18 23:51:05 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/22 01:03:44 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "../get_next_line.h"
 #include "../raycast.h"
 
-int		parse_color(char *line, int n, rgbcolor *rgb)
+int		parse_color(char *line, int n, t_rgbcolor *rgb)
 {
 	while (ft_iswhitespace(line[n]))
 		n++;
@@ -41,7 +41,7 @@ int		parse_color(char *line, int n, rgbcolor *rgb)
 
 int		parsecolor(char *line, int n)
 {
-	rgbcolor rgb;
+	t_rgbcolor rgb;
 
 	rgb.r = 0;
 	rgb.g = 0;

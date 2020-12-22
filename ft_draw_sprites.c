@@ -6,14 +6,14 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 19:08:33 by user42            #+#    #+#             */
-/*   Updated: 2020/12/19 01:27:49 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/22 01:00:18 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycast.h"
 #include "test.h"
 
-void	ft_calculsprite(draws *ds, raycasting *ray)
+void	ft_calculsprite(t_draws *ds, t_raycasting *ray)
 {
 	ds->spriteheight = abs((int)(ray->h / (ds->transformy)));
 	ds->drawstarty = -ds->spriteheight / 2 + ray->h / 2;
@@ -31,7 +31,7 @@ void	ft_calculsprite(draws *ds, raycasting *ray)
 		ds->drawendx = ray->w - 1;
 }
 
-void	ft_startinitdraws(draws *ds)
+void	ft_startinitdraws(t_draws *ds)
 {
 	ds->colors = 0;
 	ds->d = 0;
@@ -53,7 +53,7 @@ void	ft_startinitdraws(draws *ds)
 	ds->yy = 0;
 }
 
-void	drawcolors(draws *ds, raycasting *ray)
+void	drawcolors(t_draws *ds, t_raycasting *ray)
 {
 	while (ds->yy < ds->drawendy)
 	{
@@ -69,7 +69,7 @@ void	drawcolors(draws *ds, raycasting *ray)
 	}
 }
 
-void	ft_drawspritetwo(draws *ds, raycasting *ray, double *zbuffer)
+void	ft_drawspritetwo(t_draws *ds, t_raycasting *ray, double *zbuffer)
 {
 	ds->stripe = ds->drawstartx;
 	while (ds->stripe < ds->drawendx)
@@ -89,9 +89,9 @@ void	ft_drawspritetwo(draws *ds, raycasting *ray, double *zbuffer)
 	}
 }
 
-void	ft_draw_sprites(raycasting *ray, int y, double *zbuffer)
+void	ft_draw_sprites(t_raycasting *ray, int y, double *zbuffer)
 {
-	draws ds;
+	t_draws ds;
 
 	ft_initdraws(&ds, ray, y);
 	ft_calculsprite(&ds, ray);

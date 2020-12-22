@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 23:07:53 by user42            #+#    #+#             */
-/*   Updated: 2020/12/18 23:54:30 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/22 00:53:07 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "../get_next_line.h"
 #include "../raycast.h"
 
-void	ft_rrerror(cub_skip *map_pars, t_list *first)
+void	ft_rrerror(t_cub_skip *map_pars, t_list *first)
 {
 	t_list *next;
 
@@ -33,7 +33,7 @@ void	ft_rrerror(cub_skip *map_pars, t_list *first)
 	}
 }
 
-void	ft_rerror(cub_skip *map_pars, t_list *first, char *line, char *str)
+void	ft_rerror(t_cub_skip *map_pars, t_list *first, char *line, char *str)
 {
 	t_list *next;
 
@@ -57,7 +57,7 @@ void	ft_rerror(cub_skip *map_pars, t_list *first, char *line, char *str)
 	exit(0);
 }
 
-void	duplicerror(char *s, parse *pars)
+void	duplicerror(char *s, t_parse *pars)
 {
 	if (s != NULL)
 		ft_error("duplicate param", pars);

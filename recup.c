@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 22:57:01 by rasaboun          #+#    #+#             */
-/*   Updated: 2020/12/18 23:45:28 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/22 00:52:02 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 #include "libft/libft.h"
 #include "get_next_line.h"
 
-doubleint	parsesize(char *line, int n)
+t_doubleint	parsesize(char *line, int n)
 {
-	doubleint dint;
+	t_doubleint dint;
 
 	dint.i = 0;
 	dint.ii = 0;
@@ -55,7 +55,7 @@ char		*parsetex(char *line, int n)
 	return (s1);
 }
 
-void		recupthree(char *line, parse *pars)
+void		recupthree(char *line, t_parse *pars)
 {
 	int n;
 
@@ -81,7 +81,7 @@ void		recupthree(char *line, parse *pars)
 	}
 }
 
-void		recuptwo(char *line, parse *pars)
+void		recuptwo(char *line, t_parse *pars)
 {
 	int n;
 
@@ -100,7 +100,7 @@ void		recuptwo(char *line, parse *pars)
 	}
 }
 
-void		recup(char *line, parse *pars)
+void		recup(char *line, t_parse *pars)
 {
 	int n;
 

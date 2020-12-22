@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 20:31:18 by rasaboun          #+#    #+#             */
-/*   Updated: 2020/12/18 23:14:21 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/22 00:58:27 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "get_next_line.h"
 #include "raycast.h"
 
-int		close_map(parse *pars, int i, int j)
+int		close_map(t_parse *pars, int i, int j)
 {
 	int linecount;
 
@@ -34,7 +34,7 @@ int		close_map(parse *pars, int i, int j)
 	return (1);
 }
 
-int		checkmap(parse *pars, t_list **lst)
+int		checkmap(t_parse *pars, t_list **lst)
 {
 	t_checkmap	ck;
 
@@ -62,7 +62,7 @@ int		checkmap(parse *pars, t_list **lst)
 	return (1);
 }
 
-void	get_map(int fd, cub_skip *map_pars)
+void	get_map(int fd, t_cub_skip *map_pars)
 {
 	int	n;
 
@@ -90,12 +90,12 @@ void	get_map(int fd, cub_skip *map_pars)
 	free(map_pars->line);
 }
 
-parse	*cub_skip_header(int fd)
+t_parse	*cub_skip_header(int fd)
 {
-	cub_skip	map_pars;
+	t_cub_skip	map_pars;
 
 	init_map_pars(&map_pars);
-	map_pars.pars = malloc(sizeof(parse));
+	map_pars.pars = malloc(sizeof(t_parse));
 	init_pars(map_pars.pars);
 	get_map(fd, &map_pars);
 	if (map_pars.first == NULL)

@@ -6,14 +6,14 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 05:14:19 by user42            #+#    #+#             */
-/*   Updated: 2020/12/19 00:48:56 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/22 01:00:41 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycast.h"
 #include "test.h"
 
-void	ft_drawtwo(draws *draw, raycasting *ray)
+void	ft_drawtwo(t_draws *draw, t_raycasting *ray)
 {
 	draw->lineheight = (int)(ray->h / ray->perpwalldist);
 	draw->drawstart = -draw->lineheight / 2 + ray->h / 2;
@@ -26,7 +26,7 @@ void	ft_drawtwo(draws *draw, raycasting *ray)
 	draw->texnum = draw->charint - 1;
 }
 
-void	ft_drawthree(draws *draw, raycasting *ray, int x)
+void	ft_drawthree(t_draws *draw, t_raycasting *ray, int x)
 {
 	int		begin;
 
@@ -54,9 +54,9 @@ void	ft_drawthree(draws *draw, raycasting *ray, int x)
 		ray->imagescreenb[(ray->w) * begin + x] = ray->pars->c;
 }
 
-void	ft_draw(raycasting *ray, int x, double *zbuffer)
+void	ft_draw(t_raycasting *ray, int x, double *zbuffer)
 {
-	draws	draw;
+	t_draws	draw;
 	int		end;
 	int		y;
 	int		color;

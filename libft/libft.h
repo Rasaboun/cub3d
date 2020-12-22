@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rasaboun <rasaboun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 13:43:39 by rasaboun          #+#    #+#             */
-/*   Updated: 2019/11/11 13:40:20 by rasaboun         ###   ########.fr       */
+/*   Updated: 2020/12/22 01:57:37 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ int				ft_isascii(int c);
 int				ft_isprint(int c);
 int				ft_toupper(int c);
 int				ft_tolower(int c);
-int		ft_iswhitespace(char const c);
-char		*ft_strfjoin(char *s1, char *s2);
+int				ft_iswhitespace(char const c);
+char			*ft_strfjoin(char *s1, char *s2);
 void			*ft_memset(void *b, int c, size_t len);
 void			ft_bzero(void *s, size_t n);
 void			*ft_memcpy(void *s1, const void *s2, size_t n);
@@ -52,7 +52,7 @@ char			*ft_substr(char const *s, unsigned int start, size_t len);
 char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_strtrim(char const *s, char const *set);
 char			*ft_itoa(int n);
-int		ft_strcmp(const char *s1, const char *s2);
+int				ft_strcmp(const char *s1, const char *s2);
 char			**ft_split(const char *s1, char c);
 void			*ft_calloc(size_t count, size_t size);
 void			ft_putchar_fd(char c, int fd);

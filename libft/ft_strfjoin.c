@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strfjoin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rasaboun <rasaboun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 12:24:56 by rasaboun          #+#    #+#             */
-/*   Updated: 2020/11/13 19:53:56 by rasaboun         ###   ########.fr       */
+/*   Updated: 2020/12/22 01:57:10 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	ft_while(char *s3, const char *s1, int i)
 	return (p);
 }
 
-char		*ft_strfjoin(char*s1, char *s2)
+char		*ft_strfjoin(char *s1, char *s2)
 {
 	int		p;
 	char	*s3;
@@ -51,7 +51,7 @@ char		*ft_strfjoin(char*s1, char *s2)
 		y++;
 	}
 	s3[p] = '\0';
-    free(s2);
-    free(s1);
+	free(s2);
+	free(s1);
 	return (s3);
 }

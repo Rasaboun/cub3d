@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/19 01:46:36 by user42            #+#    #+#             */
-/*   Updated: 2020/12/19 01:47:12 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/22 01:39:05 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "../get_next_line.h"
 #include "../raycast.h"
 
-void	move_forward(raycasting *ray)
+void	move_forward(t_raycasting *ray)
 {
 	if (ray->pars->tab[(int)(ray->posx + ray->dirx *
 											0.05)][(int)ray->posy] == '0')
@@ -25,7 +25,7 @@ void	move_forward(raycasting *ray)
 		ray->posy += ray->diry * 0.05;
 }
 
-void	move_back(raycasting *ray)
+void	move_back(t_raycasting *ray)
 {
 	if (ray->pars->tab[(int)(ray->posx - ray->dirx *
 											0.05)][(int)ray->posy] == '0')
@@ -35,7 +35,7 @@ void	move_back(raycasting *ray)
 		ray->posy -= ray->diry * 0.05;
 }
 
-void	move_right(raycasting *ray)
+void	move_right(t_raycasting *ray)
 {
 	if (ray->pars->tab[(int)ray->posx][(int)(ray->posy\
 	+ ray->planey * 0.05)] == '0')
@@ -45,7 +45,7 @@ void	move_right(raycasting *ray)
 		ray->posx += ray->planex * 0.05;
 }
 
-void	move_left(raycasting *ray)
+void	move_left(t_raycasting *ray)
 {
 	if (ray->pars->tab[(int)ray->posx][(int)(ray->posy\
 	- ray->planey * 0.05)] == '0')
@@ -55,7 +55,7 @@ void	move_left(raycasting *ray)
 		ray->posx -= ray->planex * 0.05;
 }
 
-void	turn_left(raycasting *ray)
+void	turn_left(t_raycasting *ray)
 {
 	double olddirx;
 	double oldplanex;

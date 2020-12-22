@@ -6,14 +6,14 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 05:00:13 by user42            #+#    #+#             */
-/*   Updated: 2020/12/19 01:37:24 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/22 01:01:29 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycast.h"
 #include "test.h"
 
-void	initdda(ddas *dd, raycasting *ray, int x)
+void	initdda(t_ddas *dd, t_raycasting *ray, int x)
 {
 	dd->camerax = 2 * x / (double)ray->w - 1;
 	ray->raydirx = ray->dirx + ray->planex * dd->camerax;
@@ -25,7 +25,7 @@ void	initdda(ddas *dd, raycasting *ray, int x)
 	dd->hit = 0;
 }
 
-void	choosedir(raycasting *ray, ddas *dd)
+void	choosedir(t_raycasting *ray, t_ddas *dd)
 {
 	if (ray->raydirx < 0)
 	{
@@ -49,7 +49,7 @@ void	choosedir(raycasting *ray, ddas *dd)
 	}
 }
 
-void	findhit(raycasting *ray, ddas *dd)
+void	findhit(t_raycasting *ray, t_ddas *dd)
 {
 	while (dd->hit == 0)
 	{
@@ -70,9 +70,9 @@ void	findhit(raycasting *ray, ddas *dd)
 	}
 }
 
-void	ft_dda(raycasting *ray, int x)
+void	ft_dda(t_raycasting *ray, int x)
 {
-	ddas dd;
+	t_ddas dd;
 
 	initdda(&dd, ray, x);
 	choosedir(ray, &dd);

@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 21:44:07 by user42            #+#    #+#             */
-/*   Updated: 2020/12/18 23:49:28 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/22 00:58:57 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 #include "../get_next_line.h"
 #include "../raycast.h"
 
-void	ft_swap_sprite(sprite **one, int j)
+void	ft_swap_sprite(t_sprite **one, int j)
 {
-	sprite *tmp;
+	t_sprite *tmp;
 
 	tmp = one[j + 1];
 	one[j + 1] = one[j];
@@ -29,7 +29,7 @@ int		ft_calcul_dist(int x, int y, int posx, int posy)
 	return (pow((posx - x), 2) + pow((posy - y), 2));
 }
 
-void	sort_sprite(sprite **spr, int posx, int posy, int size)
+void	sort_sprite(t_sprite **spr, int posx, int posy, int size)
 {
 	int disorder;
 	int dist1;

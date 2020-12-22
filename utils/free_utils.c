@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 21:45:35 by user42            #+#    #+#             */
-/*   Updated: 2020/12/19 00:13:18 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/22 00:59:26 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "../get_next_line.h"
 #include "../raycast.h"
 
-void	freemap(parse *pars)
+void	freemap(t_parse *pars)
 {
 	int i;
 
@@ -32,7 +32,7 @@ void	freemap(parse *pars)
 	}
 }
 
-void	freehud(parse *pars)
+void	freehud(t_parse *pars)
 {
 	int i;
 
@@ -49,7 +49,7 @@ void	freehud(parse *pars)
 	}
 }
 
-void	freesprite(parse *pars)
+void	freesprite(t_parse *pars)
 {
 	int	i;
 
@@ -66,7 +66,7 @@ void	freesprite(parse *pars)
 	}
 }
 
-void	freetext(parse *pars)
+void	freetext(t_parse *pars)
 {
 	if (pars->ea != NULL)
 		free(pars->ea);
@@ -80,7 +80,7 @@ void	freetext(parse *pars)
 		free(pars->we);
 }
 
-void	freepars(parse *pars)
+void	freepars(t_parse *pars)
 {
 	freetext(pars);
 	freemap(pars);

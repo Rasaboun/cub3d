@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 21:55:30 by user42            #+#    #+#             */
-/*   Updated: 2020/12/19 01:20:41 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/22 01:38:42 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "../get_next_line.h"
 #include "../raycast.h"
 
-void	init_pars(parse *pars)
+void		init_pars(t_parse *pars)
 {
 	pars->c = -2;
 	pars->ea = NULL;
@@ -32,7 +32,7 @@ void	init_pars(parse *pars)
 	pars->tabhud = NULL;
 }
 
-char	**ft_lstdtab(t_list *lst)
+char		**ft_lstdtab(t_list *lst)
 {
 	char	**tab;
 	int		i;
@@ -59,7 +59,7 @@ char	**ft_lstdtab(t_list *lst)
 	return (tab);
 }
 
-int		skip_wspace(char *s)
+int			skip_wspace(char *s)
 {
 	int n;
 
@@ -69,7 +69,7 @@ int		skip_wspace(char *s)
 	return (n);
 }
 
-void	init_map_pars(cub_skip *map_pars)
+void		init_map_pars(t_cub_skip *map_pars)
 {
 	map_pars->lst = NULL;
 	map_pars->line = NULL;
@@ -81,15 +81,21 @@ void	init_map_pars(cub_skip *map_pars)
 	map_pars->hudrep = 0;
 }
 
-void ft_initdraws(draws *ds, raycasting *ray, int y)
+void		ft_initdraws(t_draws *ds, t_raycasting *ray, int y)
 {
-	ft_startinitdraws(ds);
-	ds->spritex = (ray->pars->sprites[y]->x + 0.5) - ray->posx;
-	ds->spritey = (ray->pars->sprites[y]->y + 0.5) - ray->posy;
-	ds->invdet = 1.0 / (ray->planex * ray->diry - ray->dirx * ray->planey);
-	ds->transformx = ds->invdet * (ray->diry * \
-	ds->spritex - ray->dirx * ds->spritey);
-	ds->transformy = ds->invdet * (-ray->planey *\
-	 ds->spritex + ray->planex * ds->spritey);
-	ds->spritescreenx = ((ray->w / 2) * (1 + ds->transformx / ds->transformy));
+	if (ray->pars->sprites && ray->pars->sprites[y])
+	{
+		ft_startinitdraws(ds);
+		ds->spritex = (ray->pars->sprites[y]->x + 0.5) - ray->posx;
+		ds->spritey = (ray->pars->sprites[y]->y + 0.5) - ray->posy;
+		ds->invdet = 1.0 / (ray->planex * ray->diry - ray->dirx * ray->planey);
+		ds->transformx = ds->invdet * (ray->diry *
+									ds->spritex -
+									ray->dirx * ds->spritey);
+		ds->transformy = ds->invdet * (-ray->planey *
+									ds->spritex +
+									ray->planex * ds->spritey);
+		ds->spritescreenx = ((ray->w / 2) *\
+		(1 + ds->transformx / ds->transformy));
+	}
 }

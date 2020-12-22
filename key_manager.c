@@ -6,14 +6,14 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 04:21:56 by user42            #+#    #+#             */
-/*   Updated: 2020/12/19 01:47:33 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/22 00:54:56 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycast.h"
 #include "test.h"
 
-void	turn_right(raycasting *ray)
+void	turn_right(t_raycasting *ray)
 {
 	double olddirx;
 	double oldplanex;
@@ -26,7 +26,7 @@ void	turn_right(raycasting *ray)
 	ray->planey = oldplanex * sin(-0.02) + ray->planey * cos(-0.02);
 }
 
-void	escape(raycasting *ray)
+void	escape(t_raycasting *ray)
 {
 	mlx_destroy_window(ray->mlx, ray->mlx_win);
 	freeall(ray->pars);
@@ -35,9 +35,9 @@ void	escape(raycasting *ray)
 
 int		ft_key_press(int key, void *param)
 {
-	raycasting *ray;
+	t_raycasting *ray;
 
-	ray = (raycasting *)param;
+	ray = (t_raycasting *)param;
 	if (key == 97)
 		ray->left = 1;
 	if (key == 100)
@@ -57,9 +57,9 @@ int		ft_key_press(int key, void *param)
 
 int		ft_key_release(int key, void *param)
 {
-	raycasting *ray;
+	t_raycasting *ray;
 
-	ray = (raycasting *)param;
+	ray = (t_raycasting *)param;
 	if (key == 97)
 		ray->left = 0;
 	if (key == 100)

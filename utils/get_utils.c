@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 21:17:44 by user42            #+#    #+#             */
-/*   Updated: 2020/12/19 00:13:34 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/22 01:37:28 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "../get_next_line.h"
 #include "../raycast.h"
 
-void	get_sprites(cub_skip *map_pars)
+void	get_sprites(t_cub_skip *map_pars)
 {
 	int		i;
 	t_list	*tmp;
@@ -23,7 +23,8 @@ void	get_sprites(cub_skip *map_pars)
 	i = ft_lstsize(map_pars->lst);
 	if (map_pars->lst != NULL)
 	{
-		map_pars->pars->sprites = (sprite **)malloc(sizeof(sprite *) * (i + 1));
+		map_pars->pars->sprites =\
+			(t_sprite **)malloc(sizeof(t_sprite *) * (i + 1));
 		while (i >= 0)
 		{
 			map_pars->pars->sprites[i] = NULL;
@@ -33,7 +34,7 @@ void	get_sprites(cub_skip *map_pars)
 		while (map_pars->lst != NULL)
 		{
 			tmp = map_pars->lst->next;
-			map_pars->pars->sprites[i] = (sprite *)map_pars->lst->content;
+			map_pars->pars->sprites[i] = (t_sprite *)map_pars->lst->content;
 			free(map_pars->lst);
 			map_pars->lst = tmp;
 			i++;
@@ -42,7 +43,7 @@ void	get_sprites(cub_skip *map_pars)
 	}
 }
 
-void	ft_getplayermap(parse *pars, t_checkmap *ck)
+void	ft_getplayermap(t_parse *pars, t_checkmap *ck)
 {
 	ck->play = ft_strchr("NSWE", ck->mapf);
 	pars->play.x = ck->i;
@@ -54,14 +55,14 @@ void	ft_getplayermap(parse *pars, t_checkmap *ck)
 
 void	ft_getspritemap(t_checkmap *ck, t_list **lst)
 {
-	ck->sprites = malloc(sizeof(sprite));
+	ck->sprites = malloc(sizeof(t_sprite));
 	ck->sprites->x = ck->i;
 	ck->sprites->y = ck->j;
 	ck->new = ft_lstnew(ck->sprites);
 	ft_lstadd_back(lst, ck->new);
 }
 
-int		ft_getelemmap(parse *pars, t_checkmap *ck, t_list **lst)
+int		ft_getelemmap(t_parse *pars, t_checkmap *ck, t_list **lst)
 {
 	ck->mapf = pars->tab[ck->i][ck->j];
 	if (!(ft_strchr("012 NSWE", ck->mapf)))

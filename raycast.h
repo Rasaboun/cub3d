@@ -1,35 +1,47 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycast.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/12/22 00:21:47 by user42            #+#    #+#             */
+/*   Updated: 2020/12/22 01:53:09 by user42           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef RAYCAST_H
-#define RAYCAST_H
+# define RAYCAST_H
 
-#include <stdlib.h>
-#include <math.h>
-#include <mlx.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include "get_next_line.h"
-#include "libft/libft.h"
-#include "test.h"
+# include <stdlib.h>
+# include <math.h>
+# include <mlx.h>
+# include <unistd.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
+# include "get_next_line.h"
+# include "libft/libft.h"
+# include "test.h"
 
-#define KEY_PRESSED 2
-#define KEY_RELEASE 3
-#define CLOSE_EVENT 17
+# define KEY_PRESSED 2
+# define KEY_RELEASE 3
+# define CLOSE_EVENT 17
 
-typedef struct texture
+typedef	struct	s_texture
 {
-    int textwidth;
-    int textheight;
-    char *path;
-    void *img;
-    int bpp;
-    int size_line;
-    int endian;
-    int *imagedata;
-    void *mlx;
-} texture;
+	int		textwidth;
+	int		textheight;
+	char	*path;
+	void	*img;
+	int		bpp;
+	int		size_line;
+	int		endian;
+	int		*imagedata;
+	void	*mlx;
+}				t_texture;
 
-typedef struct mini
+typedef	struct	s_mini
 {
 	int width;
 	int height;
@@ -45,132 +57,158 @@ typedef struct mini
 	int ii;
 	int yy;
 	int sp;
-} mini;
+}				t_mini;
 
-typedef struct ddas
+typedef	struct	s_mains
+{
+	int				fdd;
+	void			*screenb;
+	unsigned	int	*imagescreenb;
+	void			*mlx;
+	int				screenx;
+	int				screeny;
+	void			*mlx_win;
+	int				bpp;
+	int				size_line;
+	int				endian;
+}				t_mains;
+
+typedef	struct	s_ddas
 {
 
-    double perpWallDist;
-    int mapy;
-    int mapx;
-    double sidedistx;
-    double sidedisty;
-    double raydiry;
-    double raydirx;
-    int side;
-    double camerax;
-	double deltadistx;
-	double deltadisty;
-	int stepx;
-	int stepy;
-	int hit;
-} ddas;
+	double	perpwalldist;
+	int		mapy;
+	int		mapx;
+	double	sidedistx;
+	double	sidedisty;
+	double	raydiry;
+	double	raydirx;
+	int		side;
+	double	camerax;
+	double	deltadistx;
+	double	deltadisty;
+	int		stepx;
+	int		stepy;
+	int		hit;
+}				t_ddas;
 
-typedef struct draws
+typedef	struct	s_draws
 {
 
-    double spritex;
-    double spritey;
-    double invdet;
-    double transformx;
-    double transformy;
-    int spritescreenx;
-    int spriteheight;
-    int drawstarty;
-    int drawendy;
-    int spritewidth;
-    int drawstartx;
-    int drawendx;
-    int stripe;
-    int texx;
-    int d;
-    int texy;
-    int yy;
-    int colors;
-    int texnum;
-    double wallx;
-    int charint;
-    double texpos;
-    double step;
-    int lineheight;
-    int drawstart;
-    int drawend;
-} draws;
+	double	spritex;
+	double	spritey;
+	double	invdet;
+	double	transformx;
+	double	transformy;
+	int		spritescreenx;
+	int		spriteheight;
+	int		drawstarty;
+	int		drawendy;
+	int		spritewidth;
+	int		drawstartx;
+	int		drawendx;
+	int		stripe;
+	int		texx;
+	int		d;
+	int		texy;
+	int		yy;
+	int		colors;
+	int		texnum;
+	double	wallx;
+	int		charint;
+	double	texpos;
+	double	step;
+	int		lineheight;
+	int		drawstart;
+	int		drawend;
+}				t_draws;
 
-typedef struct raycasting
+typedef	struct	s_raycasting
 {
-    void *mlx;
-    void *mlx_win;
-    double posx;
-    double posy;
-    double dirx;
-    double diry;
-    double planex;
-    double planey;
-    int w;
-    int h;
-    int screenx;
-    int screeny;
-    unsigned int *imagescreenb;
-    int size_line;
-    void *screenb;
-    texture *textures;
-    parse *pars;
-    int save;
-    double perpwalldist;
-    int mapx;
-    int mapy;
-    double raydirx;
-    double raydiry;
-    int side;
-    int forward;
-    int back;
-    int left;
-    int right;
-    int rotate_left;
-    int rotate_right;
-} raycasting;
+	void			*mlx;
+	void			*mlx_win;
+	double			posx;
+	double			posy;
+	double			dirx;
+	double			diry;
+	double			planex;
+	double			planey;
+	int				w;
+	int				h;
+	int				screenx;
+	int				screeny;
+	unsigned	int	*imagescreenb;
+	int				size_line;
+	void			*screenb;
+	t_texture		*textures;
+	t_parse			*pars;
+	int				save;
+	double			perpwalldist;
+	int				mapx;
+	int				mapy;
+	double			raydirx;
+	double			raydiry;
+	int				side;
+	int				forward;
+	int				back;
+	int				left;
+	int				right;
+	int				rotate_left;
+	int				rotate_right;
+}				t_raycasting;
 
-int deal_key(int key, void *param);
-int raycast(raycasting *ray);
-void ft_draw(raycasting *ray, int x, double *zbuffer);
-void	ft_drawthree(draws *draw, raycasting *ray, int x);
-void	ft_drawtwo(draws *draw, raycasting *ray);
-void ft_dda(raycasting *ray, int x);
-void	initdda(ddas *dd, raycasting *ray, int x);
-void	findhit(raycasting *ray, ddas *dd);
-void	choosedir(raycasting *ray, ddas *dd);
-void freeall(parse *pars);
-void ft_draw_sprites(raycasting *ray, int y, double *zbuffer);
-void ft_initdraws(draws *ds, raycasting *ray, int y);
-void ft_startinitdraws(draws *ds);
-int ft_key_press(int key, void *param);
-void	ft_drawspritetwo(draws *ds, raycasting *ray, double *zbuffer);
-int ft_key_release(int key, void *param);
-void move_forward(raycasting *ray);
-void move_back(raycasting *ray);
-void move_right(raycasting *ray);
-void move_left(raycasting *ray);
-void turn_left(raycasting *ray);
-void turn_right(raycasting *ray);
-void freeall(parse *pars);
-int raycast(raycasting *ray);
-void freecubskip(cub_skip *map_pars);
-int *mlx_data_xpm(char *path, int fd, int *data);
-void xpm_skip_header(int fd);
-void get_data_xpm(int fd, int *data);
-int xpmidcolor(int fd, int *data, xpmcolordata *idcolor);
-char *xpmimgdata(int fd, int *data);
-int convert(char *s, xpmcolordata *idcolor, int *data, int i);
-int *xpmtoint(char *imgs, int *data, xpmcolordata *idcolor);
-int ft_iswhitespace(char const c);
-int ft_atoi_base(const char *str, int str_base);
-int base(int c, int base);
-void ft_error(char *str, parse *pars);
-int save_bitmap(unsigned int *color, int width, int height, int fd);
-t_list	*recupmap(int fd, char *line, cub_skip *map_pars);
-t_list	*recuphud(int fd, char *line, cub_skip *map_pars);
-int	parse_color(char *line, int n, rgbcolor *rgb);
-int	parsecolor(char *line, int n);
-void	ft_rrerror(cub_skip *map_pars, t_list *first);
+int				raycast(t_raycasting *ray);
+void			ft_draw(t_raycasting *ray, int x, double *zbuffer);
+void			ft_drawthree(t_draws *draw, t_raycasting *ray, int x);
+void			ft_drawtwo(t_draws *draw, t_raycasting *ray);
+void			ft_dda(t_raycasting *ray, int x);
+void			initdda(t_ddas *dd, t_raycasting *ray, int x);
+void			findhit(t_raycasting *ray, t_ddas *dd);
+void			choosedir(t_raycasting *ray, t_ddas *dd);
+void			freeall(t_parse *pars);
+void			ft_draw_sprites(t_raycasting *ray, int y, double *zbuffer);
+void			ft_initdraws(t_draws *ds, t_raycasting *ray, int y);
+void			ft_startinitdraws(t_draws *ds);
+int				ft_key_press(int key, void *param);
+void			ft_drawspritetwo(t_draws *ds,
+				t_raycasting *ray, double *zbuffer);
+int				ft_key_release(int key, void *param);
+void			move_forward(t_raycasting *ray);
+void			move_back(t_raycasting *ray);
+void			move_right(t_raycasting *ray);
+void			move_left(t_raycasting *ray);
+void			turn_left(t_raycasting *ray);
+void			turn_right(t_raycasting *ray);
+void			freeall(t_parse *pars);
+int				raycast(t_raycasting *ray);
+void			freecubskip(t_cub_skip *map_pars);
+int				*mlx_data_xpm(char *path, int fd, int *data);
+void			xpm_skip_header(int fd);
+void			get_data_xpm(int fd, int *data);
+char			*xpmimgdata(int fd, int *data);
+int				ft_iswhitespace(char const c);
+int				ft_atoi_base(const char *str, int str_base);
+int				base(int c, int base);
+void			ft_error(char *str, t_parse *pars);
+int				save_bitmap(unsigned int *color, int width, int height, int fd);
+t_list			*recupmap(int fd, char *line, t_cub_skip *map_pars);
+t_list			*recuphud(int fd, char *line, t_cub_skip *map_pars);
+int				parse_color(char *line, int n, t_rgbcolor *rgb);
+int				parsecolor(char *line, int n);
+void			ft_rrerror(t_cub_skip *map_pars, t_list *first);
+void			put_pixel(t_raycasting *ray, t_mini mn);
+void			utils_mmap(t_raycasting *ray, t_mini *ds);
+void			mini_map(t_raycasting *ray);
+void			mini_life(t_raycasting *ray);
+void			chooseplayerdirtwo(t_raycasting *ray, t_parse *pars);
+void			chooseplayerdir(t_raycasting *ray, t_parse *pars);
+void			argsave(int argc, char **argv,
+				t_raycasting *param, t_parse *pars);
+void			max_reso(t_parse *pars, t_raycasting *param, int sx, int sy);
+t_parse			*check_arg(int argc, char **argv);
+void			initcub(t_raycasting *param, t_parse *pars,
+				t_texture *textures);
+void			ft_checkun(t_parse *pars);
+void			init_texture(t_texture *tex, t_parse *pars, void *mlx);
+void			intextpath(t_texture *textures, t_parse *pars);
 #endif
