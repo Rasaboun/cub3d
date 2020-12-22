@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rasaboun <rasaboun@student.42.fr>          +#+  +:+       +#+         #
+#    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/17 15:37:01 by rasaboun          #+#    #+#              #
-#    Updated: 2019/11/11 13:42:37 by rasaboun         ###   ########.fr        #
+#    Updated: 2020/12/22 03:44:48 by user42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,8 +17,8 @@ CCFLAGS = -Wall -Wextra -Werror
 SRC = ft_isdigit.c ft_memmove.c ft_split.c  ft_strmapi.c ft_toupper.c \
 ft_atoi.c ft_isprint.c ft_memset.c ft_strchr.c  ft_strncmp.c \
 ft_bzero.c ft_itoa.c ft_strdup.c ft_strnstr.c ft_calloc.c ft_iswhitespace.c \
-ft_memccpy.c ft_putchar_fd.c ft_strjoin.c ft_strrchr.c ft_isalnum.c \
-ft_memchr.c ft_putendl_fd.c ft_strlcat.c ft_strtrim.c ft_isalpha.c \
+ft_putchar_fd.c ft_strjoin.c ft_strrchr.c ft_isalnum.c \
+ft_putendl_fd.c ft_strlcat.c ft_strtrim.c ft_isalpha.c \
 ft_memcmp.c ft_putnbr_fd.c  ft_strlcpy.c ft_substr.c ft_isascii.c \
 ft_memcpy.c ft_putstr_fd.c ft_strlen.c ft_tolower.c ft_strcmp.c ft_strfjoin.c
 

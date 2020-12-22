@@ -1,33 +1,70 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2020/12/22 02:01:59 by user42            #+#    #+#              #
+#    Updated: 2020/12/22 04:33:34 by user42           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
+NAME	=		Cub3D
+LIBFT	=		libft/libft.a
+MLX		=		minilibx-linux/libmlx.a
+CC		=		clang
+GREEN	=		'\033[0;32m'
 
-INC=%%%%
+SRC		=	raycast.c\
+			utils/initray.c\
+			utils/raypixel_utils.c \
+			utils/raycastchoose.c \
+			utils/parse_utils.c\
+			utils/error_utils.c \
+			utils/key_manager_utils.c\
+			utils/color_utils.c \
+			utils/get_utils.c \
+			utils/recup_utils.c \
+			utils/free_utils.c \
+			utils/init_utils.c \
+			utils/calcul_utils.c \
+			ft_draw.c \
+			dda.c \
+			ft_draw_sprites.c \
+			key_manager.c \
+			test.c \
+			parsemap.c \
+			recup.c \
+			bmp.c \
+			get_next_line.c \
+			get_next_line_utils.c 
+		
+OBJS=$(SRC:.c=.o)
 
-INCLIB=$(INC)/../lib
+all: $(NAME)
 
-CC=gcc
+$(NAME): $(OBJS) $(LIBFT) $(MLX)
+		$(CC) $(OBJS) -I . -I./libft -I./minilibx-linux -Wall -Werror -Wextra -g -L ./libft -lft -L ./minilibx-linux -lmlx -lbsd -lm -lX11 -lXext -o $(NAME)
+		@echo ${GREEN}FINI !
 
-CFLAGS= -I$(INC) -O3 -I..
+$(LIBFT):
+		make bonus -s -C libft
 
-NAME= mlx-test
-SRC =  test.c parsemap.c recup.c bmp.c get_next_line.c get_next_line_utils.c
-srcc= test.c get_next_line.c get_next_line_utils.c
-OBJ = $(SRC:.c=.o)
-objj = $(srcc:.c=.o)
-all	:$(NAME)
+$(MLX):
+		make -s -C minilibx-linux
 
-$(NAME)	:$(OBJ) libft
-	$(CC) -g  raycast.c utils/initray.c utils/raypixel_utils.c utils/raycastchoose.c utils/parse_utils.c utils/error_utils.c utils/key_manager_utils.c utils/color_utils.c utils/get_utils.c utils/recup_utils.c utils/free_utils.c utils/init_utils.c utils/calcul_utils.c ft_draw.c dda.c ft_draw_sprites.c key_manager.c test.c parsemap.c recup.c bmp.c get_next_line.c get_next_line_utils.c libft/libft.a -L.. -lmlx -L$(INCLIB) -lXext -lX11 -lm -lbsd -Werror -Wall -Wextra
+clean:
+		make clean -s -C libft
+		make clean -s -C minilibx-linux
+		rm $(OBJS)
 
-libft :
-	cd libft/
-	make bonus
-clean	:
-	rm -f $(NAME) $(OBJ) *~ core *.core
+fclean: clean
+	make fclean -s -C libft
+	rm -rf image.bmp
 
-cleantest :
-	rm test
+re: fclean all
 
-test :
-	$(CC) -o test $(srcc) ./libft/libft.a -fsanitize=address -L.. -lmlx -L$(INCLIB) -lXext -lX11 -lm -lbsd
+bonus: all
 
-re	: clean all
+.PONY: all clean fclean re bonus

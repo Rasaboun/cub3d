@@ -6,12 +6,15 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 05:14:19 by user42            #+#    #+#             */
-/*   Updated: 2020/12/22 01:00:41 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/22 03:28:22 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycast.h"
 #include "test.h"
+#include "libft/libft.h"
+#include "get_next_line.h"
+#include "math.h"
 
 void	ft_drawtwo(t_draws *draw, t_raycasting *ray)
 {
