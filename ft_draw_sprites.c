@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 19:08:33 by user42            #+#    #+#             */
-/*   Updated: 2020/12/22 01:00:18 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/25 15:48:20 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,24 +33,30 @@ void	ft_calculsprite(t_draws *ds, t_raycasting *ray)
 
 void	ft_startinitdraws(t_draws *ds)
 {
-	ds->colors = 0;
-	ds->d = 0;
-	ds->drawendx = 0;
-	ds->drawendy = 0;
-	ds->drawstartx = 0;
-	ds->drawstarty = 0;
 	ds->invdet = 0;
-	ds->spriteheight = 0;
-	ds->spritescreenx = 0;
-	ds->spritewidth = 0;
-	ds->spritex = 0;
-	ds->spritey = 0;
-	ds->stripe = 0;
-	ds->texx = 0;
-	ds->texy = 0;
 	ds->transformx = 0;
 	ds->transformy = 0;
+	ds->spritescreenx = 0;
+	ds->spriteheight = 0;
+	ds->drawstarty = 0;
+	ds->drawendy = 0;
+	ds->spritewidth = 0;
+	ds->drawstartx = 0;
+	ds->drawendx = 0;
+	ds->stripe = 0;
+	ds->texx = 0;
+	ds->d = 0;
+	ds->texy = 0;
 	ds->yy = 0;
+	ds->colors = 0;
+	ds->texnum = 0;
+	ds->wallx = 0;
+	ds->charint = 0;
+	ds->texpos = 0;
+	ds->step = 0;
+	ds->lineheight = 0;
+	ds->drawstart = 0;
+	ds->drawend = 0;
 }
 
 void	drawcolors(t_draws *ds, t_raycasting *ray)
@@ -93,7 +99,11 @@ void	ft_draw_sprites(t_raycasting *ray, int y, double *zbuffer)
 {
 	t_draws ds;
 
-	ft_initdraws(&ds, ray, y);
-	ft_calculsprite(&ds, ray);
-	ft_drawspritetwo(&ds, ray, zbuffer);
+	if (ft_initdraws(&ds, ray, y))
+	{
+		ds.spritex = 0;
+		ds.spritey = 0;
+		ft_calculsprite(&ds, ray);
+		ft_drawspritetwo(&ds, ray, zbuffer);
+	}
 }

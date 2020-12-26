@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 00:21:47 by user42            #+#    #+#             */
-/*   Updated: 2020/12/22 02:24:09 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/26 14:24:16 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <stdlib.h>
 # include <math.h>
-# include <mlx.h>
+# include "./minilibx-linux/mlx.h"
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -167,9 +167,10 @@ void			findhit(t_raycasting *ray, t_ddas *dd);
 void			choosedir(t_raycasting *ray, t_ddas *dd);
 void			freeall(t_parse *pars);
 void			ft_draw_sprites(t_raycasting *ray, int y, double *zbuffer);
-void			ft_initdraws(t_draws *ds, t_raycasting *ray, int y);
+int				ft_initdraws(t_draws *ds, t_raycasting *ray, int y);
 void			ft_startinitdraws(t_draws *ds);
 int				ft_key_press(int key, void *param);
+int				escape(void *param);
 void			ft_drawspritetwo(t_draws *ds,
 				t_raycasting *ray, double *zbuffer);
 int				ft_key_release(int key, void *param);

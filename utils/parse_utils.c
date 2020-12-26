@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 21:14:25 by user42            #+#    #+#             */
-/*   Updated: 2020/12/18 23:48:39 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/23 00:43:12 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int		ft_while(char *s3, const char *s1, int i)
 	return (p);
 }
 
-char	*ft_strjoinzero(char *s1, int size)
+char	*ft_strjoinzero(char *s1, int size, t_parse *pars)
 {
 	int		p;
 	char	*s3;
@@ -44,7 +44,7 @@ char	*ft_strjoinzero(char *s1, int size)
 	p = 0;
 	i = (int)ft_strlen(s1);
 	if (!(s3 = (char *)malloc(sizeof(char) * (i + size + 1))))
-		return (0);
+		ft_error("ERROR MALLOC", pars);
 	p = ft_while(s3, s1, i);
 	y = 0;
 	while (p <= (int)(i + size - 1))
@@ -58,7 +58,7 @@ char	*ft_strjoinzero(char *s1, int size)
 	return (s3);
 }
 
-void	create_charcub(char **tab, int width)
+void	create_charcub(t_parse *pars, int width, char **tab)
 {
 	int i;
 	int n;
@@ -70,7 +70,7 @@ void	create_charcub(char **tab, int width)
 		{
 			i = ft_strlen(tab[n]);
 			if (i < width)
-				tab[n] = ft_strjoinzero(tab[n], width - i);
+				tab[n] = ft_strjoinzero(tab[n], width - i, pars);
 			n++;
 		}
 }

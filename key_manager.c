@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 04:21:56 by user42            #+#    #+#             */
-/*   Updated: 2020/12/22 00:54:56 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/26 19:08:53 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,26 @@ void	turn_right(t_raycasting *ray)
 	ray->planey = oldplanex * sin(-0.02) + ray->planey * cos(-0.02);
 }
 
-void	escape(t_raycasting *ray)
+int		escape(void *param)
 {
-	mlx_destroy_window(ray->mlx, ray->mlx_win);
+	t_raycasting *ray;
+
+	ray = (t_raycasting *)param;
 	freeall(ray->pars);
+	if (ray->screenb)
+		mlx_destroy_image(ray->mlx, ray->screenb);
+	if (ray->textures[0].img)
+		mlx_destroy_image(ray->mlx, ray->textures[0].img);
+	if (ray->textures[1].img)
+		mlx_destroy_image(ray->mlx, ray->textures[1].img);
+	if (ray->textures[2].img)
+		mlx_destroy_image(ray->mlx, ray->textures[2].img);
+	if (ray->textures[3].img)
+		mlx_destroy_image(ray->mlx, ray->textures[3].img);
+	if (ray->textures[4].img)
+		mlx_destroy_image(ray->mlx, ray->textures[4].img);
+	if (ray->mlx_win)
+		mlx_destroy_window(ray->mlx, ray->mlx_win);
 	exit(EXIT_SUCCESS);
 }
 
@@ -51,7 +67,7 @@ int		ft_key_press(int key, void *param)
 	if (key == 65361)
 		ray->rotate_left = 1;
 	if (key == 65307)
-		escape(ray);
+		escape(param);
 	return (1);
 }
 

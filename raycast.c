@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 19:44:24 by user42            #+#    #+#             */
-/*   Updated: 2020/12/22 01:32:15 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/26 19:17:07 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 void			cubmlx(void *mlx_win, void *mlx, t_raycasting *param)
 {
+	mlx_hook(mlx_win, 33, 1L << 17, escape, param);
 	mlx_hook(mlx_win, 2, 1L << 0, ft_key_press, param);
-	mlx_hook(mlx_win, 3, 1L << 1, ft_key_release, param);
 	mlx_loop_hook(mlx, raycast, param);
+	mlx_hook(mlx_win, 3, 1L << 1, ft_key_release, param);
 	mlx_loop(mlx);
 }
 
@@ -86,19 +87,19 @@ int				raycast(t_raycasting *ray)
 {
 	double	zbuffer[ray->w];
 	int		i;
+	int		y;
 
+	y = 0;
 	i = 0;
 	raycastwo(ray, zbuffer);
 	while (ray->pars->sprites != NULL && ray->pars->sprites[i] != NULL)
 		i++;
 	if (i != 0)
-	{
 		sort_sprite(ray->pars->sprites, ray->posx, ray->posy, i);
-		while (i >= 0)
-		{
-			ft_draw_sprites(ray, i, zbuffer);
-			i--;
-		}
+	while (y < i)
+	{
+		ft_draw_sprites(ray, y, zbuffer);
+		y++;
 	}
 	mini_map(ray);
 	mini_life(ray);

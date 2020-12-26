@@ -1,0 +1,39 @@
+
+
+
+       F   41, 118, 242
+
+ NO ./texture/barrel.xpm
+R 1000 800
+S ./texture/barrel.xpm
+
+
+           SO ./texture/brick.xpm
+WE ./texture/brickbrick.xpm
+EA ./texture/brickbrick.xpm
+
+   C 			  			 	25, 224, 4
+
+
+
+
+11111111
+1000000111111
+10000000000001
+100N000111111
+10000001
+10000001               1
+10020001              101
+10000001              101
+1000000111111111111111101
+10000000000000000000000001
+1111111111111111111111111
+
+
+//gerer la croix**
+//delete cub3d**
+//map.cub "sans .cub" et propre texture relative**
+//texture ++ && texture cool**
+//check leak avec la croix**
+//gere trop argument
+//gere mlx.h

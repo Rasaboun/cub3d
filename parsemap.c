@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 20:31:18 by rasaboun          #+#    #+#             */
-/*   Updated: 2020/12/22 00:58:27 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/26 19:09:34 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,10 @@ void	get_map(int fd, t_cub_skip *map_pars)
 	map_pars->hudrep = 0;
 	while (get_next_line(fd, &map_pars->line))
 	{
-		if (map_pars->line == NULL)
-			exit(0);
-		n = 0;
 		n = skip_wspace(map_pars->line);
-		recup(map_pars->line + n, map_pars->pars);
+		recup(map_pars->line, map_pars->pars);
 		if (map_pars->line[n] == '0')
-		{
-			ft_error("error", map_pars->pars);
-		}
+			ft_rerror(map_pars, NULL, map_pars->line, "ERROR MAP");
 		if (map_pars->line[n] == '5')
 			map_pars->hud = recuphud(fd, map_pars->line, map_pars);
 		else if (map_pars->line[n] == '1')
@@ -95,15 +90,20 @@ t_parse	*cub_skip_header(int fd)
 	t_cub_skip	map_pars;
 
 	init_map_pars(&map_pars);
-	map_pars.pars = malloc(sizeof(t_parse));
+	if (!(map_pars.pars = malloc(sizeof(t_parse))))
+		ft_error("ERROR MALLOC", NULL);
 	init_pars(map_pars.pars);
 	get_map(fd, &map_pars);
 	if (map_pars.first == NULL)
 		ft_error("NO MAP", map_pars.pars);
+	if (map_pars.pars->f == -2 || map_pars.pars->c == -2)
+		ft_rerror(&map_pars, NULL, NULL, "ERROR COLOR");
 	map_pars.pars->tabhud = ft_lstdtab(map_pars.hud);
 	map_pars.pars->tab = ft_lstdtab(map_pars.first);
-	create_charcub(map_pars.pars->tab, tab_width(map_pars.pars->tab));
-	create_charcub(map_pars.pars->tabhud, tab_width(map_pars.pars->tabhud));
+	create_charcub(map_pars.pars, \
+	tab_width(map_pars.pars->tab), map_pars.pars->tab);
+	create_charcub(map_pars.pars, \
+	tab_width(map_pars.pars->tabhud), map_pars.pars->tabhud);
 	if (checkmap(map_pars.pars, &map_pars.lst) == 0)
 		ft_error("ERROR CHECKMAP", map_pars.pars);
 	get_sprites(&map_pars);

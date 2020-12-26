@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 01:07:05 by user42            #+#    #+#             */
-/*   Updated: 2020/12/22 01:42:10 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/26 14:32:16 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,14 +93,14 @@ void		mini_life(t_raycasting *ray)
 		return ;
 	mn.ratio_x = (((ray->w / 5) - (ray->w / (16 * 2))) / ray->pars->hwidth);
 	mn.ratio_y = (((ray->w / 20) - (ray->w / (16 * 2))) / ray->pars->hheight);
-	mn.ii = ray->w / 3;
+	mn.ii = (int)(ray->w / 1.2);
 	mn.i = 0;
 	mn.y = -1;
-	mn.yy = ray->w / 30;
+	mn.yy = ray->w / ray->h;
 	while (mn.y++ < (ray->pars->hheight - 1))
 	{
 		mn.i = 0;
-		mn.ii = ray->w / 3;
+		mn.ii = (int)(ray->w / 1.2);
 		while (mn.i < ray->pars->hwidth)
 		{
 			mn.color = 0xc21316;

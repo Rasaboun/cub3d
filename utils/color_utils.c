@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 23:22:15 by user42            #+#    #+#             */
-/*   Updated: 2020/12/22 01:03:44 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/23 22:57:35 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ int		parsecolor(char *line, int n)
 	rgb.g = 0;
 	rgb.b = 0;
 	rgb.rgb = 0;
-	n = parse_color(line, n, &rgb);
+	if ((n = parse_color(line, n, &rgb)) <= 0)
+		return (-1);
 	while (ft_iswhitespace(line[n]))
 		n++;
 	if (ft_isdigit(line[n]) == 1)

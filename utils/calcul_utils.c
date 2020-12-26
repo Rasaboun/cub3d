@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 21:44:07 by user42            #+#    #+#             */
-/*   Updated: 2020/12/22 02:24:57 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/26 19:14:44 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	sort_sprite(t_sprite **spr, int posx, int posy, int size)
 	dist1 = 0;
 	dist2 = 0;
 	disorder = 1;
-	while (disorder)
+	while (spr != NULL && disorder)
 	{
 		disorder = 0;
 		j = 0;

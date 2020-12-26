@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 05:00:13 by user42            #+#    #+#             */
-/*   Updated: 2020/12/22 01:01:29 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/25 17:00:01 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,4 @@ void	ft_dda(t_raycasting *ray, int x)
 	else
 		ray->perpwalldist = (double)(ray->mapy - \
 		ray->posy + (1 - dd.stepy) / 2) / ray->raydiry;
-	if (ray->perpwalldist <= 0.0)
-	{
-		ray->perpwalldist = 1;
-	}
 }

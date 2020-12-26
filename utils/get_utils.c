@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 21:17:44 by user42            #+#    #+#             */
-/*   Updated: 2020/12/22 01:37:28 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/23 20:00:34 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ void	get_sprites(t_cub_skip *map_pars)
 	i = ft_lstsize(map_pars->lst);
 	if (map_pars->lst != NULL)
 	{
-		map_pars->pars->sprites =\
-			(t_sprite **)malloc(sizeof(t_sprite *) * (i + 1));
+		if (!(map_pars->pars->sprites =\
+			(t_sprite **)malloc(sizeof(t_sprite *) * (i + 1))))
+			ft_error("ERROR MALLOC", map_pars->pars);
 		while (i >= 0)
 		{
 			map_pars->pars->sprites[i] = NULL;

@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 00:32:02 by user42            #+#    #+#             */
-/*   Updated: 2020/12/22 01:51:24 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/26 14:24:40 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 # include <stdlib.h>
 # include <math.h>
-# include <mlx.h>
+# include "./minilibx-linux/mlx.h"
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -177,11 +177,11 @@ t_list			*recupmap(int fd, char *line, t_cub_skip *map_pars);
 void			init_pars(t_parse *pars);
 t_parse			*cub_skip_header(int fd);
 int				tab_width(char **tab);
-void			create_charcub(char **tab, int width);
+void			create_charcub(t_parse *pars, int width, char **tab);
 void			get_map(int fd, t_cub_skip *map_pars);
 void			ft_swap_sprite(t_sprite **one, int j);
 int				ft_while(char *s3, const char *s1, int i);
-char			*ft_strjoinzero(char *s1, int size);
+char			*ft_strjoinzero(char *s1, int size, t_parse *pars);
 void			ft_swap_sprite(t_sprite **one, int j);
 int				ft_calcul_dist(int x, int y, int posx, int posy);
 void			get_sprites(t_cub_skip *map_pars);
@@ -205,4 +205,5 @@ void			init_map_pars(t_cub_skip *map_pars);
 void			file_headers(unsigned char *file_header, int file_size,
 				int width, unsigned char *image_header);
 int				save_bmp(int width, unsigned int *color, int i, int fd);
+void			ft_errord(char *str, t_parse *pars, char *line);
 #endif

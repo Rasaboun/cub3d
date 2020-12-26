@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 22:57:01 by rasaboun          #+#    #+#             */
-/*   Updated: 2020/12/22 00:52:02 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/23 23:00:53 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,11 @@ void		recupthree(char *line, t_parse *pars)
 {
 	int n;
 
-	n = 0;
+	n = skip_wspace(line);
 	if (line[n] == 'S' && line[n + 1] != 'O')
 	{
-		duplicerror(pars->s, pars);
+		if (pars->s != NULL)
+			ft_errord("duplicate arg", pars, line);
 		n++;
 		pars->s = parsetex(line, n);
 	}
@@ -75,7 +76,8 @@ void		recupthree(char *line, t_parse *pars)
 	}
 	if (line[n] == 'N' && line[n + 1] == 'O')
 	{
-		duplicerror(pars->no, pars);
+		if (pars->no != NULL)
+			ft_errord("duplicate arg", pars, line);
 		n += 2;
 		pars->no = parsetex(line, n);
 	}
@@ -85,16 +87,19 @@ void		recuptwo(char *line, t_parse *pars)
 {
 	int n;
 
-	n = 0;
+	n = skip_wspace(line);
+	recupthree(line, pars);
 	if (line[n] == 'S' && line[n + 1] == 'O')
 	{
-		duplicerror(pars->so, pars);
+		if (pars->so != NULL)
+			ft_errord("duplicate arg", pars, line);
 		n += 2;
 		pars->so = parsetex(line, n);
 	}
 	if (line[n] == 'W' && line[n + 1] == 'E')
 	{
-		duplicerror(pars->we, pars);
+		if (pars->we != NULL)
+			ft_errord("duplicate arg", pars, line);
 		n += 2;
 		pars->we = parsetex(line, n);
 	}
@@ -104,12 +109,12 @@ void		recup(char *line, t_parse *pars)
 {
 	int n;
 
-	n = 0;
+	n = skip_wspace(line);
 	recuptwo(line, pars);
-	recupthree(line, pars);
 	if (line[n] == 'E' && line[n + 1] == 'A')
 	{
-		duplicerror(pars->ea, pars);
+		if (pars->ea != NULL)
+			ft_errord("duplicate arg", pars, line);
 		n += 2;
 		pars->ea = parsetex(line, n);
 	}

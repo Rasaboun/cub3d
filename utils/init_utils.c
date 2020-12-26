@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 21:55:30 by user42            #+#    #+#             */
-/*   Updated: 2020/12/22 01:38:42 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/25 15:19:47 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void		init_pars(t_parse *pars)
 	pars->we = NULL;
 	pars->sprites = NULL;
 	pars->tabhud = NULL;
+	pars->row = 0;
 }
 
 char		**ft_lstdtab(t_list *lst)
@@ -81,7 +82,7 @@ void		init_map_pars(t_cub_skip *map_pars)
 	map_pars->hudrep = 0;
 }
 
-void		ft_initdraws(t_draws *ds, t_raycasting *ray, int y)
+int			ft_initdraws(t_draws *ds, t_raycasting *ray, int y)
 {
 	if (ray->pars->sprites && ray->pars->sprites[y])
 	{
@@ -97,5 +98,7 @@ void		ft_initdraws(t_draws *ds, t_raycasting *ray, int y)
 									ray->planex * ds->spritey);
 		ds->spritescreenx = ((ray->w / 2) *\
 		(1 + ds->transformx / ds->transformy));
+		return (1);
 	}
+	return (0);
 }

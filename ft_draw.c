@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 05:14:19 by user42            #+#    #+#             */
-/*   Updated: 2020/12/22 03:28:22 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/25 21:18:54 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,14 @@ void	ft_drawthree(t_draws *draw, t_raycasting *ray, int x)
 		ray->side = 3;
 	if (ray->side == 1 && ray->raydiry < 0)
 		ray->side = 2;
-	draw->wallx -= floor((draw->wallx));
+	draw->wallx -= floor(draw->wallx);
 	draw->texx = (int)(draw->wallx * \
 	(double)(ray->textures[ray->side].textwidth));
-	if (ray->side == 0)
+	if (ray->side == 0 && ray->raydirx > 0)
 		draw->texx = ray->textures[ray->side].textwidth - draw->texx - 1;
-	if (ray->side == 1)
+	if (ray->side == 1 && ray->raydiry < 0)
 		draw->texx = ray->textures[ray->side].textwidth - draw->texx - 1;
-	draw->step = 1.0 * ray->textures[ray->side].textwidth \
+	draw->step = 1.0 * ray->textures[ray->side].textheight \
 	/ draw->lineheight;
 	draw->texpos = (draw->drawstart - \
 	ray->h / 2 + draw->lineheight / 2) * draw->step;
@@ -70,16 +70,17 @@ void	ft_draw(t_raycasting *ray, int x, double *zbuffer)
 	end = draw.drawend - 1;
 	while (end++ < ray->h)
 		ray->imagescreenb[(ray->w) * end + x] = ray->pars->f;
-	y = draw.drawstart - 1;
-	while (y++ < draw.drawend)
+	y = draw.drawstart;
+	while (y < draw.drawend)
 	{
 		draw.texy = (int)draw.texpos \
 		& (ray->textures[ray->side].textheight - 1);
 		draw.texpos += draw.step;
 		color = \
 		ray->textures[ray->side].imagedata[ray->textures[ray->side].textheight \
-		* draw.texy + ray->textures[ray->side].textwidth - draw.texx];
+		* draw.texy + draw.texx];
 		ray->imagescreenb[(ray->w) * y + x] = color;
+		y++;
 	}
 	zbuffer[x] = ray->perpwalldist;
 }
