@@ -28,13 +28,3 @@ EA ./texture/brickbrick.xpm
 1000000111111111111111101
 10000000000000000000000001
 1111111111111111111111111
-
-
-//gerer la croix**
-//delete cub3d**
-//map.cub "sans .cub" et propre texture relative**
-//texture ++ && texture cool**
-//check leak avec la croix**
-//gere trop argument except --save
-//gere mlx.h**
-
