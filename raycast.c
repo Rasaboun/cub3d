@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 19:44:24 by user42            #+#    #+#             */
-/*   Updated: 2020/12/27 15:35:18 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/27 19:36:57 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,43 +21,33 @@ void			cubmlx(void *mlx_win, void *mlx, t_raycasting *param)
 	mlx_loop(mlx);
 }
 
-void	initparam(t_raycasting *param, t_texture *textures)
-{
-	param->mlx_win = NULL;
-	param->mlx = NULL;
-	param->imagescreenb = NULL;
-	param->screenb = NULL;
-	param->textures = NULL;
-}
-
 int				main(int argc, char *argv[])
 {
 	t_parse			*pars;
 	t_mains			m;
 	t_texture		textures[5];
-	t_raycasting	param;
+	t_raycasting	pm;
 
-	initparam(&param, textures);
+	initparam(&pm, textures);
 	pars = NULL;
-	param.pars = check_arg(argc, argv);
-	ft_checkun(param.pars);
-	if ((param.mlx = mlx_init()) == NULL)
-		ft_error("Error mlx init", param.pars);
-	mlx_get_screen_size(param.mlx, &m.screenx, &m.screeny);
-	max_reso(param.pars, &param, m.screenx, m.screeny);
-	if ((param.screenb = mlx_new_image(param.mlx, param.pars->r.i, param.pars->r.ii)) == NULL)
-		ft_errorescape("error new img", &param);
-	if ((param.imagescreenb = (unsigned int *)mlx_get_data_addr(param.screenb,\
+	pm.pars = check_arg(argc, argv);
+	ft_checkun(pm.pars);
+	if ((pm.mlx = mlx_init()) == NULL)
+		ft_error("Error mlx init", pm.pars);
+	mlx_get_screen_size(pm.mlx, &m.screenx, &m.screeny);
+	max_reso(pm.pars, &pm, m.screenx, m.screeny);
+	if (!(pm.screenb = mlx_new_image(pm.mlx, pm.pars->r.i, pm.pars->r.ii)))
+		ft_errorescape("error new img", &pm);
+	if ((pm.imagescreenb = (unsigned int *)mlx_get_data_addr(pm.screenb,\
 	&m.bpp, &m.size_line, &m.endian)) == NULL)
-		ft_errorescape("error get data addr screen", &param);
-	chooseplayerdir(&param, param.pars);
-	initcub(&param, param.pars, textures);
-	param.textures = textures;
-	init_texture(param.textures, param.pars, param.mlx);
-	argsave(argc, argv, &param, param.pars);
-	if ((param.mlx_win = mlx_new_window(param.mlx, param.w, param.h, "Cub3d")) == NULL)
-		ft_errorescape("error new window", &param);
-	cubmlx(param.mlx_win, param.mlx, &param);
+		ft_errorescape("error get data addr screen", &pm);
+	chooseplayerdir(&pm, pm.pars);
+	initcub(&pm, pm.pars, textures);
+	inittexture(textures, &pm);
+	argsave(argc, argv, &pm, pm.pars);
+	if ((pm.mlx_win = mlx_new_window(pm.mlx, pm.w, pm.h, "Cub3d")) == NULL)
+		ft_errorescape("error new window", &pm);
+	cubmlx(pm.mlx_win, pm.mlx, &pm);
 }
 
 void			movefunc(t_raycasting *ray)

@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 22:57:01 by rasaboun          #+#    #+#             */
-/*   Updated: 2020/12/27 14:11:47 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/27 20:25:59 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 #include "libft/libft.h"
 #include "get_next_line.h"
 
-t_doubleint	parsesize(char *line, int n)
+t_doubleint	parsesize(char *line, int n, t_parse *pars)
 {
 	t_doubleint dint;
+	int			y;
 
 	dint.i = 0;
 	dint.ii = 0;
@@ -27,12 +28,17 @@ t_doubleint	parsesize(char *line, int n)
 		n++;
 	while (ft_iswhitespace(line[n]))
 		n++;
+	y = n;
+	while (line[y] && (ft_isdigit(line[y]) || ft_iswhitespace(line[y])))
+		y++;
+	if (line[y] != '\0')
+		ft_errord("error arg resolution", pars, line);
 	dint.ii = ft_atoi(line + n);
 	dint.alr = 1;
 	return (dint);
 }
 
-char		*parsetex(char *line, int n)
+char		*parsetex(char *line, int n, t_parse *pars)
 {
 	int		y;
 	int		nn;
@@ -51,6 +57,8 @@ char		*parsetex(char *line, int n)
 		y++;
 		n++;
 	}
+	if (n != (int)ft_strlen(line))
+		ft_errord("error arg", pars, line);
 	s1 = ft_substr(line, nn, y);
 	return (s1);
 }
@@ -65,21 +73,21 @@ void		recupthree(char *line, t_parse *pars)
 		if (pars->s != NULL)
 			ft_errord("duplicate arg", pars, line);
 		n++;
-		pars->s = parsetex(line, n);
+		pars->s = parsetex(line, n, pars);
 	}
 	if (line[n] == 'R')
 	{
 		if (pars->r.alr == 1)
-			ft_error("duplicate", pars);
+			ft_errord("duplicate arg", pars, line);
 		n++;
-		pars->r = parsesize(line, n);
+		pars->r = parsesize(line, n, pars);
 	}
 	if (line[n] == 'N' && line[n + 1] == 'O')
 	{
 		if (pars->no != NULL)
 			ft_errord("duplicate arg", pars, line);
 		n += 2;
-		pars->no = parsetex(line, n);
+		pars->no = parsetex(line, n, pars);
 	}
 }
 
@@ -94,14 +102,14 @@ void		recuptwo(char *line, t_parse *pars)
 		if (pars->so != NULL)
 			ft_errord("duplicate arg", pars, line);
 		n += 2;
-		pars->so = parsetex(line, n);
+		pars->so = parsetex(line, n, pars);
 	}
 	if (line[n] == 'W' && line[n + 1] == 'E')
 	{
 		if (pars->we != NULL)
 			ft_errord("duplicate arg", pars, line);
 		n += 2;
-		pars->we = parsetex(line, n);
+		pars->we = parsetex(line, n, pars);
 	}
 }
 
@@ -116,7 +124,7 @@ void		recup(char *line, t_parse *pars)
 		if (pars->ea != NULL)
 			ft_errord("duplicate arg", pars, line);
 		n += 2;
-		pars->ea = parsetex(line, n);
+		pars->ea = parsetex(line, n, pars);
 	}
 	if (line[n] == 'F')
 	{

@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 20:31:18 by rasaboun          #+#    #+#             */
-/*   Updated: 2020/12/26 19:09:34 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/27 20:59:49 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,13 @@ int		checkmap(t_parse *pars, t_list **lst)
 		while (pars->tab[ck.i][ck.j])
 		{
 			if (ft_getelemmap(pars, &ck, lst) == 0)
-				return (0);
+				return (ft_errorcheckmap(&ck, *lst));
 			ck.j++;
 		}
 		ck.i++;
 	}
 	if (ck.player != 1)
-		return (0);
+		return (ft_errorcheckmap(&ck, *lst));
 	return (1);
 }
 

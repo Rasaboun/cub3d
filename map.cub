@@ -1,14 +1,10 @@
-
-
-
-       F   94, 93, 91
-
- NO ./texture/wall_1.xpm
-R 1000 800
+F   94, 93, 91
+NO       ./texture/wall_1.xpm
+R 1000 1000 
 S ./texture/sprite.xpm
 
 
-           SO ./texture/wall_2.xpm
+SO ./texture/wall_2.xpm
 WE ./texture/wall_3.xpm
 EA ./texture/wall_4.xpm
 
@@ -18,9 +14,9 @@ EA ./texture/wall_4.xpm
 
 11111111
 1000000111111
-10000000000001
-100E000111111
-10000001
+11000000000001
+1E100000111111
+11000001
 10000001               1
 10020001              101
 10000001              101

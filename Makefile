@@ -6,14 +6,14 @@
 #    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/22 02:01:59 by user42            #+#    #+#              #
-#    Updated: 2020/12/27 14:49:50 by user42           ###   ########.fr        #
+#    Updated: 2020/12/27 19:39:41 by user42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=		Cub3D
 LIBFT	=		libft/libft.a
 MLX		=		minilibx-linux/libmlx.a
-CC		=		clang
+CC		=		gcc
 GREEN	=		'\033[0;32m'
 
 SRC		=	raycast.c\
@@ -38,7 +38,8 @@ SRC		=	raycast.c\
 			recup.c \
 			bmp.c \
 			get_next_line.c \
-			get_next_line_utils.c 
+			get_next_line_utils.c \
+			utils/init.c
 		
 OBJS=$(SRC:.c=.o)
 

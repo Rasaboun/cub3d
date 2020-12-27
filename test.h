@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 00:32:02 by user42            #+#    #+#             */
-/*   Updated: 2020/12/26 14:24:40 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/27 20:59:00 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,13 +165,14 @@ void			ft_error(char *str, t_parse *pars);
 int				save_bitmap(unsigned int *color, int width, int height, int fd);
 int				save_bmp(int width, unsigned int *color, int i, int fd);
 void			recup(char *line, t_parse *pars);
-char			*parsetex(char *line, int n);
-t_doubleint		parsesize(char *line, int n);
+char			*parsetex(char *line, int n, t_parse *pars);
+t_doubleint		parsesize(char *line, int n, t_parse *pars);
 int				parsecolor(char *line, int n);
 void			sort_sprite(t_sprite **sprites, int posx, int posy, int size);
 void			get_sprites(t_cub_skip *map_pars);
 int				close_map(t_parse *pars, int i, int j);
 int				checkmap(t_parse *pars, t_list **lst);
+int				ft_errorcheckmap(t_checkmap *ck, t_list *lst);
 char			**ft_lstdtab(t_list *lst);
 t_list			*recupmap(int fd, char *line, t_cub_skip *map_pars);
 void			init_pars(t_parse *pars);

@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 00:21:47 by user42            #+#    #+#             */
-/*   Updated: 2020/12/27 15:28:40 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/27 21:05:21 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,8 @@ typedef	struct	s_raycasting
 }				t_raycasting;
 
 int				raycast(t_raycasting *ray);
+void			inittexture(t_texture *tex, t_raycasting *param);
+void			initparam(t_raycasting *param, t_texture *textures);
 void			ft_draw(t_raycasting *ray, int x, double *zbuffer);
 void			ft_drawthree(t_draws *draw, t_raycasting *ray, int x);
 void			ft_drawtwo(t_draws *draw, t_raycasting *ray);
@@ -207,10 +209,10 @@ void			chooseplayerdir(t_raycasting *ray, t_parse *pars);
 void			argsave(int argc, char **argv,
 				t_raycasting *param, t_parse *pars);
 void			max_reso(t_parse *pars, t_raycasting *param, int sx, int sy);
-t_parse			*check_arg(int argc, char **argv);
+t_parse			*check_arg(int argc, char **av);
 void			initcub(t_raycasting *param, t_parse *pars,
 				t_texture *textures);
 void			ft_checkun(t_parse *pars);
-void			init_texture(t_texture *tex, t_parse *pars, void *mlx);
+void			init_texture(t_texture *tex, t_raycasting *ray, void *mlx);
 void			intextpath(t_texture *textures, t_parse *pars);
 #endif
