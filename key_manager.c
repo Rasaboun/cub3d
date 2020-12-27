@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 04:21:56 by user42            #+#    #+#             */
-/*   Updated: 2020/12/26 19:08:53 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/27 15:30:20 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ int		escape(void *param)
 	t_raycasting *ray;
 
 	ray = (t_raycasting *)param;
-	freeall(ray->pars);
+	if (ray->pars)
+		freeall(ray->pars);
 	if (ray->screenb)
 		mlx_destroy_image(ray->mlx, ray->screenb);
 	if (ray->textures[0].img)
@@ -46,6 +47,11 @@ int		escape(void *param)
 		mlx_destroy_image(ray->mlx, ray->textures[4].img);
 	if (ray->mlx_win)
 		mlx_destroy_window(ray->mlx, ray->mlx_win);
+	if (ray->mlx)
+	{
+		mlx_destroy_display(ray->mlx);
+		free(ray->mlx);
+	}
 	exit(EXIT_SUCCESS);
 }
 

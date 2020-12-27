@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 22:57:01 by rasaboun          #+#    #+#             */
-/*   Updated: 2020/12/23 23:00:53 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/27 14:11:47 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,14 +121,14 @@ void		recup(char *line, t_parse *pars)
 	if (line[n] == 'F')
 	{
 		if (pars->f != -2)
-			ft_error("duplicate", pars);
+			ft_errord("duplicate", pars, line);
 		n++;
 		pars->f = parsecolor(line, n);
 	}
 	if (line[n] == 'C')
 	{
 		if (pars->c != -2)
-			ft_error("duplicate", pars);
+			ft_errord("duplicate", pars, line);
 		n++;
 		pars->c = parsecolor(line, n);
 	}

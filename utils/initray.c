@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 01:26:20 by user42            #+#    #+#             */
-/*   Updated: 2020/12/22 01:34:56 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/27 15:28:07 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ void			intextpath(t_texture *textures, t_parse *pars)
 	textures[2].path = pars->we;
 	textures[3].path = pars->so;
 	textures[4].path = pars->s;
+	textures[0].img = NULL;
+	textures[1].img = NULL;
+	textures[2].img = NULL;
+	textures[3].img = NULL;
+	textures[4].img = NULL;
 }
 
 void			init_texture(t_texture *tex, t_parse *pars, void *mlx)

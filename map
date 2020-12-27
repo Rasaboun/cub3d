@@ -35,5 +35,6 @@ EA ./texture/brickbrick.xpm
 //map.cub "sans .cub" et propre texture relative**
 //texture ++ && texture cool**
 //check leak avec la croix**
-//gere trop argument
-//gere mlx.h
+//gere trop argument except --save
+//gere mlx.h**
+

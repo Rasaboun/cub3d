@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 00:21:47 by user42            #+#    #+#             */
-/*   Updated: 2020/12/26 14:24:16 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/27 15:28:40 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,7 @@ void			ft_rrerror(t_cub_skip *map_pars, t_list *first);
 void			put_pixel(t_raycasting *ray, t_mini mn);
 void			utils_mmap(t_raycasting *ray, t_mini *ds);
 void			mini_map(t_raycasting *ray);
+void			ft_errorescape(char *str, t_raycasting *ray);
 void			mini_life(t_raycasting *ray);
 void			chooseplayerdirtwo(t_raycasting *ray, t_parse *pars);
 void			chooseplayerdir(t_raycasting *ray, t_parse *pars);
