@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   bmp.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rasaboun <rasaboun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 23:03:30 by rasaboun          #+#    #+#             */
-/*   Updated: 2020/12/19 00:39:39 by user42           ###   ########.fr       */
+/*   Updated: 2023/03/13 15:25:49 by rasaboun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "test.h"
+#include "data.h"
 
 int		save_bmp(int width, unsigned int *color, int i, int fd)
 {

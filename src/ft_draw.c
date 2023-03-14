@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_draw.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rasaboun <rasaboun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 05:14:19 by user42            #+#    #+#             */
-/*   Updated: 2020/12/25 21:18:54 by user42           ###   ########.fr       */
+/*   Updated: 2023/03/13 16:04:30 by rasaboun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycast.h"
-#include "test.h"
-#include "libft/libft.h"
+#include "data.h"
+#include "../libft/libft.h"
 #include "get_next_line.h"
 #include "math.h"
 

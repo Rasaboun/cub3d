@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rasaboun <rasaboun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 00:21:47 by user42            #+#    #+#             */
-/*   Updated: 2020/12/27 21:40:01 by user42           ###   ########.fr       */
+/*   Updated: 2023/03/13 15:41:08 by rasaboun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 
 # include <stdlib.h>
 # include <math.h>
-# include "./minilibx-linux/mlx.h"
+# include "../minilibx-linux/mlx.h"
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
 # include "get_next_line.h"
-# include "libft/libft.h"
-# include "test.h"
+# include "../libft/libft.h"
+# include "data.h"
 
 # define KEY_PRESSED 2
 # define KEY_RELEASE 3

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   init_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rasaboun <rasaboun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 21:55:30 by user42            #+#    #+#             */
-/*   Updated: 2020/12/25 15:19:47 by user42           ###   ########.fr       */
+/*   Updated: 2023/03/14 14:03:00 by rasaboun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../test.h"
+#include "../include/data.h"
 #include "../libft/libft.h"
-#include "../get_next_line.h"
-#include "../raycast.h"
+#include "../include/get_next_line.h"
+#include "../include/raycast.h"
 
 void		init_pars(t_parse *pars)
 {

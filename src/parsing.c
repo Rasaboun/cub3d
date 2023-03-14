@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   recup.c                                            :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rasaboun <rasaboun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 22:57:01 by rasaboun          #+#    #+#             */
-/*   Updated: 2020/12/27 20:25:59 by user42           ###   ########.fr       */
+/*   Updated: 2023/03/13 16:04:19 by rasaboun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycast.h"
-#include "libft/libft.h"
+#include "../libft/libft.h"
 #include "get_next_line.h"
 
 t_doubleint	parsesize(char *line, int n, t_parse *pars)

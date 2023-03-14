@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   key_manager.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rasaboun <rasaboun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 04:21:56 by user42            #+#    #+#             */
-/*   Updated: 2020/12/27 15:30:20 by user42           ###   ########.fr       */
+/*   Updated: 2023/03/13 15:33:58 by rasaboun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycast.h"
-#include "test.h"
+#include "data.h"
 
 void	turn_right(t_raycasting *ray)
 {

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   error_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rasaboun <rasaboun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 23:07:53 by user42            #+#    #+#             */
-/*   Updated: 2020/12/22 00:53:07 by user42           ###   ########.fr       */
+/*   Updated: 2023/03/14 14:02:40 by rasaboun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../test.h"
+#include "../include/data.h"
 #include "../libft/libft.h"
-#include "../get_next_line.h"
-#include "../raycast.h"
+#include "../include/get_next_line.h"
+#include "../include/raycast.h"
 
 void	ft_rrerror(t_cub_skip *map_pars, t_list *first)
 {

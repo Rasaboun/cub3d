@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   dda.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rasaboun <rasaboun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 05:00:13 by user42            #+#    #+#             */
-/*   Updated: 2020/12/25 17:00:01 by user42           ###   ########.fr       */
+/*   Updated: 2023/03/13 15:25:49 by rasaboun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycast.h"
-#include "test.h"
+#include "data.h"
 
 void	initdda(t_ddas *dd, t_raycasting *ray, int x)
 {

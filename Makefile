@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
+#    By: rasaboun <rasaboun@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/22 02:01:59 by user42            #+#    #+#              #
-#    Updated: 2020/12/27 19:39:41 by user42           ###   ########.fr        #
+#    Updated: 2023/03/14 14:10:38 by rasaboun         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,38 +15,40 @@ LIBFT	=		libft/libft.a
 MLX		=		minilibx-linux/libmlx.a
 CC		=		gcc
 GREEN	=		'\033[0;32m'
+SRC		=	src/raycast.c\
+			src/utils/initray.c\
+			src/utils/raypixel_utils.c \
+			src/utils/raycastchoose.c \
+			src/utils/parse_utils.c\
+			src/utils/error_utils.c \
+			src/utils/key_manager_utils.c\
+			src/utils/color_utils.c \
+			src/utils/get_utils.c \
+			src/utils/recup_utils.c \
+			src/utils/free_utils.c \
+			src/utils/init_utils.c \
+			src/utils/calcul_utils.c \
+			src/ft_draw.c \
+			src/dda.c \
+			src/ft_draw_sprites.c \
+			src/key_manager.c \
+			src/error.c \
+			src/parsemap.c \
+			src/parsing.c \
+			src/bmp.c \
+			src/get_next_line.c \
+			src/get_next_line_utils.c \
+			src/utils/init.c
 
-SRC		=	raycast.c\
-			utils/initray.c\
-			utils/raypixel_utils.c \
-			utils/raycastchoose.c \
-			utils/parse_utils.c\
-			utils/error_utils.c \
-			utils/key_manager_utils.c\
-			utils/color_utils.c \
-			utils/get_utils.c \
-			utils/recup_utils.c \
-			utils/free_utils.c \
-			utils/init_utils.c \
-			utils/calcul_utils.c \
-			ft_draw.c \
-			dda.c \
-			ft_draw_sprites.c \
-			key_manager.c \
-			test.c \
-			parsemap.c \
-			recup.c \
-			bmp.c \
-			get_next_line.c \
-			get_next_line_utils.c \
-			utils/init.c
-		
 OBJS=$(SRC:.c=.o)
+
+%.o: %.c
+	$(CC) -I./include -o $@ -c $< 
 
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT) $(MLX)
-		$(CC) $(OBJS) -I . -I./libft -I./minilibx-linux -Wall -Werror -Wextra -L ./libft -lft -L ./minilibx-linux -lmlx -lbsd -lm -lX11 -lXext -o $(NAME) -g
+		$(CC) $(OBJS) -I./include -I./libft -I./minilibx-linux -Wall -Werror -Wextra -L ./libft -lft -L ./minilibx-linux -lmlx -lbsd -lm -lX11 -lXext -o $(NAME) -g
 		@echo ${GREEN}FINI !
 
 $(LIBFT):
@@ -58,11 +60,12 @@ $(MLX):
 clean:
 		make clean -s -C libft
 		make clean -s -C minilibx-linux
-		rm $(OBJS)
+		rm -f $(OBJS)
 
 fclean: clean
 	make fclean -s -C libft
 	rm -rf image.bmp
+	rm -f $(NAME)
 
 re: fclean all
 

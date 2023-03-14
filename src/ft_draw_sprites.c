@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_draw_sprites.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rasaboun <rasaboun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 19:08:33 by user42            #+#    #+#             */
-/*   Updated: 2020/12/25 15:48:20 by user42           ###   ########.fr       */
+/*   Updated: 2023/03/13 15:25:49 by rasaboun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycast.h"
-#include "test.h"
+#include "data.h"
 
 void	ft_calculsprite(t_draws *ds, t_raycasting *ray)
 {

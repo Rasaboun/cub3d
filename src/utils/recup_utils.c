@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   recup_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rasaboun <rasaboun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 21:20:11 by user42            #+#    #+#             */
-/*   Updated: 2020/12/26 14:42:27 by user42           ###   ########.fr       */
+/*   Updated: 2023/03/14 14:03:36 by rasaboun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../test.h"
+#include "../include/data.h"
 #include "../libft/libft.h"
-#include "../get_next_line.h"
-#include "../raycast.h"
+#include "../include/get_next_line.h"
+#include "../include/raycast.h"
 
 t_list	*recupmap(int fd, char *line, t_cub_skip *map_pars)
 {
