@@ -25,6 +25,16 @@ About
 
 > The goal is to create a 3D graphic representation of a ***labyrinth*** in first person view using the principles of **ray-casting**.
 
+<h2 id="usage">
+🔨 Usage
+</h2>
+
+```shell
+Make && ./Cub3D [your-map.cub]
+```
+
+https://user-images.githubusercontent.com/40967731/225426383-a632b20e-9aa5-4fb4-8ee7-cf5edea7a663.mp4
+
 <h2 id="projetstructure">
 Project Structure
 </h2>
@@ -88,11 +98,6 @@ Map
 | `F`            | floor rgb color |
 | `C`            | celling rgb color|
 
-<h2 id="usage">
-🔨 Usage
-</h2>
 
-```shell
-Make && ./Cub3D [your-map.cub]
-```
+
 
