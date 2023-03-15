@@ -1,6 +1,6 @@
 F   94, 93, 91
 NO       ./texture/wall_1.xpm
-R 1000 1000 
+R  1280 720 
 S ./texture/sprite.xpm
 
 
