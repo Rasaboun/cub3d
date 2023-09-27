@@ -6,7 +6,7 @@
 #    By: rasaboun <rasaboun@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/22 02:01:59 by user42            #+#    #+#              #
-#    Updated: 2023/03/14 14:10:38 by rasaboun         ###   ########.fr        #
+#    Updated: 2023/09/27 23:22:24 by rasaboun         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ OBJS=$(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT) $(MLX)
-		$(CC) $(OBJS) -I./include -I./libft -I./minilibx-linux -Wall -Werror -Wextra -L ./libft -lft -L ./minilibx-linux -lmlx -lbsd -lm -lX11 -lXext -o $(NAME) -g
+		$(CC) $(OBJS) -I./include -I./libft -I./minilibx-linux -Wall -Werror -Wextra -L ./libft -lft -L ./minilibx-linux -lmlx -lm -lX11 -lXext -o $(NAME) -g
 		@echo ${GREEN}FINI !
 
 $(LIBFT):

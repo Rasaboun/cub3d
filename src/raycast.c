@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rasaboun <rasaboun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 19:44:24 by user42            #+#    #+#             */
-/*   Updated: 2020/12/27 19:36:57 by user42           ###   ########.fr       */
+/*   Updated: 2023/09/27 23:27:12 by rasaboun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int				raycast(t_raycasting *ray)
 	mini_life(ray);
 	if (ray->save == 0)
 	{
-		mlx_clear_window(ray->mlx, ray->mlx_win);
+		//mlx_clear_window(ray->mlx, ray->mlx_win);
 		mlx_put_image_to_window(ray->mlx, ray->mlx_win, ray->screenb, 0, 0);
 	}
 	return (1);
